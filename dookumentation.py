@@ -58,8 +58,6 @@ __source__ = ("https://raw.githubusercontent.com/juancarlospaco/"
 
 
 start_time = datetime.now()
-
-
 HTML = """<!DOCTYPE html><meta charset=utf-8/><meta name=keywords content=Docs>
 <title> {%{{ data['basename'].title()[:99] }}%} - Dookumentation </title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -353,7 +351,6 @@ class PyParse(object):
 
     def parse_file(self, filepath):
         """Parse file,create info Imports,Class,Function,Attr,Decorator,etc."""
-        print('Parsing file: {0}'.format(filepath))
         source = ""
         with open(filepath, 'r', encoding="utf-8") as python_file_to_read:
             source = python_file_to_read.read()
@@ -367,7 +364,7 @@ class PyParse(object):
         try:
             module = ast.parse(source)
         except:
-            print("The file contains syntax errors: {0}".format(filename))
+            log.warning("Python file has syntax errors: {0}!".format(filename))
             return {}
         for symbol in module.body:
             if symbol.__class__ is ast.Assign:
