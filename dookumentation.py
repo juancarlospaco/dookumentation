@@ -30,20 +30,16 @@ from random import randint
 from string import punctuation
 from tempfile import gettempdir
 from time import sleep
+from subprocess import getoutput
+from urllib import request
 
 import _ast
 
 try:
-    from urllib import request
-    from subprocess import getoutput
-    from shutil import disk_usage
+    from shutil import disk_usage  # windows dont have disk_usage ?
+    import resource  # windows dont have resource ?
 except ImportError:
-    request = getoutput = disk_usage = None
-
-try:
-    import resource  # windows dont have resource
-except ImportError:
-    resource = None
+    disk_usage = resource = None
 
 try:
     from pylama.main import check_path, parse_options
@@ -567,16 +563,12 @@ def check_working_folder(folder_to_check: str=os.path.expanduser("~")) -> bool:
     """
     folder_to_check = os.path.join(os.path.abspath(folder_to_check), "doc")
     log.debug("Checking the Working Folder: '{0}'".format(folder_to_check))
-    if not isinstance(folder_to_check, str):  # What if folder is not a string.
-        log.critical("Folder {0} is not String type!.".format(folder_to_check))
-        return False
-    elif os.path.isfile(folder_to_check):
+    if os.path.isfile(folder_to_check) or not isinstance(folder_to_check, str):
         log.info("Folder {0} is File or Relative Path".format(folder_to_check))
         return True
     elif not os.path.isdir(folder_to_check):  # What if folder is not a folder.
-        log.debug("Folder {0} does not exist !.".format(folder_to_check))
-        os.makedirs(folder_to_check, exist_ok=True)
         log.warning("Creating Required Folder: {0}/".format(folder_to_check))
+        os.makedirs(folder_to_check, exist_ok=True)
     elif not os.access(folder_to_check, os.R_OK):  # destination no Readable.
         log.critical("Folder {0} not Readable !.".format(folder_to_check))
         return False
@@ -618,63 +610,41 @@ def process_multiple_files(file_path):
         process_single_python_file(file_path)
 
 
-@typecheck
-def prefixer_extensioner(file_path: str) -> str:
-    """Take a file path and safely prepend a prefix and change extension.
-
-    This is needed because filepath.replace('.foo', '.bar') sometimes may
-    replace '/folder.foo/file.foo' into '/folder.bar/file.bar' wrong!.
-    """
-    log.debug("Prepending '{0}' Prefix to {1}.".format(args.prefix, file_path))
-    extension = os.path.splitext(file_path)[1].lower()
-    filenames = os.path.splitext(os.path.basename(file_path))[0]
-    filenames = args.prefix + filenames if args.prefix else filenames
-    dir_names = os.path.dirname(file_path)
-    file_path = os.path.join(dir_names, filenames + extension)
-    return file_path
-
-
 def python_file_to_json_meta(python_file_path):
     """Take python source code string and extract meta-data as json file."""
     json_meta = {}
     log.debug("INPUT: Reading Python file {0}.".format(python_file_path))
     with open(python_file_path, encoding="utf-8-sig") as python_file:
-        original_python = python_file.read()
-    # Miscellaneous
+        python_code = python_file.read()
     json_meta["generator"] = __doc__.splitlines()[0] + " " + __version__
-    # Paths
-    json_meta["relpath"] = os.path.relpath(python_file_path)
+    json_meta["relpath"] = os.path.relpath(python_file_path)  # Paths
     json_meta["basename"] = os.path.basename(python_file_path)
     json_meta["dirname"] = os.path.dirname(python_file_path)
     json_meta["fullpath"] = python_file_path
-    # Statistics
-    json_meta["lines_total"] = len(original_python.splitlines())
-    json_meta["characters"] = len(original_python.replace("\n", ""))
+    json_meta["lines_total"] = len(python_code.splitlines())  # Statistics
+    json_meta["characters"] = len(python_code.replace("\n", ""))
     json_meta["kilobytes"] = int(os.path.getsize(python_file_path) / 1024)
-    json_meta["lines_code"] = len(  # DocString count as code,because DocTests.
-        [_ for _ in original_python.splitlines()
-         if len(_.strip()) and not _.strip().startswith("#")])
+    json_meta["lines_code"] = len([_ for _ in python_code.splitlines() if len(
+        _.strip()) and not _.strip().startswith("#")])
     json_meta["words"] = len([_ for _ in re.sub(
-        "[^a-zA-Z0-9 ]", "", original_python).split(" ") if _ != ""])
+        "[^a-zA-Z0-9 ]", "", python_code).split(" ") if _ != ""])
     json_meta["punctuations"] = len(
-        [_ for _ in original_python if _ in punctuation])
-    # File Properties
+        [_ for _ in python_code if _ in punctuation])
     json_meta["permissions"] = int(oct(os.stat(python_file_path).st_mode)[-3:])
     json_meta["writable"] = os.access(python_file_path, os.W_OK)
     json_meta["executable"] = os.access(python_file_path, os.X_OK)
     json_meta["readable"] = os.access(python_file_path, os.R_OK)
     json_meta["symlink"] = os.path.islink(python_file_path)
-    json_meta["sha1"] = sha1(original_python.encode("utf-8")).hexdigest()
-    json_meta["import_procedural"] = "__import__(" in original_python
-    json_meta["has_set_trace"] = ".set_trace()" in original_python
-    json_meta["has_print"] = "print(" in original_python
-    json_meta["has_shebang"] = re.findall('^#!/.*python', original_python)
+    json_meta["sha1"] = sha1(python_code.encode("utf-8")).hexdigest()
+    json_meta["import_procedural"] = "__import__(" in python_code
+    json_meta["has_set_trace"] = ".set_trace()" in python_code
+    json_meta["has_print"] = "print(" in python_code
+    json_meta["has_shebang"] = re.findall('^#!/.*python', python_code)
     json_meta["accessed"] = datetime.utcfromtimestamp(os.path.getatime(
         python_file_path)).isoformat(" ").split(".")[0]
     json_meta["modified"] = datetime.utcfromtimestamp(os.path.getmtime(
         python_file_path)).isoformat(" ").split(".")[0]
-    # Bugs
-    json_meta["pylama"] = [
+    json_meta["pylama"] = [  # Bugs
         pylama_error.__dict__["_info"]  # dict with PyLama Errors from linters
         for pylama_error in check_path(parse_options((python_file_path, )))
         ] if check_path and parse_options else []  # if no PyLama empty list
@@ -682,7 +652,7 @@ def python_file_to_json_meta(python_file_path):
         json_meta["lines_per_bug"] = int(
             json_meta["lines_total"] / len(json_meta["pylama"]))
     regex_for_todo, all_todo = r"(  # TODO|  # FIXME|  # OPTIMIZE|  # BUG)", []
-    for index, line in enumerate(original_python.splitlines()):
+    for index, line in enumerate(python_code.splitlines()):
         if re.findall(regex_for_todo, line):
             all_todo.append({  # Using same keywords as PyLama array.
                 "lnum": index + 1, "text": line.strip(),
@@ -690,7 +660,6 @@ def python_file_to_json_meta(python_file_path):
                     "#", "").strip().lower()})
     if len(all_todo):
         json_meta["todo"] = all_todo  # this is all todo, fixme,etc on the code
-    # Procedural from Parser
     for key, value in PyParse().parse_file(python_file_path).items():
         json_meta[key] = value  # "some_code_entity": "value_of_that_entity",
     return json_meta  # return the Big Ol' JSON
@@ -745,8 +714,6 @@ def json_meta_to_md(json_meta):
 
 def json_meta_to_plugins(plugin_folder, python_file_path, json_meta):
     """Load and Run Plugins from Plugins folder."""
-    if not all((plugin_folder, python_file_path, json_meta)):
-        return
     plgns = [os.path.join(plugin_folder, _)  for _ in os.listdir(plugin_folder)
              if "template" == os.path.splitext(_)[0] and not _.startswith(".")]
     for template_to_render in tuple(sorted(plgns)):
@@ -769,44 +736,38 @@ def json_meta_to_plugins(plugin_folder, python_file_path, json_meta):
 
 
 @typecheck
-def process_single_python_file(python_file_path: str):
+def process_single_python_file(python_filepath: str):
     """Process a single Python file."""
-    log.info("Processing Python file: {0}".format(python_file_path))
+    log.info("Processing Python file: {0}".format(python_filepath))
     global args
-    is_a_file = os.path.isfile(python_file_path)
-    is_readable = os.access(python_file_path, os.R_OK)
-    if is_a_file and is_readable:
-        json_meta = python_file_to_json_meta(python_file_path)
-    new_json_file = os.path.join(
-        os.path.dirname(args.fullpath), "doc", "json",
-        os.path.basename(python_file_path) + ".json")
+    if os.path.isfile(python_filepath) and os.access(python_filepath, os.R_OK):
+        json_meta = python_file_to_json_meta(python_filepath)
+    new_json_file = os.path.join(os.path.dirname(args.fullpath), "doc", "json",
+                                 os.path.basename(python_filepath) + ".json")
     log.debug("OUTPUT: Writing MetaData JSON file {0}.".format(new_json_file))
     with open(new_json_file, "w", encoding="utf-8") as json_file:
             json_file.write(json_pretty(json_meta))
     html = json_meta_to_html(json_meta)
-    new_html_file = os.path.join(
-        os.path.dirname(args.fullpath), "doc", "html",
-        os.path.basename(python_file_path) + ".html")
+    new_html_file = os.path.join(os.path.dirname(args.fullpath), "doc", "html",
+                                 os.path.basename(python_filepath) + ".html")
     log.debug("OUTPUT: Writing HTML5 Documentation {0}.".format(new_html_file))
     with open(new_html_file, "w", encoding="utf-8") as html_file:
             html_file.write(html)
     md = json_meta_to_md(json_meta)
-    new_md_file = os.path.join(
-        os.path.dirname(args.fullpath), "doc", "md",
-        os.path.basename(python_file_path) + ".md")
+    new_md_file = os.path.join(os.path.dirname(args.fullpath), "doc", "md",
+                               os.path.basename(python_filepath) + ".md")
     log.debug("OUTPUT: Writing MD Documentation {0}.".format(new_md_file))
     with open(new_md_file, "w", encoding="utf-8") as md_file:
             md_file.write(md)
     svg = json_meta_to_svg(json_meta)
-    new_svg_file = os.path.join(
-        os.path.dirname(args.fullpath), "doc", "svg",
-        os.path.basename(python_file_path) + ".svg")
+    new_svg_file = os.path.join(os.path.dirname(args.fullpath), "doc", "svg",
+                                os.path.basename(python_filepath) + ".svg")
     log.debug("OUTPUT: Writing SVG Documentation {0}.".format(new_svg_file))
     with open(new_svg_file, "w", encoding="utf-8") as svg_file:
             svg_file.write(svg)
     plugin_dir = os.path.join(os.path.dirname(args.fullpath), "doc", "plugins")
     log.debug("Checking for Plugins and Running from {0}.".format(plugin_dir))
-    json_meta_to_plugins(plugin_dir, python_file_path, json_meta)
+    json_meta_to_plugins(plugin_dir, python_filepath, json_meta)
 
 
 ###############################################################################
@@ -814,10 +775,9 @@ def process_single_python_file(python_file_path: str):
 
 def check_for_updates():
     """Method to check for updates from Git repo versus this version."""
-    this_version = str(open(__file__).read())
     last_version = str(request.urlopen(__source__).read().decode("utf8"))
-    if this_version != last_version:
-        log.warning("Theres new Version available!,Update from " + __source__)
+    if str(open(__file__).read()) != last_version:
+        log.warning("Theres new Version available!, Update from " + __source__)
     else:
         log.info("No new updates!,You have the lastest version of this app.")
 
@@ -829,7 +789,6 @@ def make_root_check_and_encoding_debug() -> bool:
     >>> make_root_check_and_encoding_debug()
     True
     """
-    log.info(__doc__)
     log.debug("Python {0} on {1}.".format(python_version(), platform()))
     log.debug("STDIN Encoding: {0}.".format(sys.stdin.encoding))
     log.debug("STDERR Encoding: {0}.".format(sys.stderr.encoding))
@@ -838,15 +797,10 @@ def make_root_check_and_encoding_debug() -> bool:
     log.debug("FileSystem Encoding: {0}.".format(sys.getfilesystemencoding()))
     log.debug("PYTHONIOENCODING Encoding: {0}.".format(
         os.environ.get("PYTHONIOENCODING", None)))
-    os.environ["PYTHONIOENCODING"] = "utf-8"
-    sys.dont_write_bytecode = True
+    os.environ["PYTHONIOENCODING"], sys.dont_write_bytecode = "utf-8", True
     if not sys.platform.startswith("win"):  # root check
         if not os.geteuid():
             log.critical("Runing as root is not Recommended,NOT Run as root!.")
-            return False
-    elif sys.platform.startswith("win"):  # administrator check
-        if getuser().lower().startswith("admin"):
-            log.critical("Runing as Administrator is not Recommended!.")
             return False
     return True
 
@@ -892,8 +846,6 @@ def set_single_instance(name: str, single_instance: bool=True, port: int=8888):
             log.warning(e)
         else:
             log.info("Socket Lock for Single Instance: {0}.".format(__lock))
-    else:  # if multiple instance want to touch same file bad things can happen
-        log.warning("Multiple instance on same file can cause Race Condition.")
     return __lock
 
 
@@ -932,8 +884,6 @@ def make_logger(name: str=str(os.getpid())):
             return new
         # all non-Windows platforms support ANSI Colors so we use them
         log.StreamHandler.emit = add_color_emit_ansi(log.StreamHandler.emit)
-    else:
-        log.debug("Colored Logs not supported on {0}.".format(sys.platform))
     log_file = os.path.join(gettempdir(), str(name).lower().strip() + ".log")
     log.basicConfig(level=-1, filemode="w", filename=log_file,
                     format="%(levelname)s:%(asctime)s %(message)s %(lineno)s")
@@ -942,7 +892,7 @@ def make_logger(name: str=str(os.getpid())):
     try:
         handler = log.handlers.SysLogHandler(address=adrs)
     except:
-        log.debug("Unix SysLog Server not found,ignored Logging to SysLog.")
+        log.debug("Unix SysLog Server not found, ignored Logging to SysLog.")
     else:
         log.addHandler(handler)
     log.debug("Logger created with Log file at: {0}.".format(log_file))
@@ -976,21 +926,14 @@ def make_post_execution_message(app: str=__doc__.splitlines()[0].strip()):
 
 
 def make_arguments_parser():
-    """Build and return a command line agument parser."""
-    # Parse command line arguments.
-    parser = ArgumentParser(description=__doc__, epilog="""Dookumentation:
+    """Build and return a command line agument parser,parse CLI arguments."""
+    parser = ArgumentParser(description=__doc__, epilog="""    Dookumentation:
     Takes file or folder full path string and process all Python code found.
-    If argument is not file/folder will fail.
     Watch works for whole folders, with minimum of ~60 Secs between runs.""")
     parser.add_argument('--version', action='version', version=__version__)
     parser.add_argument('fullpath', metavar='fullpath', type=str,
                         help='Full path to local file or folder.')
-    parser.add_argument('--prefix', type=str,
-                        help="Prefix string to prepend on output filenames.")
-    parser.add_argument('--timestamp', action='store_true',
-                        help="Add a Time Stamp on all Doc output files.")
-    parser.add_argument('--quiet', action='store_true',
-                        help="Quiet, Silent, force disable all Logging.")
+    parser.add_argument('--quiet', action='store_true', help="Quiet, Silent.")
     parser.add_argument('--checkupdates', action='store_true',
                         help="Check for Updates from Internet while running.")
     parser.add_argument('--after', type=str,
@@ -1010,35 +953,29 @@ def main():
     make_root_check_and_encoding_debug()
     set_process_name_and_cpu_priority("dookumentation")
     set_single_instance("dookumentation")
-    if args.checkupdates:
-        check_for_updates()
-    if args.quiet:
-        log.disable(log.CRITICAL)
+    check_for_updates() if args.checkupdates else log.debug("No Check Updates")
+    log.disable(log.CRITICAL) if args.quiet else log.debug("Max Logging ON")
     log.info(__doc__ + __version__)
     check_working_folder(os.path.dirname(args.fullpath))
     if args.before and getoutput:
         log.info(getoutput(str(args.before)))
-    # Work based on if argument is file or folder, folder is slower.
-    if os.path.isfile(args.fullpath
-                      ) and args.fullpath.endswith((".py", ".pyw")):
-        log.info("Target is a PY / PYW Source Code File.")
-        list_of_files = str(args.fullpath)
+    files_exts, list_of_files = (".py", ".pyw"), str(args.fullpath)
+    if os.path.isfile(args.fullpath) and args.fullpath.endswith(files_exts):
+        log.info("Target is single a *.PY or *.PYW Python Source Code File.")
         process_single_python_file(args.fullpath)
     elif os.path.isdir(args.fullpath):
-        log.info("Target is a Folder with PY / PYW Source Code  Files.")
+        log.info("Target is Folder with *.PY & *.PYW Python Source Code Files")
         log.warning("Processing a whole Folder may take some time...")
-        list_of_files = walkdir_to_filelist(args.fullpath, (".py", ".pyw"), [])
+        list_of_files = walkdir_to_filelist(args.fullpath, files_exts, [])
         pool = Pool(cpu_count())  # Multiprocessing Async
         pool.map_async(process_multiple_files, list_of_files)
         pool.close()
         pool.join()
     else:
-        log.critical("File or folder not found,or cant be read,or I/O Error.")
-        sys.exit(1)
+        sys.exit("File or folder not found,or cant be read,or I/O Error!.")
     if args.after and getoutput:
         log.info(getoutput(str(args.after)))
-    log.info('-' * 80)
-    log.info('Files Processed: {0}.'.format(list_of_files))
+    log.info('\n {0} \n Files Processed: {1}.'.format('-' * 80, list_of_files))
     log.info('Number of Files Processed: ~{0}.'.format(
         len(list_of_files) if isinstance(list_of_files, tuple) else 1))
     make_post_execution_message()
