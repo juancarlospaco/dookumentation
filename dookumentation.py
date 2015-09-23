@@ -161,76 +161,6 @@ class="mdl-button mdl-button--raised mdl-button--accent">Forward</button></a>
 "</a>").format(u=__url__, n="Dookumentation") }}%}</div></footer>"""
 
 
-SVG = """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg height="299%" width="299%" xmlns="http://www.w3.org/2000/svg"
-style="font-family:Ubuntu" title="Dookumentation"><text title="Dookumentation">
-<tspan x="9" y="50" style="font-size:4em">Dookumentation !</tspan>  {%
-{{'<tspan x="9" y="99" style="font-size:2em"> Statistics </tspan>'}}
-{{'<tspan x="9" y="120">Lines Total: {0}</tspan>'.format(data['lines_total'])}}
-{{'<tspan x="150" y="120">Lines Code: {0}</tspan>'.format(data['lines_code'])}}
-{{'<tspan x="300" y="120">Size (Kb.): {0}</tspan>'.format(data['kilobytes']) }}
-{{'<tspan x="9" y="150">Characters: {0}.</tspan>'.format(data['characters']) }}
-{{'<tspan x="150" y="150"> Words: {0}         </tspan>'.format(data['words'])}}
-{{'<tspan x="300" y="150">Punct.: {0}  </tspan>'.format(data['punctuations'])}}
-{{'<tspan x="9" y="180">Permissions: {0}</tspan>'.format(data['permissions'])}}
-{{'<tspan x="150" y="180">Bugs ?: {0}.</tspan>'.format(bool(data['pylama'])) }}
-{{'<tspan x="300" y="180"> SymLink ?: {0} </tspan> '.format(data['symlink']) }}
-{{'<tspan x="9" y="210"> Writable ?: {0}. </tspan>'.format(data['writable']) }}
-{{'<tspan x="150" y="210">Executable?:{0}</tspan>'.format(data['executable'])}}
-{{'<tspan x="300" y="210">Readable ?: {0}.</tspan>'.format(data['readable']) }}
-{{'<tspan x="9" y="240">Has Print()?: {0}</tspan>'.format(data['has_print']) }}
-{{'<tspan x="150" y="240">__import__()?: {0}.</tspan>'.format(
-    data['import_procedural'])}}
-{{'<tspan x="300" y="240"> Has BreakPoints ?: {0}.</tspan>'.format(
-    data['has_set_trace']) }}
-{{'<tspan x="9" y="270"> SheBang ? {0}.</tspan>'.format(data['has_shebang']) }}
-{{ '<tspan x="500" y="99" style="font-size:2em" title="Bugs">Bugs</tspan>' }}
-if len(data.get('pylama')):
-    {{'<tspan x="500" y="120"> You wrote 1 Bug every '}}
-    {{'{0} Lines of Code !.</tspan>'.format(data['lines_per_bug']) }}
-    for i, _ in enumerate(data['pylama']):
-        {{'    <tspan x="500" y="{0}"> {1}. '.format(150 + i * 20, i) }}
-        {{'    Line {0} Column {1} found by {2}: {3}.</tspan>'.format(
-               _['lnum'], _['col'], _['linter'].upper(), _['text'][:99]) }}
-else:
-    if check_path and parse_options:  # Theres PyLama but theres no Errors.
-        {{ '<tspan x="500" y="170" style="color:green"> No Bugs !. </tspan>' }}
-    else:  # Theres NO PyLama, but may or may not be no Errors ?.
-        {{ '<tspan x="500" y="170" style="color:red"> No PyLama !. </tspan>' }}
-if len(data.get('todo')):
-    {{ '<tspan x="1200" y="99" style="font-size:2em"> Things To Do</tspan>' }}
-    for i, _ in enumerate(data['todo']):
-        {{'    <tspan x="1200" y="{0}"> {1}. '.format(150 + i * 20, i) }}
-        {{'    {0} on Line {1}: {2}. </tspan>'.format(
-               _['type'].upper(), _['lnum'], _['text'][:99]) }}
-{{'<tspan x="9" y="500" title="Import" style="font-size:2em">Imports</tspan>'}}
-if len(data.get('imports')):
-    for i, _ in enumerate(data['imports'].items()):
-        {{'<tspan x="9" y="{0}">{1}. {2}</tspan>'.format(550 + i * 30, i,
-          str(_)[:70])}}
-else:
-    {{ '<tspan x="9" y="550">No Imports!, Parser cant find Imports.</tspan>' }}
-{{ '<tspan x="500" y="500" style="font-size:2em">Attributes</tspan>' }}
-if len(data.get('attributes')):
-    for i, _ in enumerate(data['attributes'].items()):
-        {{'<tspan x="500" y="{0}">{1}. {2}</tspan>'.format(550 + i * 30, i,
-          str(_)[:70])}}
-else:
-    {{ '<tspan x="9" y="550">No Attributes!, cant find Attributes.</tspan>' }}
-{{ '<tspan x="1200" y="500" style="font-size:2em">Functions</tspan>' }}
-if len(data.get('attributes')):
-    for i, _ in enumerate(data['functions'].items()):
-        {{'<tspan x="1200" y="{0}">{1}. {2}</tspan>'.format(550 + i * 30, i,
-          str(_)[:70])}}
-else:
-    {{ '<tspan x="1200" y="550">No Functions!, cant find Functions.</tspan>' }}
-%} <tspan x="700" y="25">Made with Python StdLibs by Juan</tspan><tspan x="700"
-y="50"> Tested on Chromium, Chrome, Android, Firefox and Qupzilla. </tspan>
-<tspan x="1200" y="25" title="Dookumentation"> {%{{ __url__ }} %} </tspan>
-<tspan x="1200" y="50" title="Dookumentation">{%{{data['generator']}}%}</tspan>
-</text>ERROR: Your Browser does not support SVG</svg><!-- Dookumentation -->"""
-
-
 MD = """# Dookumentation\n\n\n### [Imports](#imports "Imports")\n\n\n {%
 if len(data.get('imports')):
     for _ in data['imports'].items():
@@ -697,12 +627,6 @@ def json_meta_to_html(json_meta):
     return html(data=json_meta, mini=True)  # mini is HTML Minification.
 
 
-def json_meta_to_svg(json_meta):
-    """Take json_meta string and convert it to SVG (for HTML5) file."""
-    svg = Templar(SVG)  # instantiate and give it template string,then render
-    return svg(data=json_meta, mini=True)  # mini is SVG Minification.
-
-
 def json_meta_to_md(json_meta):
     """Take json_meta string and convert it to MD MarkDown file."""
     md = Templar(MD)  # instantiate and give it template string,then render
@@ -756,12 +680,6 @@ def process_single_python_file(python_filepath: str):
     log.debug("OUTPUT: Writing MD Documentation {0}.".format(new_md_file))
     with open(new_md_file, "w", encoding="utf-8") as md_file:
             md_file.write(md)
-    svg = json_meta_to_svg(json_meta)
-    new_svg_file = os.path.join(os.path.dirname(args.fullpath), "doc", "svg",
-                                os.path.basename(python_filepath) + ".svg")
-    log.debug("OUTPUT: Writing SVG Documentation {0}.".format(new_svg_file))
-    with open(new_svg_file, "w", encoding="utf-8") as svg_file:
-            svg_file.write(svg)
     plugin_dir = os.path.join(os.path.dirname(args.fullpath), "doc", "plugins")
     log.debug("Checking for Plugins and Running from {0}.".format(plugin_dir))
     json_meta_to_plugins(plugin_dir, python_filepath, json_meta)
