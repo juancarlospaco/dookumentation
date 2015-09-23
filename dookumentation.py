@@ -509,7 +509,7 @@ def check_working_folder(folder_to_check: str=os.path.expanduser("~")) -> bool:
         else:  # < 1 Gb
             log.critical("Total Free Space is < 1 GigaByte; Epic Fail !.")
             return False
-    basic_folders = ("json", "html", "md", "svg", "plugins")  # sub-folders.
+    basic_folders = ("json", "html", "md", "plugins")  # sub-folders.
     for subfolder in [os.path.join(folder_to_check, _) for _ in basic_folders]:
         if not os.path.isdir(subfolder):
             log.warning("Creating Required Sub-Folder: {0}/".format(subfolder))
