@@ -16,7 +16,6 @@ import os
 import re
 import socket
 import sys
-
 from argparse import ArgumentParser
 from copy import copy
 from ctypes import byref, cdll, create_string_buffer
@@ -27,25 +26,33 @@ from json import dumps
 from multiprocessing import Pool, cpu_count
 from platform import platform, python_version
 from random import randint
+from shutil import disk_usage, make_archive
 from string import punctuation
+from subprocess import getoutput
 from tempfile import gettempdir
 from time import sleep
-from subprocess import getoutput
 from urllib import request
 
 import _ast
 
 try:
-    from shutil import disk_usage  # windows dont have disk_usage ?
     import resource  # windows dont have resource ?
 except ImportError:
-    disk_usage = resource = None
+    resource = None
 
 try:
     from pylama.main import check_path, parse_options
 except ImportError:
     check_path = parse_options = None
     print("WARNING: PyLama Not Found !!!, Run: \nsudo pip3 install pylama")
+
+try:  # https://github.com/lepture/python-livereload
+    import ivereload  # sudo pip3 install livereload
+except ImportError:
+    from webbrowser import open_new_tab
+    import http.server as server
+    from http.server import CGIHTTPRequestHandler
+    livereload = None  # Still works Ok without LiveReload
 
 
 __version__ = "1.0.0"
@@ -685,6 +692,17 @@ def process_single_python_file(python_filepath: str):
     json_meta_to_plugins(plugin_dir, python_filepath, json_meta)
 
 
+def serve_http(where=os.getcwd()):
+    """Serve HTTP files and HTML on the where folder,with LiveReload if any."""
+    if livereload:  # with LiveReload
+        livereload.Server().serve(port=8000, open_url_delay=1, root=where)
+    else:  # without LiveReload
+        log.info("Run:pip install livereload\nServer on http://localhost:8000")
+        httpd = server.HTTPServer(('', 8000), CGIHTTPRequestHandler)
+        open_new_tab("http://localhost:8000/")
+        httpd.serve_forever()
+
+
 ###############################################################################
 
 
@@ -809,7 +827,7 @@ def make_logger(name: str=str(os.getpid())):
     except:
         log.debug("Unix SysLog Server not found, ignored Logging to SysLog.")
     else:
-        log.addHandler(handler)
+        log.getLogger().addHandler(handler)
     log.debug("Logger created with Log file at: {0}.".format(log_file))
     return log
 
@@ -857,6 +875,8 @@ def make_arguments_parser():
                         help="Command to execute before run (Experimental).")
     parser.add_argument('--watch', action='store_true',
                         help="Re-Process if file changes (Experimental).")
+    parser.add_argument('--zip', action='store_true', help="HTML as ZIP file")
+    parser.add_argument('--serve', action='store_true', help="HTTP Serve HTML")
     global args
     args = parser.parse_args()
 
@@ -888,8 +908,13 @@ def main():
         pool.join()
     else:
         sys.exit("File or folder not found,or cant be read,or I/O Error!.")
+    html_folder = os.path.join(os.path.dirname(args.fullpath), "doc", "html")
+    if args.zip and make_archive and os.path.isdir(html_folder):  # HTML to ZIP
+        make_archive(html_folder, 'zip', html_folder, logger=log)
     if args.after and getoutput:
         log.info(getoutput(str(args.after)))
+    if args.serve and os.path.isdir(html_folder):  # HTML to HTTP LiveReload
+        serve_http(html_folder)
     log.info('\n {0} \n Files Processed: {1}.'.format('-' * 80, list_of_files))
     log.info('Number of Files Processed: ~{0}.'.format(
         len(list_of_files) if isinstance(list_of_files, tuple) else 1))
