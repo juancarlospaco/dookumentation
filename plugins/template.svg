@@ -113,15 +113,15 @@
     it should Render something cute from a simple plain text JSON 'data' object,
     the plain text JSON 'data' is simply the *.json file from /doc/json/ folder,
     this Template-Plugin Renders JSON data to SVG (HTML5-Friendly for the Web),
-    its fully functional, and also provided as an Example Plugin.
+    its fully functional, but still a Demo, also provided as an Example Plugin.
 
-    I/O, Reading and Writing is handled by Dookumentation.
+    I/O, Reading and Writing, Folders, SubFolders is handled by Dookumentation.
 
     The Encoding is UTF-8 and Unicode ready.
 
-    The Programming Code is unrestricted Python 3.
+    The Programming Code is normal Python 3.
 
-    The Template Mini-Markup code is Templar (Django/Jinja alike):
+    The Template Mini-Markup code is Templar (Django / Jinja alike):
     https://gist.github.com/juancarlospaco/97a6a09d64b190a630ad#gistcomment-1576482
 
     For more info about Dookumentation:
