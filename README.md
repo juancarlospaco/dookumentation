@@ -4,6 +4,13 @@
 *W.I.P.  More Documentation soon...*
 
 
+# Input Formats
+
+- `*.py` Python source code file, single file or whole folders recursively.
+- `*.pyw` Python source code file for MS Windows, single file or whole folders recursively.
+- ~~*.PYZ Python source code file ZIP Compressed, single file or whole folders recursively.~~ Planned for future, not supported yet.
+
+
 # Output Formats
 
 - **HTML5**, [Material Design](http://www.getmdl.io "Material Design"), [Minified](https://github.com/juancarlospaco/css-html-js-minify#css-html-js-minify "Im Author of an HTML, CSS, JS minifier") `*.html`
