@@ -9,13 +9,15 @@
 - **Async**, does not Block or Slows down even with large amount of files and folders to process.
 - **Watch**, Watch for changes on files re-process only the changes, you code and forget about Documentations.
 - **Zero Config**, No configurations, No settings, No `*.yml` files required to work, ever.
+- **Single-File**, everything is just 1 file, with PEP-8, Lint and other Python Best Practices, very readable.
 - **Python3 ready**, it will only work with Python >= 3, instead of soon to be deprecated *(year 2020)* python2.
 - **Unicode ready**, it should handle correctly any kind of character that `UTF-8` can support without escaping.
 - **Plugins**, write your own plugins with native unrestricted Python 3, plugins are single file plain text.
 - **Templates Custom**, Custom Templates ARE plugins, write one get two at the same price.
 - **Export to Anything**, Templates are Plugins and are for Exporting to any kind of format you need.
 - **Serve + Live-Reload**, HTTP Web Server from local computer to the network, with Live-Reload.
-- **Scripting**, Execute custom Scripts After and Before the processing of files and folders.
+- **Minimalism**, do 1 thing do it awesome, is tiny and simple, K.I.S.S., its < 1.000 lines.
+- **Scripting**, Execute custom Scripts *(eg. Bash *.sh)* After and Before the processing of files and folders.
 - **Recursive**, it can work recursively processing whole project folders at once.
 - **MetaData + Statistics**, Parse, Collect and Display nice MetaData and Statistics of your work.
 - **Link-ability**, Automagically determines a word is referring to Python Library and Link to its Documentation.
