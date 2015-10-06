@@ -13,7 +13,7 @@
 
 ### Output Formats
 
-- **HTML5**, [Material Design](http://www.getmdl.io "Material Design"), [Minified](https://github.com/juancarlospaco/css-html-js-minify#css-html-js-minify "Im Author of an HTML, CSS, JS minifier") `*.html`
+- **HTML5**, [Material Design](http://www.getmdl.io "Material Design"), [Minified](https://github.com/juancarlospaco/css-html-js-minify#css-html-js-minify "Im Author of an HTML, CSS, JS minifier"), Download/Export **JSON** and **MarkDown** from the HTML Docs `*.html`
 - **MarkDown**, [GitHub Compatible](https://help.github.com/articles/github-flavored-markdown "GitHub Flavored Markdown"), Pretty-Printed `*.md`
 - **RST**, [ReSTructuredText](http://docutils.sourceforge.net/rst.html "ReSTructuredText Home Page"), GitHub Compatible, Pretty-Printed `*.rst`
 - **JSON**, [Pretty-Printed](https://gist.github.com/juancarlospaco/358bcefc7df07bdc6b80#gistcomment-1573844 "Gist used to Pretty-Print the JSON"), JavaScript Compatible `*.json`
