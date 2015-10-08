@@ -44,3 +44,31 @@
 - **XML**, generic XML, Pretty-Printed, [via single-file provided plugin](https://github.com/juancarlospaco/dookumentation/blob/master/plugins/template.xml "XML Template-Plugin") `*.xml`
 - **Infinite?**, via [third party Do-It-Yourself single-file plugin](https://gist.github.com/juancarlospaco/97a6a09d64b190a630ad#gistcomment-1576482 "Write 1 file, export 1 new format !")
 - [*Your Output Format here...*](https://github.com/juancarlospaco/dookumentation/pulls "Send new Output Formats by sending your Plugins")
+
+
+# Why?:
+
+- TBD.
+
+
+# Requisites:
+
+- [Python 3.x](https://www.python.org "Python Homepage") *(or PyPy 3.x, or Python Nightly)*
+
+
+# Coding Style Guide:
+
+- Lint, [PEP-8](https://www.python.org/dev/peps/pep-0008), [PEP-257](https://www.python.org/dev/peps/pep-0257), [PyLama](https://github.com/klen/pylama#-pylama), [iSort](https://github.com/timothycrosley/isort) must Pass Ok. `pip install pep8 pep257 pylama isort`
+- If theres any kind of Tests, they must Pass Ok, if theres no Tests, its ok, if Tests provided, is even better.
+
+
+# Licence:
+
+- GNU GPL Latest Version, GNU LGPL Latest Version, GNU AGPL Latest Version, MIT Latest Version, any Licence [YOU Request via Bug Report](https://github.com/juancarlospaco/css-html-js-minify/issues/new).
+
+
+
+
+
+
+
