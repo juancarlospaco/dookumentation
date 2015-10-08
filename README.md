@@ -46,29 +46,22 @@
 - [*Your Output Format here...*](https://github.com/juancarlospaco/dookumentation/pulls "Send new Output Formats by sending your Plugins")
 
 
-# Why?:
+### Why?:
 
 - TBD.
 
 
-# Requisites:
+### Requisites:
 
 - [Python 3.x](https://www.python.org "Python Homepage") *(or PyPy 3.x, or Python Nightly)*
 
 
-# Coding Style Guide:
+### Coding Style Guide:
 
 - Lint, [PEP-8](https://www.python.org/dev/peps/pep-0008), [PEP-257](https://www.python.org/dev/peps/pep-0257), [PyLama](https://github.com/klen/pylama#-pylama), [iSort](https://github.com/timothycrosley/isort) must Pass Ok. `pip install pep8 pep257 pylama isort`
 - If theres any kind of Tests, they must Pass Ok, if theres no Tests, its ok, if Tests provided, is even better.
 
 
-# Licence:
+### Licence:
 
 - GNU GPL Latest Version, GNU LGPL Latest Version, GNU AGPL Latest Version, MIT Latest Version, any Licence [YOU Request via Bug Report](https://github.com/juancarlospaco/css-html-js-minify/issues/new).
-
-
-
-
-
-
-
