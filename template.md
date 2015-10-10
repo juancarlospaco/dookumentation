@@ -4,7 +4,7 @@
 ### [Imports](#imports "Imports")
 
 {%
-if len(data.get('imports')):
+if data.get('imports'):
     for _ in data['imports'].items():
         {{ _[0], _[1] }}
 else:
@@ -12,10 +12,21 @@ else:
 %}
 
 
+### [Classes](#classes "Classes")
+
+{%
+if data.get('classes'):
+    for _ in data['classes'].items():
+        {{ _[0], _[1] }}
+else:
+    {{ '- No Classes!, Parser can not find any Classes!.' }}
+%}
+
+
 ### [Functions](#functions "Functions")
 
 {%
-if len(data.get('functions')):
+if data.get('functions'):
     for _ in data['functions'].items():
         {{ _[0], _[1] }}
 else:
@@ -26,7 +37,7 @@ else:
 ### [Attributes](#attributes "Attributes")
 
 {%
-if len(data.get('attributes')):
+if data.get('attributes'):
     for _ in data['attributes'].items():
         {{ _[0], _[1] }}
 else:
@@ -37,7 +48,7 @@ else:
 ### [&hercon; Bugs](#bugs "Bugs")
 
 {%
-if len(data.get('pylama')):
+if data.get('pylama'):
     {{ '- &star; You wrote 1 Bug every {0} Lines of Code!.{1}'.format(data['lines_per_bug'], os.linesep * 2) }}
     for _ in data['pylama']:
         {{ '- Line {0} Column {1} found by {2}: &raquo; {3}.{4}'.format(_['lnum'], _['col'], _['linter'].upper(), _['text'], os.linesep) }}
