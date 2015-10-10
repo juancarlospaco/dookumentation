@@ -60,7 +60,7 @@ except ImportError:
 
 
 __version__ = "1.0.0"
-__license__ = "GPLv3+ LGPLv3+ AGPLv3+"
+__license__ = "GPLv3+ LGPLv3+ AGPLv3+ MIT"
 __author__ = "Juan Carlos"
 __email__ = "juancarlospaco@gmail.com"
 __url__ = "https://github.com/juancarlospaco/dookumentation"
@@ -82,7 +82,7 @@ RST = "​﻿﻿​​﻿​﻿​﻿​​﻿﻿﻿​​﻿﻿﻿​​​﻿�
 
 
 ###############################################################################
-# Generic Template Engine + Stealth Strings
+# Stealth Strings
 
 
 def stealth_to_string(stringy: str, rot13: bool=False) -> str:
@@ -95,6 +95,10 @@ def stealth_to_string(stringy: str, rot13: bool=False) -> str:
     stringy = zlib.decompress(base64.b64decode(__i2b(_n))).decode('utf-8')
     stringy = codecs.decode(stringy, "rot-13") if rot13 and codecs else stringy
     return str(stringy).strip()
+
+
+##############################################################################
+# Generic Template Engine
 
 
 class Templar(str):
@@ -270,7 +274,7 @@ class PyParse(object):
         if symbol.args.kwarg is not None:
             if not func_name.endswith('('):
                 func_name += ', '
-            func_name += '**' + symbol.args.kwarg
+            func_name += '**' + symbol.args.kwarg.arg
         func_name += ')'
         for sym in symbol.body:
             if sym.__class__ is ast.Assign:
@@ -434,6 +438,7 @@ def python_file_to_json_meta(python_file_path):
     json_meta["import_procedural"] = "__import__(" in python_code
     json_meta["has_set_trace"] = ".set_trace()" in python_code
     json_meta["has_print"] = "print(" in python_code
+    json_meta["has_tab"] = "\t" in python_code
     json_meta["has_shebang"] = re.findall('^#!/.*python', python_code)
     json_meta["accessed"] = datetime.utcfromtimestamp(os.path.getatime(
         python_file_path)).isoformat(" ").split(".")[0]
