@@ -134,7 +134,13 @@ class Templar(str):
         """Render template from __namespace dict + **kw added to namespace."""
         html = []
         __namespace.update(kw, **globals())
-        __namespace["spit"] = lambda *arg: [html.append(str(_)) for _ in arg]
+        def spit(*args, **kwargs):
+            for _ in args:
+                html.append(str(_))
+            if kwargs:
+                for _ in tuple(kwargs.items()):
+                    html.append(str(_))
+        __namespace["spit"] = spit
         for is_code, value in __self.tokens:
             eval(value, __namespace) if is_code else html.append(value)
         return re.sub('>\s+<', '> <', "".join(html)) if mini else "".join(html)
