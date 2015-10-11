@@ -46,6 +46,23 @@
 - [*Your Output Format here...*](https://github.com/juancarlospaco/dookumentation/pulls "Send new Output Formats by sending your Plugins")
 
 
+### Folders Hierarchy 
+
+- This folder structure will be created automatically by Dookumentation if it does not exist.
+- Relevant directories and files with Description:
+
+```
+/                   "This is the relative path to the project being Documented (eg. *.py)."
+│
+└── doc/
+    ├── html/       "HTML Documentation files are saved here (eg. *.html)."
+    ├── md/         "MarkDown Documentation files are saved here (eg. *.md)."
+    ├── rst/        "ReSTructuredText Documentation files are saved here (eg. *.rst)."
+    ├── json/       "JSON Documentation files are saved here (eg. *.json)."
+    └── plugins/    "Template-Plugin files are read from here (eg. SVG, XML, etc)."
+```
+
+
 ### Why?:
 
 - TBD.
@@ -60,8 +77,9 @@
 
 - Lint, [PEP-8](https://www.python.org/dev/peps/pep-0008), [PEP-257](https://www.python.org/dev/peps/pep-0257), [PyLama](https://github.com/klen/pylama#-pylama), [iSort](https://github.com/timothycrosley/isort) must Pass Ok. `pip install pep8 pep257 pylama isort`
 - If theres any kind of Tests, they must Pass Ok, if theres no Tests, its ok, if Tests provided, is even better.
+- [PEP-0257 Official Python Docstring Style Guide](https://www.python.org/dev/peps/pep-0257/)
 
 
 ### Licence:
 
-- GNU GPL Latest Version, GNU LGPL Latest Version, GNU AGPL Latest Version, MIT Latest Version, any Licence [YOU Request via Bug Report](https://github.com/juancarlospaco/css-html-js-minify/issues/new).
+- GNU GPL Latest Version, GNU LGPL Latest Version, GNU AGPL Latest Version, MIT Latest Version, any Licence [YOU Request via Bug Report](https://github.com/juancarlospaco/dookumentation/issues/new).
