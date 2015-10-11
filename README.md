@@ -46,6 +46,23 @@
 - [*Your Output Format here...*](https://github.com/juancarlospaco/dookumentation/pulls "Send new Output Formats by sending your Plugins")
 
 
+### Folders Hierarchy 
+
+- This folder structure will be created automatically by Dookumentation if it does not exist.
+- Relevant directories and files with Description:
+
+```
+/                   "This is the relative path to the project being Documented (eg. *.py)."
+│
+└── doc/
+    ├── html/       "HTML Documentation files are saved here (eg. *.html)."
+    ├── md/         "MarkDown Documentation files are saved here (eg. *.md)."
+    ├── rst/        "ReSTructuredText Documentation files are saved here (eg. *.rst)."
+    ├── json/       "JSON Documentation files are saved here (eg. *.json)."
+    └── plugins/    "Template-Plugin files are read from here (eg. SVG, XML, etc)."
+```
+
+
 ### Why?:
 
 - TBD.
