@@ -63,7 +63,8 @@
     ├── md/         "MarkDown Documentation files are saved here (eg. *.md)."
     ├── rst/        "ReSTructuredText Documentation files are saved here (eg. *.rst)."
     ├── json/       "JSON Documentation files are saved here (eg. *.json)."
-    └── plugins/    "Template-Plugin files are read from here (eg. SVG, XML, etc)."
+    ├── plugins/    "Template-Plugin files are read from here (eg. SVG, XML, etc)."
+    └── html.zip    "HTML Documentation on Compressed ZIP file (if --zip is used)."
 ```
 
 
