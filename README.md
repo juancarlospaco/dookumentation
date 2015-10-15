@@ -43,6 +43,7 @@
 - **MarkDown**, [GitHub Compatible](https://help.github.com/articles/github-flavored-markdown "GitHub Flavored Markdown"), Pretty-Printed `*.md`
 - **RST**, [ReSTructuredText](http://docutils.sourceforge.net/rst.html "ReSTructuredText Home Page"), Nikola Compatible, Pretty-Printed `*.rst`
 - **JSON**, [Pretty-Printed](https://gist.github.com/juancarlospaco/358bcefc7df07bdc6b80#gistcomment-1573844 "Gist used to Pretty-Print the JSON"), JavaScript Compatible `*.json`
+- **ODT**, [ODF ODT Document](https://en.wikipedia.org/wiki/OpenDocument "Open Standard Documentation ODF"), LibreOffice Compatible `*.odt`
 - **ZIP**, Compressed ZIP with HTML5 Documentation inside, optional via `--zip` parameter `*.zip`
 - **TXT**, Unformatted Plain Text, Pretty-Printed, easy to parse from scripts `*.txt`
 - **SVG** for the Web, HTML5 `<svg>` standalone document, Pretty-Printed, [via single-file provided plugin](https://github.com/juancarlospaco/dookumentation/blob/master/plugins/template.svg "SVG Template-Plugin") `*.svg`
