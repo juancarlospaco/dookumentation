@@ -12,7 +12,6 @@ Python3-ready Documentation Generator from Source Code.
 import ast
 import base64
 import binascii
-import functools
 import logging as log
 import os
 import pkgutil
@@ -21,6 +20,7 @@ import socket
 import sys
 import zipfile
 import zlib
+
 from argparse import ArgumentParser
 from copy import copy
 from ctypes import byref, cdll, create_string_buffer
@@ -75,6 +75,7 @@ vuiltins = tuple(set([_.lower() for _ in sorted(
     sys.builtin_module_names + tuple(dir(__builtins__)) +
     tuple(__builtins__.__dict__.keys()) + tuple(globals().keys()))]))
 third_party_mods = tuple(set([_[1].lower() for _ in pkgutil.iter_modules()]))
+os.environ["PYTHONIOENCODING"], sys.dont_write_bytecode = "utf-8", True
 
 
 ###############################################################################
@@ -329,7 +330,7 @@ def html2ebook(files: list, fyle: str=uuid4().hex + ".epub", meta={}) -> str:
     mani, spine, toc, toc2 = "", "", "", ""
     mline = '    <item id="file_id_{0}" href="{1}" media-type="text/html" />\n'
     tline = '    <li><a href="{0}" title="{1}" alt="{2}"><b>{3}</b></a></li>\n'
-    sline = '    <itemref idref="{0}" /> <!-- {1} --> \n'
+    sline = '    <itemref idref="{0}" />    <!-- {1} --> \n'
     tlin2 = '''  <navPoint id="{0}" playOrder="{1}"><navLabel><text>{2}</text>
                  </navLabel><content src="{3}"/></navPoint> <!-- {4} --> \n'''
     with zipfile.ZipFile(str(fyle), 'w', compression=8) as epub:
@@ -357,40 +358,6 @@ def html2ebook(files: list, fyle: str=uuid4().hex + ".epub", meta={}) -> str:
 # Data handlers and miscellaneous
 
 
-def typecheck(f):
-    """Decorator for Python3 annotations to type-check inputs and outputs."""
-    def __check_annotations(tipe):
-        _type, is_ok = None, isinstance(tipe, (type, tuple, type(None)))
-        if is_ok:  # Annotations can be Type or Tuple or None
-            _type = tipe if isinstance(tipe, tuple) else tuple((tipe, ))
-            if None in _type:  # if None on tuple replace with type(None)
-                _type = tuple([_ if _ is not None else type(_) for _ in _type])
-        return _type, is_ok
-
-    @functools.wraps(f)  # wrap a function or method to Type Check it.
-    def decorated(*args, **kwargs):
-        msg = "Type check error: {0} must be {1} but is {2} on function {3}()."
-        notations, f_name = tuple(f.__annotations__.keys()), f.__code__.co_name
-        for i, name in enumerate(f.__code__.co_varnames):
-            if name not in notations:
-                continue  # this arg name has no annotation then skip it.
-            _type, is_ok = __check_annotations(f.__annotations__.get(name))
-            if is_ok:  # Force to tuple
-                if i < len(args) and not isinstance(args[i], _type):
-                    log.critical(msg.format(repr(args[i])[:50], _type,
-                                            type(args[i]), f_name))
-                elif name in kwargs and not isinstance(kwargs[name], _type):
-                    log.critical(msg.format(repr(kwargs[name])[:50], _type,
-                                            type(kwargs[name]), f_name))
-        out = f(*args, **kwargs)
-        _type, is_ok = __check_annotations(f.__annotations__.get("return"))
-        if is_ok and not isinstance(out, _type) and "return" in notations:
-            log.critical(msg.format(repr(out)[:50], _type, type(out), f_name))
-        return out    # The output result of function or method.
-    return decorated  # The decorated function or method.
-
-
-@typecheck
 def walkdir_to_filelist(where: str, target: tuple, omit: tuple) -> tuple:
     """Perform full walk of where, gather full path of all files."""
     log.debug("""Recursively Scanning {0}, searching for {1}, and ignoring {2}.
@@ -402,7 +369,6 @@ def walkdir_to_filelist(where: str, target: tuple, omit: tuple) -> tuple:
                   and f.endswith(target)])  # only process target files
 
 
-@typecheck
 def check_working_folder(folder_to_check: str=os.path.expanduser("~")) -> bool:
     """Check working folder,passed argument,for everything that can go wrong.
 
@@ -514,7 +480,6 @@ def python_file_to_json_meta(python_file_path):
     return json_meta  # return the Big Ol' JSON
 
 
-@typecheck
 def json_pretty(json_dict: dict) -> str:
     """Pretty-Printing JSON data from dictionary to string."""
     _json = dumps(json_dict, sort_keys=1, indent=4, separators=(",\n", ": "))
@@ -572,7 +537,6 @@ def json_meta_to_plugins(plugin_folder, python_file_path, json_meta):
     return plgns
 
 
-@typecheck
 def process_single_python_file(python_filepath: str):
     """Process a single Python file."""
     log.info("Processing Python file: {0}".format(python_filepath))
@@ -640,30 +604,6 @@ def check_for_updates():
         log.info("No new updates!,You have the lastest version of this app.")
 
 
-@typecheck
-def make_root_check_and_encoding_debug() -> bool:
-    """Debug and Log Encodings and Check for root/administrator,return Boolean.
-
-    >>> make_root_check_and_encoding_debug()
-    True
-    """
-    log.debug("Python {0} on {1}.".format(python_version(), platform()))
-    log.debug("STDIN Encoding: {0}.".format(sys.stdin.encoding))
-    log.debug("STDERR Encoding: {0}.".format(sys.stderr.encoding))
-    log.debug("STDOUT Encoding:{}".format(getattr(sys.stdout, "encoding", "")))
-    log.debug("Default Encoding: {0}.".format(sys.getdefaultencoding()))
-    log.debug("FileSystem Encoding: {0}.".format(sys.getfilesystemencoding()))
-    log.debug("PYTHONIOENCODING Encoding: {0}.".format(
-        os.environ.get("PYTHONIOENCODING", None)))
-    os.environ["PYTHONIOENCODING"], sys.dont_write_bytecode = "utf-8", True
-    if not sys.platform.startswith("win"):  # root check
-        if not os.geteuid():
-            log.critical("Runing as root is not Recommended,NOT Run as root!.")
-            return False
-    return True
-
-
-@typecheck
 def set_process_name_and_cpu_priority(name: str) -> bool:
     """Set process name and cpu priority.
 
@@ -683,7 +623,6 @@ def set_process_name_and_cpu_priority(name: str) -> bool:
         return True
 
 
-@typecheck
 def set_single_instance(name: str, single_instance: bool=True, port: int=8888):
     """Set process name and cpu priority, return socket.socket object or None.
 
@@ -707,7 +646,6 @@ def set_single_instance(name: str, single_instance: bool=True, port: int=8888):
     return __lock
 
 
-@typecheck
 def make_logger(name: str=str(os.getpid())):
     """Build and return a Logging Logger."""
     if not sys.platform.startswith("win") and sys.stderr.isatty():
@@ -757,7 +695,6 @@ def make_logger(name: str=str(os.getpid())):
     return log
 
 
-@typecheck
 def make_post_execution_message(app: str=__doc__.splitlines()[0].strip()):
     """Simple Post-Execution Message with information about RAM and Time.
 
@@ -811,7 +748,6 @@ def main():
     """Main Loop."""
     make_arguments_parser()
     make_logger("dookumentation")
-    make_root_check_and_encoding_debug()
     set_process_name_and_cpu_priority("dookumentation")
     set_single_instance("dookumentation")
     check_for_updates() if args.checkupdates else log.debug("No Check Updates")
