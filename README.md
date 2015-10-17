@@ -67,8 +67,11 @@
     ├── html/       "HTML Documentation files are saved here (eg. *.html)."
     ├── md/         "MarkDown Documentation files are saved here (eg. *.md)."
     ├── rst/        "ReSTructuredText Documentation files are saved here (eg. *.rst)."
+    ├── odt/        "ODT ODF Documentation files are saved here (eg. *.fodt)."
     ├── json/       "JSON Documentation files are saved here (eg. *.json)."
+    ├── txt/        "Unformatted Plain Text Documentation files are saved here (eg. *.txt)."
     ├── plugins/    "Template-Plugin files are read from here (eg. SVG, XML, etc)."
+    ├── html.epub   "Compressed eBook Documentation from HTML5 (if --ebook is used)."
     └── html.zip    "HTML Documentation on Compressed ZIP file (if --zip is used)."
 ```
 
