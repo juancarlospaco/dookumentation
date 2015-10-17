@@ -6,6 +6,8 @@
 
 ![Mobile](https://lh3.googleusercontent.com/-NY1dYAmLezk/Vhne9A8gQkI/AAAAAAAALFA/FAc5VNF2y5M/s0/15%2B-%2B1 "HTML5 Material Design Mobile Responsive")
 
+![eBooks from Python on Okular Viewer](https://lh6.googleusercontent.com/-aI9SIUzt23E/ViHcqejiISI/AAAAAAAALIg/kefIUyBNllY/s0/temp.jpg)
+
 
 ### Features
 
@@ -65,8 +67,11 @@
     ├── html/       "HTML Documentation files are saved here (eg. *.html)."
     ├── md/         "MarkDown Documentation files are saved here (eg. *.md)."
     ├── rst/        "ReSTructuredText Documentation files are saved here (eg. *.rst)."
+    ├── odt/        "ODT ODF Documentation files are saved here (eg. *.fodt)."
     ├── json/       "JSON Documentation files are saved here (eg. *.json)."
+    ├── txt/        "Unformatted Plain Text Documentation files are saved here (eg. *.txt)."
     ├── plugins/    "Template-Plugin files are read from here (eg. SVG, XML, etc)."
+    ├── html.epub   "Compressed eBook Documentation from HTML5 (if --ebook is used)."
     └── html.zip    "HTML Documentation on Compressed ZIP file (if --zip is used)."
 ```
 
