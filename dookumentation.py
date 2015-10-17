@@ -836,8 +836,10 @@ def main():
         sys.exit("File or folder not found,or cant be read,or I/O Error!.")
     html_folder = os.path.join(os.path.dirname(args.fullpath), "doc", "html")
     if args.zip and make_archive and os.path.isdir(html_folder):  # HTML to ZIP
+        log.debug("OUTPUT: Writing ZIP Documentation {0}.".format(html_folder))
         make_archive(html_folder, 'zip', html_folder, logger=log)
     if args.ebook and os.path.isdir(html_folder):  # HTML to eBook
+        log.debug("OUTPUT: Writing EPUB Documentation {0}".format(html_folder))
         html2ebook(walkdir_to_filelist(html_folder, ("", ), IGNORE),
                    html_folder + ".epub", {"des": __doc__ + __url__.upper()})
     if args.after and getoutput:
