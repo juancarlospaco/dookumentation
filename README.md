@@ -28,6 +28,11 @@
 - **MetaData + Statistics**, Parse, Collect and Display nice MetaData and Statistics of your work.
 - **Link-ability**, Automagically determines a word is referring to Python Library and Link to its Documentation.
 - **Download/Export**, Get a JSON file or MarkDown file directly from the generated HTML documentation.
+- **ProcessName**, Sets its own Process name and show up on Process lists, like `htop` and System Monitors.
+- **Updates**, Can optionally check for updates for itself, from the Internet.
+- **Smooth CPUs**, Sets Smooth CPU usage, good for portable devices on battery.
+- **Colored Logging**, Colors on the logs, log file for troubleshooting, SysLog support.
+- **Single Instance**, via Sockets.
 - [*Your Feature or idea here...*](https://github.com/juancarlospaco/dookumentation/pulls "Send new Features")
 
 
