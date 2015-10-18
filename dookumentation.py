@@ -411,7 +411,7 @@ def python_file_to_json_meta(python_file_path):
     json_meta["relpath"] = os.path.relpath(python_file_path)  # Paths
     json_meta["basename"] = os.path.basename(python_file_path)
     json_meta["dirname"] = os.path.dirname(python_file_path)
-    json_meta["fullpath"] = python_file_path
+    json_meta["fullpath"], json_meta["is_index"] = python_file_path, False
     json_meta["lines_total"] = len(python_code.splitlines())  # Statistics
     json_meta["characters"] = len(python_code.replace("\n", ""))
     json_meta["kilobytes"] = int(os.path.getsize(python_file_path) / 1024)
