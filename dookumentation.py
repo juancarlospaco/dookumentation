@@ -42,9 +42,9 @@ from uuid import uuid4
 import _ast
 
 try:
-    import resource  # windows dont have resource ?
+    import resource
 except ImportError:
-    resource = None
+    resource = None  # windows dont have resource?
 
 try:
     from pylama.main import check_path, parse_options
@@ -211,18 +211,17 @@ class PyParse(object):
         while attribute.__class__ is ast.Attribute:
             parent_name.append(attribute.attr)
             attribute = attribute.value
-        name = '.'.join(reversed(parent_name))
-        attribute_id = ''
+        name, attr_id = '.'.join(reversed(parent_name)), ''
         if attribute.__class__ is ast.Name:
-            attribute_id = attribute.id
+            attr_id = attribute.id
         elif attribute.__class__ is ast.Call:
             if attribute.func.__class__ is ast.Attribute:
-                attribute_id = "{0}.{1}()".format(
+                attr_id = "{0}.{1}()".format(
                     self.expand_attribute(attribute.func.value),
                     attribute.func.attr)
             else:
-                attribute_id = "{0}()".format(attribute.func.id)
-        name = attribute_id if name == "" else "{0}.{1}".format(attribute_id, name)
+                attr_id = "{0}()".format(attribute.func.id)
+        name = attr_id if name == "" else "{0}.{1}".format(attr_id, name)
         return name
 
     def parse_assign(self, symbol):
@@ -237,11 +236,8 @@ class PyParse(object):
 
     def parse_class(self, symbol):
         """Parse class and get info from itself."""
-        docstring, attr, func, decorators = "", {}, {}, []
-        name = symbol.name + '('
-        name += ', '.join([
-            self.expand_attribute(base) for base in symbol.bases])
-        name += ')'
+        docstring, attr, func, decora, name = "", {}, {}, [], symbol.name + '('
+        name += ', '.join(self.expand_attribute(_) for _ in symbol.bases) + ')'
         for sym in symbol.body:
             if sym.__class__ is ast.Assign:
                 result = self.parse_assign(sym)
@@ -251,13 +247,11 @@ class PyParse(object):
                 result = self.parse_function(sym)
                 attr.update(result['attrs'])
                 func[result['name']] = result
-        docstring = ast.get_docstring(symbol, clean=True)
-        lineno = symbol.lineno
+        docstring, lineno = ast.get_docstring(symbol, clean=1), symbol.lineno
         for decorator in symbol.decorator_list:
-            decorators.append("@" + self.expand_attribute(decorator))
-        return {
-            'name': name, 'attributes': attr, 'functions': func,
-            'lineno': lineno, 'docstring': docstring, 'decorators': decorators}
+            decora.append("@" + self.expand_attribute(decorator))
+        return {'name': name, 'attributes': attr, 'functions': func,
+                'lineno': lineno, 'docstring': docstring, 'decorators': decora}
 
     def parse_function(self, symbol):
         """Parse function and get info from itself."""
@@ -295,10 +289,8 @@ class PyParse(object):
         func_name += ')'
         for sym in symbol.body:
             if sym.__class__ is ast.Assign:
-                result = self.parse_assign(sym)
-                attrs.update(result[1])
-        docstring = ast.get_docstring(symbol, clean=True)
-        lineno = symbol.lineno
+                attrs.update(self.parse_assign(sym)[1])
+        docstring, lineno = ast.get_docstring(symbol, clean=1), symbol.lineno
         for decorator in symbol.decorator_list:
             decorators.append("@" + self.expand_attribute(decorator))
         return {'name': func_name, 'lineno': lineno, 'attrs': attrs,
@@ -310,9 +302,8 @@ class PyParse(object):
         for simbolos in module.body:
             if type(simbolos) is ast.Import:
                 for item in simbolos.names:
-                    imports[item.name] = {
-                        "asname": item.asname,
-                        "lineno": simbolos.lineno}
+                    imports[item.name] = {"asname": item.asname,
+                                          "lineno": simbolos.lineno}
             if type(simbolos) is ast.ImportFrom:
                 for item in simbolos.names:
                     from_imports[item.name] = {
@@ -360,13 +351,10 @@ def html2ebook(files: list, fyle: str=uuid4().hex + ".epub", meta={}) -> str:
 
 def walkdir_to_filelist(where: str, target: tuple, omit: tuple) -> tuple:
     """Perform full walk of where, gather full path of all files."""
-    log.debug("""Recursively Scanning {0}, searching for {1}, and ignoring {2}.
-    """.format(where, target, omit))
-    return tuple([os.path.join(root, f)
-                  for root, d, files in os.walk(where, followlinks=True)
-                  for f in files if not f.startswith('.')  # ignore hidden
-                  and not f.endswith(omit)  # not process processed file
-                  and f.endswith(target)])  # only process target files
+    log.debug("Scanning {0},search {1},ignore {2}".format(where, target, omit))
+    return tuple([os.path.join(r, f) for r, d, fs in os.walk(where)
+                  for f in fs if not f.startswith('.') and not f.endswith(omit)
+                  and f.endswith(target)])  # only target files,no hidden files
 
 
 def check_working_folder(folder_to_check: str=os.path.expanduser("~")) -> bool:
@@ -401,8 +389,6 @@ def check_working_folder(folder_to_check: str=os.path.expanduser("~")) -> bool:
         if not os.path.isdir(subfolder):
             log.warning("Creating Required Sub-Folder: {0}/".format(subfolder))
             os.makedirs(subfolder, exist_ok=True)
-        if not os.path.isdir(subfolder):
-            return False
     return True
 
 
@@ -426,10 +412,9 @@ def process_multiple_files(file_path):
 
 def python_file_to_json_meta(python_file_path):
     """Take python source code string and extract meta-data as json file."""
-    json_meta = {}
     log.debug("INPUT: Reading Python file {0}.".format(python_file_path))
     with open(python_file_path, encoding="utf-8-sig") as python_file:
-        python_code = python_file.read()
+        python_code, json_meta = python_file.read(), {}
     json_meta["generator"] = __doc__.splitlines()[0] + " " + __version__
     json_meta["relpath"] = os.path.relpath(python_file_path)  # Paths
     json_meta["basename"] = os.path.basename(python_file_path)
