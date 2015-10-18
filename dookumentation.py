@@ -353,11 +353,7 @@ def walkdir_to_filelist(where: str, target: tuple, omit: tuple) -> tuple:
 
 
 def check_working_folder(folder_to_check: str=os.path.expanduser("~")) -> bool:
-    """Check working folder,passed argument,for everything that can go wrong.
-
-    >>> check_working_folder()
-    True
-    """
+    """Check working folder,passed argument,for everything that can go wrong"""
     folder_to_check = os.path.join(os.path.abspath(folder_to_check), "doc")
     log.debug("Checking the Working Folder: '{0}'".format(folder_to_check))
     if os.path.isfile(folder_to_check) or not isinstance(folder_to_check, str):
@@ -582,11 +578,7 @@ def check_for_updates():
 
 
 def set_process_name_and_cpu_priority(name: str) -> bool:
-    """Set process name and cpu priority.
-
-    >>> set_process_name_and_cpu_priority("test_test")
-    True
-    """
+    """Set process name and cpu priority."""
     try:
         os.nice(19)  # smooth cpu priority
         libc = cdll.LoadLibrary("libc.so.6")  # set process name
@@ -601,11 +593,7 @@ def set_process_name_and_cpu_priority(name: str) -> bool:
 
 
 def set_single_instance(name: str, single_instance: bool=True, port: int=8888):
-    """Set process name and cpu priority, return socket.socket object or None.
-
-    >>> isinstance(set_single_instance("test"), socket.socket)
-    True
-    """
+    """Set process name and cpu priority,return socket.socket object or None"""
     __lock = None
     if single_instance:
         try:  # Single instance app ~crossplatform, uses udp socket.
@@ -655,11 +643,9 @@ def make_logger(name: str=str(os.getpid())):
                     print(reason)  # Do not use log here.
                 return fn(*new_args)
             return new
-        # all non-Windows platforms support ANSI Colors so we use them
         log.StreamHandler.emit = add_color_emit_ansi(log.StreamHandler.emit)
     log_file = os.path.join(gettempdir(), str(name).lower().strip() + ".log")
-    log.basicConfig(level=-1, filemode="w", filename=log_file,
-                    format="%(levelname)s:%(asctime)s %(message)s %(lineno)s")
+    log.basicConfig(level=-1, filemode="w", filename=log_file)
     log.getLogger().addHandler(log.StreamHandler(sys.stderr))
     adrs = "/dev/log" if sys.platform.startswith("lin") else "/var/run/syslog"
     try:
@@ -673,24 +659,19 @@ def make_logger(name: str=str(os.getpid())):
 
 
 def make_post_execution_message(app: str=__doc__.splitlines()[0].strip()):
-    """Simple Post-Execution Message with information about RAM and Time.
-
-    >>> make_post_execution_message() >= 0
-    True
-    """
+    """Simple Post-Execution Message with information about RAM and Time."""
     ram_use, ram_all = 0, 0
     if sys.platform.startswith("linux"):
-        ram_use = int(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss *
+        use = int(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss *
                     resource.getpagesize() / 1024 / 1024 if resource else 0)
-        ram_all = int(os.sysconf('SC_PAGE_SIZE') * os.sysconf('SC_PHYS_PAGES')
+        al = int(os.sysconf('SC_PAGE_SIZE') * os.sysconf('SC_PHYS_PAGES')
                       / 1024 / 1024 if hasattr(os, "sysconf") else 0)
-    msg = "Total Maximum RAM Memory used: ~{0} of {1} MegaBytes.".format(
-        ram_use, ram_all)
+    msg = "Total Maximum RAM Memory used: ~{0} of {1}MegaBytes".format(use, al)
     log.info(msg)
     if start_time and datetime:
         log.info("Total Working Time: {0}".format(datetime.now() - start_time))
     if randint(0, 100) < 25:  # ~25% chance to see the message,dont get on logs
-        print("Thanks for using this App,share your experience!{0}".format("""
+        print("Thanks for using this App,share your experience! {0}".format("""
         Twitter: https://twitter.com/home?status=I%20Like%20{n}!:%20{u}
         Facebook: https://www.facebook.com/share.php?u={u}&t=I%20Like%20{n}
         G+: https://plus.google.com/share?url={u}""".format(u=__url__, n=app)))
