@@ -720,8 +720,7 @@ def make_arguments_parser():
                         help="Command to execute after run (Experimental).")
     parser.add_argument('--before', type=str,
                         help="Command to execute before run (Experimental).")
-    parser.add_argument('--watch', action='store_true',
-                        help="Re-Process if file changes (Experimental).")
+    parser.add_argument('--watch', action='store_true', help="Watch changes.")
     parser.add_argument('--zip', action='store_true', help="HTML as ZIP file")
     parser.add_argument('--ebook', action='store_true', help="HTML as eBook")
     parser.add_argument('--serve', action='store_true', help="HTTP Serve HTML")
@@ -754,7 +753,7 @@ def main():
         pool.close()
         pool.join()
     else:
-        sys.exit("File or folder not found,or cant be read,or I/O Error!.")
+        sys.exit("File or folder not found, or cant be read, or I/O Error !.")
     html_folder = os.path.join(os.path.dirname(args.fullpath), "doc", "html")
     if args.zip and make_archive and os.path.isdir(html_folder):  # HTML to ZIP
         log.debug("OUTPUT: Writing ZIP Documentation {0}.".format(html_folder))
