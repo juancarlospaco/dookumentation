@@ -2,11 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-"""Dookumentation.
-
-StandAlone Async single-file cross-platform no-dependencies
-Python3-ready Documentation Generator from Source Code.
-"""
+"""Dookumentation."""
 
 
 import ast
@@ -371,9 +367,6 @@ def check_working_folder(folder_to_check: str=os.path.expanduser("~")) -> bool:
     elif not os.path.isdir(folder_to_check):  # What if folder is not a folder.
         log.warning("Creating Required Folder: {0}/".format(folder_to_check))
         os.makedirs(folder_to_check, exist_ok=True)
-    elif not os.access(folder_to_check, os.R_OK):  # destination no Readable.
-        log.critical("Folder {0} not Readable !.".format(folder_to_check))
-        return False
     elif not os.access(folder_to_check, os.W_OK):  # destination no Writable.
         log.critical("Folder {0} Not Writable !.".format(folder_to_check))
         return False
