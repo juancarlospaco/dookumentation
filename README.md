@@ -11,10 +11,11 @@
 
 ### Features
 
+- **KISS**, Takes a full path to anything, a file or a folder, parse and generate multiple documentation formats.
 - **Standalone**, uses ONLY Standard Libraries, built-in on Python 3.
 - **Async**, does not Block or Slows down even with large amount of files and folders to process.
 - **Watch**, Watch for changes on files re-process only the changes, you code and forget about Documentations.
-- **Zero Config**, No configurations, No settings, No `*.yml` files required to work, ever.
+- **Zero Config**, No configurations, No settings, No `*.yml` or `makefile` files required to work, ever.
 - **Single-File**, everything is just 1 file, with PEP-8, Lint and other Python Best Practices, very readable.
 - **Python3 ready**, it will only work with Python >= 3, instead of soon to be deprecated *(year 2020)* python2.
 - **Unicode ready**, it should handle correctly any kind of character that `UTF-8` can support without escaping.
