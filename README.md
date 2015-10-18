@@ -85,7 +85,7 @@
 **PIP:** *(Recommended!)*
 - TBD, comming soon...
 
-**Try it !** *(Without installing anything)*
+**Try it !:** *(Without installing anything)*
 ```
 wget -O - https://raw.githubusercontent.com/juancarlospaco/dookumentation/master/dookumentation.py | python3
 ```
