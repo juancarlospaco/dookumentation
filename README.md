@@ -76,6 +76,27 @@
 ```
 
 
+### Install
+**PIP:** *(Recommended!)*
+- TBD, comming soon...
+
+**Try it !** *(Without installing anything)*
+```
+wget -O - https://raw.githubusercontent.com/juancarlospaco/dookumentation/master/dookumentation.py | python3
+```
+
+**WGET:**
+```
+sudo wget -O /usr/bin/dookumentation.py https://raw.githubusercontent.com/juancarlospaco/dookumentation/master/dookumentation.py
+sudo chmod +x /usr/bin/dookumentation.py
+dookumentation.py
+```
+
+**MANUALLY:**
+
+- Save [this file](https://raw.githubusercontent.com/juancarlospaco/dookumentation/master/dookumentation.py) and run it with Python3.
+
+
 ### Why?:
 
 - TBD.
@@ -85,6 +106,10 @@
 
 - [Python 3.x](https://www.python.org "Python Homepage") *(or PyPy 3.x, or Python Nightly)*
 
+**Optionals:**
+
+- [PyLama](https://github.com/klen/pylama#-pylama)
+
 
 ### Coding Style Guide:
 
@@ -93,6 +118,23 @@
 - [PEP-0257 Official Python Docstring Style Guide](https://www.python.org/dev/peps/pep-0257/)
 
 
+### Contributors:
+
+- **Please Star this Repo on Github !**, it helps to show up faster on searchs.
+- **Ad-Hocracy Meritocracy**: 3 Pull Requests Merged on Master you become Repo Admin. *Join us!*
+- [Help](https://help.github.com/articles/using-pull-requests) and more [Help](https://help.github.com/articles/fork-a-repo) and Interactive Quick [Git Tutorial](https://try.github.io).
+
+
+### Ethics and Humanism Policy:
+- May this FLOSS be always Pristine and Clean, No AdWare, No Spamm, No BundleWare, No Infomercial, No MalWare.
+- This project is [LGBTQQIAAP friendly](http://www.urbandictionary.com/define.php?term=LGBTQQIAAP "Whats LGBTQQIAAP").
+
+
 ### Licence:
 
 - GNU GPL Latest Version, GNU LGPL Latest Version, GNU AGPL Latest Version, MIT Latest Version, any Licence [YOU Request via Bug Report](https://github.com/juancarlospaco/dookumentation/issues/new).
+
+
+### Donate, Charityware :
+
+- [Charityware](https://en.wikipedia.org/wiki/Donationware) is a licensing model that supplies fully operational unrestricted software to the user and requests an optional donation be paid to a third-party beneficiary non-profit. The amount of donation may be left to the discretion of the user.
