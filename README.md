@@ -6,7 +6,7 @@
 
 ![Mobile](https://lh3.googleusercontent.com/-NY1dYAmLezk/Vhne9A8gQkI/AAAAAAAALFA/FAc5VNF2y5M/s0/15%2B-%2B1 "HTML5 Material Design Mobile Responsive")
 
-![eBooks from Python on Okular Viewer](https://lh6.googleusercontent.com/-aI9SIUzt23E/ViHcqejiISI/AAAAAAAALIg/kefIUyBNllY/s0/temp.jpg)
+![eBook Documentation on Okular Viewer](https://lh6.googleusercontent.com/-aI9SIUzt23E/ViHcqejiISI/AAAAAAAALIg/kefIUyBNllY/s0/temp.jpg "eBook Documentation on Okular Viewer")
 
 
 ### Features
