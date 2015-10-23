@@ -356,10 +356,7 @@ def check_working_folder(folder_to_check: str=os.path.expanduser("~")) -> bool:
     """Check working folder,passed argument,for everything that can go wrong"""
     folder_to_check = os.path.join(os.path.abspath(folder_to_check), "doc")
     log.debug("Checking the Working Folder: '{0}'".format(folder_to_check))
-    if os.path.isfile(folder_to_check) or not isinstance(folder_to_check, str):
-        log.info("Folder {0} is File or Relative Path".format(folder_to_check))
-        return True
-    elif not os.path.isdir(folder_to_check):  # What if folder is not a folder.
+    if not os.path.isdir(folder_to_check):  # What if folder is not a folder.
         log.warning("Creating Required Folder: {0}/".format(folder_to_check))
         os.makedirs(folder_to_check, exist_ok=True)
     elif not os.access(folder_to_check, os.W_OK):  # destination no Writable.
@@ -670,7 +667,6 @@ def make_post_execution_message(app: str=__doc__.splitlines()[0].strip()):
     log.info(msg)
     if start_time and datetime:
         log.info("Total Working Time: {0}".format(datetime.now() - start_time))
-    if randint(0, 100) < 25:  # ~25% chance to see the message,dont get on logs
         print("Thanks for using this App,share your experience! {0}".format("""
         Twitter: https://twitter.com/home?status=I%20Like%20{n}!:%20{u}
         Facebook: https://www.facebook.com/share.php?u={u}&t=I%20Like%20{n}
@@ -681,7 +677,7 @@ def make_post_execution_message(app: str=__doc__.splitlines()[0].strip()):
 def make_arguments_parser():
     """Build and return a command line agument parser,parse CLI arguments."""
     parser = ArgumentParser(description=__doc__, epilog="""    Dookumentation:
-    Takes file or folder full path string and process all Python code found.
+    Takes file or folder full path string and Documents all Python code found.
     Watch works for whole folders, with minimum of ~60 Secs between runs.""")
     parser.add_argument('--version', action='version', version=__version__)
     parser.add_argument('fullpath', metavar='fullpath', type=str,
@@ -709,7 +705,7 @@ def main():
     set_single_instance("dookumentation")
     check_for_updates() if args.checkupdates else log.debug("No Check Updates")
     log.disable(log.CRITICAL) if args.quiet else log.debug("Max Logging ON")
-    log.info(__doc__ + __version__)
+    log.info(__doc__.upper() + __version__ + __url__)
     check_working_folder(os.path.dirname(args.fullpath))
     if args.before and getoutput:
         log.info(getoutput(str(args.before)))
