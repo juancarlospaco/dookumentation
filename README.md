@@ -1,8 +1,10 @@
 # dookumentation
+![The Dark Side of Documentation](https://raw.githubusercontent.com/juancarlospaco/dookumentation/master/dookumentation.jpg "The Dark Side of Documentation !")
+
+[![GPL License](http://img.shields.io/badge/license-GPL-blue.svg?style=plastic)](http://opensource.org/licenses/GPL-3.0) [![LGPL License](http://img.shields.io/badge/license-LGPL-blue.svg?style=plastic)](http://opensource.org/licenses/LGPL-3.0) [![Python Version](https://img.shields.io/badge/Python-3-brightgreen.svg?style=plastic)](http://python.org) 
 
 
-**Work In Progress !!!**
-
+### Screenshots
 
 ![Desktop](https://lh5.googleusercontent.com/-tORGiVrBQJ8/ViRI8yOURvI/AAAAAAAALKU/y7fklCK0FQg/s0/temp.jpg "HTML5 Material Design Desktop Responsive")
 
