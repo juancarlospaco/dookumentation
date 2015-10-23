@@ -353,7 +353,7 @@ def walkdir_to_filelist(where: str, target: tuple, omit: tuple) -> tuple:
 
 
 def check_working_folder(folder_to_check: str=os.path.expanduser("~")) -> bool:
-    """Check working folder,passed argument,for everything that can go wrong"""
+    """Check working folder,passed as arg,for everything that can go wrong."""
     folder_to_check = os.path.join(os.path.abspath(folder_to_check), "doc")
     log.debug("Checking the Working Folder: '{0}'".format(folder_to_check))
     if not os.path.isdir(folder_to_check):  # What if folder is not a folder.
@@ -590,7 +590,7 @@ def set_process_name_and_cpu_priority(name: str) -> bool:
 
 
 def set_single_instance(name: str, single_instance: bool=True, port: int=8888):
-    """Set process name and cpu priority,return socket.socket object or None"""
+    """Set process name & cpu priority,return socket.socket object or None."""
     __lock = None
     if single_instance:
         try:  # Single instance app ~crossplatform, uses udp socket.
