@@ -140,6 +140,7 @@ class Templar(str):
         """Render template from __namespace dict + **kw added to namespace."""
         html = []
         __namespace.update(kw, **globals())
+
         def spit(*args, **kwargs):
             for _ in args:
                 html.append(str(_))
@@ -348,8 +349,8 @@ def walkdir_to_filelist(where: str, target: tuple, omit: tuple) -> tuple:
     """Perform full walk of where, gather full path of all files."""
     log.debug("Scanning {0},search {1},ignore {2}".format(where, target, omit))
     return tuple([os.path.join(r, f) for r, d, fs in os.walk(where)
-                  for f in fs if not f.startswith('.') and not f.endswith(omit)
-                  and f.endswith(target)])  # only target files,no hidden files
+                  for f in fs if not f.startswith('.') and  # no hidden files,
+                  not f.endswith(omit) and f.endswith(target)])  # only target.
 
 
 def check_working_folder(folder_to_check: str=os.path.expanduser("~")) -> bool:
@@ -486,7 +487,7 @@ def json_meta_to_templar(json_meta, template, mini=False):
 
 def json_meta_to_plugins(plugin_folder, python_file_path, json_meta):
     """Load and Run Plugins from Plugins folder."""
-    plgns = [os.path.join(plugin_folder, _)  for _ in os.listdir(plugin_folder)
+    plgns = [os.path.join(plugin_folder, _) for _ in os.listdir(plugin_folder)
              if "template" == os.path.splitext(_)[0] and not _.startswith(".")]
     for template_to_render in tuple(sorted(plgns)):
         subdir = os.path.splitext(template_to_render)[-1].replace(".", "")
@@ -532,13 +533,13 @@ def process_single_python_file(python_filepath: str):
             md_file.write(md)
     rst = json_meta_to_templar(json_meta, RST, False)
     new_rst_file = os.path.join(os.path.dirname(args.fullpath), "doc", "rst",
-                               os.path.basename(python_filepath) + ".rst")
+                                os.path.basename(python_filepath) + ".rst")
     log.debug("OUTPUT: Writing RST Documentation {0}.".format(new_rst_file))
     with open(new_rst_file, "w", encoding="utf-8") as md_file:
             md_file.write(rst)
     txt = json_meta_to_templar(json_meta, TXT, False)
     new_txt_file = os.path.join(os.path.dirname(args.fullpath), "doc", "txt",
-                               os.path.basename(python_filepath) + ".txt")
+                                os.path.basename(python_filepath) + ".txt")
     log.debug("OUTPUT: Writing TXT Documentation {0}.".format(new_txt_file))
     with open(new_txt_file, "w", encoding="utf-8") as txt_file:
             txt_file.write(txt)
@@ -660,9 +661,9 @@ def make_post_execution_message(app: str=__doc__.splitlines()[0].strip()):
     ram_use, ram_all = 0, 0
     if sys.platform.startswith("linux"):
         use = int(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss *
-                    resource.getpagesize() / 1024 / 1024 if resource else 0)
-        al = int(os.sysconf('SC_PAGE_SIZE') * os.sysconf('SC_PHYS_PAGES')
-                      / 1024 / 1024 if hasattr(os, "sysconf") else 0)
+                  resource.getpagesize() / 1024 / 1024 if resource else 0)
+        al = int(os.sysconf('SC_PAGE_SIZE') * os.sysconf('SC_PHYS_PAGES') /
+                 1024 / 1024 if hasattr(os, "sysconf") else 0)
     msg = "Total Maximum RAM Memory used: ~{0} of {1}MegaBytes".format(use, al)
     log.info(msg)
     if start_time and datetime:
