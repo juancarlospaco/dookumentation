@@ -207,6 +207,14 @@ if not livereload:
             }
 
         }
+
+{%
+
+if highlight and PythonLexer and HtmlFormatter:
+    {{ HtmlFormatter(linenos=True, anchorlinenos=True).get_style_defs() }}
+
+%}
+
     </style>
 
 
@@ -251,7 +259,19 @@ if not livereload:
             </a>
             <div class="mdl-tooltip mdl-tooltip--large" for=btoverl>Close</div>
             <div id=overlay >
-            <textarea name="editContent" id="source_code" readonly autofocus >{%{{open(data['fullpath'], 'r', encoding='utf-8').read()}}%}</textarea>
+
+            {%
+
+            with open(data['fullpath'], 'r', encoding='utf-8') as _code:
+                if highlight and PythonLexer and HtmlFormatter:
+                    formater = HtmlFormatter(linenos=True, anchorlinenos=True, nobackground=True)
+                    {{ str(highlight(_code.read(), PythonLexer(), formater)) }}
+                else:
+                    {{ '<textarea name=editContent id=source_code readonly >' }}
+                    {{ _code.read().strip() + '</textarea><!-- Pygments not installed -->' }}
+
+            %}
+
             </div>
         </div>
     <section>
