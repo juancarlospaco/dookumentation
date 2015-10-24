@@ -80,7 +80,8 @@ if data.get('attributes'):
 
 
 if data.get('pylama'):
-    {{ 'Bugs: You wrote 1 Bug every {0} Lines of Code!.'.format(data['lines_per_bug']) }}
+    if data.get('lines_per_bug'):
+        {{ 'Bugs: You wrote 1 Bug every {0} Lines of Code!.'.format(data['lines_per_bug']) }}
     for _ in data['pylama']:
         {{ 'Line {0} Column {1} found by {2}: {3} '.format(_['lnum'], _['col'], _['linter'].upper(), _['text']) }}
     {{ 'We recommend using PyLama: https://github.com/klen/pylama#-pylama' }}

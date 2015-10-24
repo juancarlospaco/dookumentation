@@ -58,7 +58,8 @@ else:
 
 {%
 if data.get('pylama'):
-    {{ '- **You wrote 1 Bug every {0} Lines of Code!.**{1}'.format(data['lines_per_bug'], os.linesep * 2) }}
+    if data.get('lines_per_bug'):
+        {{ '- **You wrote 1 Bug every {0} Lines of Code!.**{1}'.format(data['lines_per_bug'], os.linesep * 2) }}
     for _ in data['pylama']:
         {{ '- Line {0} Column {1} found by {2}:    {3}.{4}'.format(_['lnum'], _['col'], _['linter'].upper(), _['text'], os.linesep) }}
 else:
