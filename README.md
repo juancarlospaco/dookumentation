@@ -120,7 +120,7 @@ dookumentation.py
 - **Pycco/Docco:** Abandonware since ~2012, Broken on Python3, Broken Unicode, very Limited and Uncomplete port of Docco, Docco may be Ok for CoffeeScript, but Pycco is too unfinished, is for single-files, no Watch, no LiveReload.
 - **PyDoc/ePyDoc:** Ugly as hell, old html Markup, hard to style its CSS, html only output, is for single-files *(?)*, no Watch, no LiveReload.
 - **MkDocs:** Dont generate Docs from Source, just build HTML from MD, lots of Dependencies, config files required, manual boilerplate required, html only output, no Watch, no LiveReload.
-- **Sphinx:** Makefiles [*Ain't Nobody Got Time For That*](https://www.youtube.com/watch?v=8cT_Ulmcrys), Lots of Manual Configuration required, old html Markup, Ugly by default, Dont generate Docs from Source by default, lots of Dependencies, manual boilerplate required, no Watch, no LiveReload.
+- **Sphinx:** Makefiles [*Ain't Nobody Got Time For That*](https://www.youtube.com/watch?v=8cT_Ulmcrys), Lots of Manual Configuration required, old html Markup, Ugly by default, Dont generate Docs from Source by default, lots of Dependencies, manual boilerplate required, you still need to mess around with PanDoc and Plugins for other outputs formats than HTML, no Watch, no LiveReload.
 
 
 ### Requisites:
