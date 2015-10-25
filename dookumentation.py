@@ -56,13 +56,13 @@ except ImportError:
     livereload = None  # Still works Ok without LiveReload
 
 
-__version__ = "1.0.0"
-__license__ = "GPLv3+ LGPLv3+ AGPLv3+ MIT"
-__author__ = "Juan Carlos"
-__email__ = "juancarlospaco@gmail.com"
-__url__ = "https://github.com/juancarlospaco/dookumentation"
-__source__ = ("https://raw.githubusercontent.com/juancarlospaco/"
-              "dookumentation/master/dookumentation.py")
+__version__ = '1.0.0'
+__license__ = 'GPLv3+ LGPLv3+ AGPLv3+ MIT'
+__author__ = 'Juan Carlos'
+__email__ = 'juancarlospaco@gmail.com'
+__url__ = 'https://github.com/juancarlospaco/dookumentation'
+__source__ = ('https://raw.githubusercontent.com/juancarlospaco/'
+              'dookumentation/master/dookumentation.py')
 
 
 start_time = datetime.now()  # All standard libs builtin things, for templates.
@@ -78,7 +78,7 @@ os.environ["PYTHONIOENCODING"], sys.dont_write_bytecode = "utf-8", True
 
 
 def stealth_to_string(stringy: str) -> str:
-    """Stealth to string,stealth is a hidden string,both str type and ttf-8."""
+    """Stealth to string,stealth is a hidden string,both str type and utf-8."""
     def __i2b(integ):  # int to bytes, do not touch.
         """Helper for string_to_stealth and stealth_to_string, dont touch!."""
         __num = len("%x" % integ)
@@ -307,7 +307,7 @@ class PyParse(object):
 
 
 ##############################################################################
-# HRML5 to eBook
+# HTML5 to eBook
 
 
 def html2ebook(files: list, fyle: str=uuid4().hex + ".epub", meta={}) -> str:
