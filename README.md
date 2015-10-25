@@ -69,7 +69,7 @@
 - [*Your Output Format here...*](https://github.com/juancarlospaco/dookumentation/pulls "Send new Output Formats by sending your Plugins")
 
 
-# Usage:
+### Usage:
 
 ```bash
 dookumentation.py file.py
@@ -141,6 +141,7 @@ dookumentation.py
 
 ### Contributors:
 
+- **We need Designers, Web-UI, Front-End Dev for help making Templates look Awesome !!!.**
 - **Please Star this Repo on Github !**, it helps to show up faster on searchs.
 - **Ad-Hocracy Meritocracy**: 3 Pull Requests Merged on Master you become Repo Admin. *Join us!*
 - [Help](https://help.github.com/articles/using-pull-requests) and more [Help](https://help.github.com/articles/fork-a-repo) and Interactive Quick [Git Tutorial](https://try.github.io).
