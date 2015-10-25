@@ -69,6 +69,15 @@
 - [*Your Output Format here...*](https://github.com/juancarlospaco/dookumentation/pulls "Send new Output Formats by sending your Plugins")
 
 
+# Usage:
+
+```bash
+dookumentation.py file.py
+
+dookumentation.py /path/to/folder/
+```
+
+
 ### Folders Hierarchy 
 
 - This folder structure will be created automatically by Dookumentation if it does not exist.
@@ -93,11 +102,6 @@
 ### Install
 **PIP:** *(Recommended!)*
 - TBD, comming soon...
-
-**Try it !:** *(Without installing anything)*
-```
-wget -O - https://raw.githubusercontent.com/juancarlospaco/dookumentation/master/dookumentation.py | python3
-```
 
 **WGET:**
 ```
