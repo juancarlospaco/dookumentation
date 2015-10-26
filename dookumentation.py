@@ -47,6 +47,12 @@ except ImportError:
     check_path = parse_options = None
     print("WARNING: PyLama Not Found !!!, Run: \nsudo pip3 install pylama")
 
+try:
+    import pygments
+except ImportError:
+    pygments = None
+    print("WARNING: Pygments Not Found !!!, Run: \nsudo pip3 install pygments")
+
 try:  # https://github.com/lepture/python-livereload
     import ivereload  # sudo pip3 install livereload
 except ImportError:
@@ -515,7 +521,7 @@ def process_single_python_file(python_filepath: str):
     log.debug("OUTPUT: Writing MetaData JSON file {0}.".format(new_json_file))
     with open(new_json_file, "w", encoding="utf-8") as json_file:
             json_file.write(json_pretty(json_meta))
-    html = json_meta_to_templar(json_meta, HTML, bool(not HtmlFormatter))
+    html = json_meta_to_templar(json_meta, HTML, bool(not pygments))
     new_html_file = os.path.join(os.path.dirname(args.fullpath), "doc", "html",
                                  os.path.basename(python_filepath) + ".html")
     log.debug("OUTPUT: Writing HTML5 Documentation {0}.".format(new_html_file))
