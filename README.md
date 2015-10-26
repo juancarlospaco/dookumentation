@@ -62,9 +62,9 @@
 - **ODT**, [ODF ODT Document](https://en.wikipedia.org/wiki/OpenDocument "Open Standard Documentation ODF"), LibreOffice Compatible `*.odt`
 - **eBook**, Compressed eBook with HTML5 Documentation, ePub3 compliant, optional via `--ebook` parameter `*.epub`
 - **ZIP**, Compressed ZIP with HTML5 Documentation inside, optional via `--zip` parameter `*.zip`
-- **TXT**, Unformatted Plain Text, Pretty-Printed, easy to parse from scripts `*.txt`
 - **SVG** for the Web, HTML5 `<svg>` standalone document, Pretty-Printed, [via single-file provided plugin](https://github.com/juancarlospaco/dookumentation/blob/master/plugins/template.svg "SVG Template-Plugin") `*.svg`
 - **XML**, generic XML, Pretty-Printed, [via single-file provided plugin](https://github.com/juancarlospaco/dookumentation/blob/master/plugins/template.xml "XML Template-Plugin") `*.xml`
+- **TXT**, Unformatted Plain Text, Pretty-Printed, easy to parse from scripts, [via single-file provided plugin](https://github.com/juancarlospaco/dookumentation/blob/master/plugins/template.txt "TXT Template-Plugin") `*.txt`
 - **Infinite?**, via [third party Do-It-Yourself single-file plugin](https://gist.github.com/juancarlospaco/97a6a09d64b190a630ad#gistcomment-1576482 "Write 1 file, export 1 new format !")
 - [*Your Output Format here...*](https://github.com/juancarlospaco/dookumentation/pulls "Send new Output Formats by sending your Plugins")
 
