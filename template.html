@@ -7,7 +7,7 @@
 {{ '<title>{0} - Dookumentation</title>'.format(data['basename'][:99]) }}
 
 if not livereload:
-    {{ '<meta http-equiv=refresh content=120 ><!-- LiveReload not installed -->' }}
+    {{ '<meta http-equiv=refresh content=240 ><!-- LiveReload not installed -->' }}
 
 %}
 
@@ -207,14 +207,6 @@ if not livereload:
             }
 
         }
-
-{%
-
-if highlight and PythonLexer and HtmlFormatter:
-    {{ HtmlFormatter(linenos=True, anchorlinenos=True).get_style_defs() }}
-
-%}
-
     </style>
 
 
@@ -260,24 +252,21 @@ if highlight and PythonLexer and HtmlFormatter:
             <div class="mdl-tooltip mdl-tooltip--large" for=btoverl>Close</div>
             <div id=overlay >
 
-            {%
-
-            with open(data['fullpath'], 'r', encoding='utf-8') as _code:
-                if highlight and PythonLexer and HtmlFormatter:
-                    formater = HtmlFormatter(linenos=True, anchorlinenos=True, nobackground=True)
-                    {{ str(highlight(_code.read(), PythonLexer(), formater)) }}
-                else:
-                    {{ '<textarea name=editContent id=source_code readonly >' }}
-                    {{ _code.read().strip() + '</textarea><!-- Pygments not installed -->' }}
-
-            %}
-
-            </div>
-        </div>
-    <section>
-
-
 {%
+
+
+with open(data['fullpath'], 'r', encoding='utf-8') as _code:
+    try:  # Use pygments if is installed.
+        from pygments import highlight
+        from pygments.lexers import PythonLexer
+        from pygments.formatters import HtmlFormatter
+        formater = HtmlFormatter(linenos=True, anchorlinenos=True, nobackground=True)
+        {{ str(highlight(_code.read(), PythonLexer(), formater))  }}
+        {{ '<style>{0}</style>'.format(formater.get_style_defs()) }}
+    except ImportError:  # Dont Die if is not installed.
+        {{ '<textarea name=editContent id=source_code readonly >' }}
+        {{ _code.read().strip() + '</textarea><!-- Pygments not installed -->' }}
+{{ '</div></div><section>' }}
 
 
 ###############################################################################
@@ -506,6 +495,7 @@ if data.get('todo'):
                                 <option value="https://www.google.com/?q=">                         Google
                                 <option value="https://github.com/search?&q=">                      GitHub
                                 <option value="https://pypi.python.org/pypi?%3Aaction=search&term=">PyPI
+                                <option value="https://searx.me/search?q=">                         SearX
                                 <option value="https://duckduckgo.com/?q=">                         DuckDuckGo
                             </select>
                         </div>
