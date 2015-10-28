@@ -78,6 +78,14 @@ dookumentation.py /path/to/folder/
 ```
 
 
+### Plugins Usage:
+
+- Download and save the plugins to `/doc/plugins/`, thats all.
+
+**Example:** 
+If your plugin is named `template.xml` then save it to `./doc/plugins/` being the actual relative path as `./doc/plugins/template.xml`, on the next run, your plugin will be used.
+
+
 ### Folders Hierarchy 
 
 - This folder structure will be created automatically by Dookumentation if it does not exist.
