@@ -33,6 +33,8 @@
 - **Templates Custom**, Custom Templates ARE plugins, write one get two at the same price.
 - **Export to Anything**, Templates are Plugins and are for Exporting to any kind of format you need.
 - **Serve + Live-Reload**, HTTP Web Server from local computer to the network, with Live-Reload.
+- **Fades**, Built-in [Fades](https://github.com/PyAr/fades) support by default.
+- **YouTube**, Built-in [Youtube](https://www.youtube.com) support, Youtube links on DocStrings get Automagically Embedded.
 - **Minimalism**, do 1 thing do it awesome, is tiny and simple, K.I.S.S., its < 1.000 lines.
 - **Scripting**, Execute custom Scripts *(eg. Bash *.sh)* After and Before the processing of files and folders.
 - **Recursive**, it can work recursively processing whole project folders at once.
