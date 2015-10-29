@@ -7,7 +7,7 @@
 {{ '<title>{0} - Dookumentation</title>'.format(data['basename'][:99]) }}
 
 if not livereload:
-    {{ '<meta http-equiv=refresh content=240 ><!-- LiveReload not installed -->' }}
+    {{ '<meta http-equiv=refresh content=480 ><!-- LiveReload not installed -->' }}
 
 %}
 
@@ -319,6 +319,12 @@ if data.get('functions'):
         else:
             attrivutes = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &bull; &bull; &bull;'
         {{ '<li>{deco} def <b>{name}:</b> &raquo; <a title="{name}" alt="{name}" target=_blank href="javascript:void(0)" onclick="overly()">Line {lin}</a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<textarea readonly title=DocString style="width:350px">{docz}</textarea><br>{atri}'.format(name=_[0], deco=decoradore, docz=_[1]['docstring'], lin=_[1]['lineno'], atri=attrivutes) }}
+        youtube_urls = re.findall(r'((?<=(v|V)/)|(?<=be/)|(?<=(\?|\&)v=)|(?<=embed/))([\w-]+)', _[1]['docstring'])
+        if len(youtube_urls):
+            for y_tuple in youtube_urls:
+                for y_id in y_tuple:
+                    if len(y_id) > 10:
+                        {{ '<iframe width=500 height=300 src="https://www.youtube-nocookie.com/embed/{0}" title="Youtube link found on DocString of {1} Function at Line {2}" alt="Youtube link found on DocString of {1} Function at Line {2}" frameborder=0 allowfullscreen ></iframe><br><i>Youtube link found on DocString of {1} Function at Line {2}.</i><br><br>'.format(y_id, _[0], _[1]['lineno']) }}
     {{ ' </details> ' }}
 
 
@@ -337,6 +343,12 @@ if data.get('classes'):
         else:
             attrivutes = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &bull; &bull; &bull;'
         {{ '<li>{deco} class <b>{name}:</b> &raquo; <a title="{name}" alt="{name}" target=_blank href="javascript:void(0)" onclick="overly()">Line {lin}</a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<textarea readonly title=DocString style="width:350px">{docz}</textarea><br>{atri}<br>'.format(name=_[0], deco=decoradore, docz=_[1]['docstring'], lin=_[1]['lineno'], atri=attrivutes) }}
+        youtube_urls = re.findall(r'((?<=(v|V)/)|(?<=be/)|(?<=(\?|\&)v=)|(?<=embed/))([\w-]+)', _[1]['docstring'])
+        if len(youtube_urls):
+            for y_tuple in youtube_urls:
+                for y_id in y_tuple:
+                    if len(y_id) > 10:
+                        {{ '<iframe width=500 height=300 src="https://www.youtube-nocookie.com/embed/{0}" title="Youtube link found on DocString of {1} Class at Line {2}" alt="Youtube link found on DocString of {1} Class at Line {2}" frameborder=0 allowfullscreen ></iframe><br><i>Youtube link found on DocString of {1} Class at Line {2}.</i><br><br>'.format(y_id, _[0], _[1]['lineno']) }}
         if len(_[1]['functions']):
             for _ in _[1]['functions'].items():
                 decoradore = '<br>'.join(['&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + d for d in _[1]['decorators']]) + '<br>' if _[1]['decorators'] != [] else ''
@@ -347,6 +359,12 @@ if data.get('classes'):
                 else:
                     attrivutes = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &bull; &bull; &bull;'
                 {{ '<p>{deco}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;def <b>{name}:</b> &raquo; <a title="{name}" alt="{name}" target=_blank href="javascript:void(0)" onclick="overly()">Line {lin}</a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<textarea readonly title=DocString style="width:300px">{docz}</textarea><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{atri}'.format(name=_[0], deco=decoradore, docz=_[1]['docstring'], lin=_[1]['lineno'], atri=attrivutes) }}
+                youtube_urls = re.findall(r'((?<=(v|V)/)|(?<=be/)|(?<=(\?|\&)v=)|(?<=embed/))([\w-]+)', _[1]['docstring'])
+                if len(youtube_urls):
+                    for y_tuple in youtube_urls:
+                        for y_id in y_tuple:
+                            if len(y_id) > 10:
+                                {{ '<iframe width=500 height=300 src="https://www.youtube-nocookie.com/embed/{0}" title="Youtube link found on DocString of {1} Function at Line {2}" alt="Youtube link found on DocString of {1} Function at Line {2}" frameborder=0 allowfullscreen ></iframe><br><i>Youtube link found on DocString of {1} Function at Line {2}.</i><br><br>'.format(y_id, _[0], _[1]['lineno']) }}
         {{ ' <hr> ' }}
     {{ ' <br> </details> ' }}
 
