@@ -149,6 +149,7 @@ class Templar(str):
             if kwargs:
                 for _ in tuple(kwargs.items()):
                     html.append(str(_))
+
         __namespace["spit"] = spit
         for is_code, value in __self.tokens:
             eval(value, __namespace) if is_code else html.append(value)
