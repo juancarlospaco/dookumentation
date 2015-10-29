@@ -37,7 +37,7 @@
 - **Scripting**, Execute custom Scripts *(eg. Bash *.sh)* After and Before the processing of files and folders.
 - **Recursive**, it can work recursively processing whole project folders at once.
 - **MetaData + Statistics**, Parse, Collect and Display nice MetaData and Statistics of your work.
-- **Link-ability**, Automagically determines a word is referring to Python Library and Link to its Documentation.
+- **Cross-reference Links**, Automagically determines a word is referring to Python Library and Link to its Documentation.
 - **Download/Export**, Get a JSON file or MarkDown file directly from the generated HTML documentation.
 - **ProcessName**, Sets its own Process name and show up on Process lists, like `htop` and System Monitors.
 - **Updates**, Can optionally check for updates for itself, from the Internet.
