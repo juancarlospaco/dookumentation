@@ -5,7 +5,6 @@
 {%
 
 {{ '<title>{0} - Dookumentation</title>'.format(data['basename'][:99]) }}
-
 if not livereload:
     {{ '<meta http-equiv=refresh content=480 ><!-- LiveReload not installed -->' }}
 
@@ -286,8 +285,7 @@ with open(data['fullpath'], 'r', encoding='utf-8') as _code:
 {{ '</div></div><section>' }}
 
 
-###############################################################################
-# Imports
+################################## Imports ###################################
 
 
 if data.get('imports'):
@@ -313,8 +311,7 @@ if data.get('imports'):
     {{ '</ol><i><a title="We recommend using iSort" alt="We recommend using iSort" target=_blank href="https://github.com/timothycrosley/isort">We recommend iSort</a></i><br></details>' }}
 
 
-###############################################################################
-# Functions
+################################ Functions ###################################
 
 
 if data.get('functions'):
@@ -337,8 +334,7 @@ if data.get('functions'):
     {{ '</ol></details> ' }}
 
 
-###############################################################################
-# Classes
+############################### Classes ######################################
 
 
 if data.get('classes'):
@@ -378,8 +374,7 @@ if data.get('classes'):
     {{ '</ol></details>' }}
 
 
-###############################################################################
-# Attributes
+############################### Attributes ###################################
 
 
 if data.get('attributes'):
@@ -392,8 +387,7 @@ if data.get('attributes'):
     {{ '</ol></details>' }}
 
 
-###############################################################################
-# Bugs
+################################### Bugs #####################################
 
 
 if data.get('pylama'):
@@ -406,8 +400,7 @@ if data.get('pylama'):
     {{ '</ol><br><i><a title="We recommend using PyLama" alt="We recommend using PyLama" target=_blank href="https://github.com/klen/pylama#-pylama">We recommend PyLama</a></i><br></details>' }}
 
 
-###############################################################################
-# TO-DO List
+############################### TO-DO List ###################################
 
 
 if data.get('todo'):
@@ -417,8 +410,7 @@ if data.get('todo'):
     {{ '</ol><br><br><i>We parse and collect all code comments matching the Regular Expression: r"(# TODO|# FIXME|# OPTIMIZE|# BUG)"</i></details>' }}
 
 
-###############################################################################
-# Fades
+################################# Fades ######################################
 
 
 if data.get('fades'):
@@ -555,7 +547,7 @@ if data.get('fades'):
                         <label for=downloadz class="icon material-icons" title="Exports and Downloads">cloud_download</label>
                         <div class=expandicon3 >
                             <a title="Export to JSON (Pretty-Printed)" target=_blank alt='Export to JSON' download='{%{{data["basename"]}}%}.json' href="data:application/json;charset=utf-8,{%{{parse.quote(str(data), encoding='utf-8')}}%}">JSON</a>
-                            <br>
+                            <br><!-- this should be always the last render -->
                             <a title="Export to MarkDown MD (GitHub compatible)" target=_blank alt='Export to MarkDown MD GitHub Compatible' download='{%{{data["basename"]}}%}.md' href="data:text/plain;charset=utf-8,{%{{parse.quote(str(json_meta_to_templar(data, MD, False)), encoding='utf-8')}}%}">MarkDown</a>
                     </center>
         </div>
