@@ -446,7 +446,7 @@ if data.get('fades'):
 
 
 {{ '<details id=logs title="Build Logs for Debugging and Developers"><summary>&ccupssm; <a href="#logs">Logs</a></summary><h4>&ggg; Build Logs for Debugging and Developers</h4>' }}
-{{ '<textarea cols=50 rows=25 readonly >{0}</textarea></details>'.format(open(log.getLogger().handlers[0].baseFilename, "r", encoding="utf-8").read()) }}
+{{ '<textarea cols=50 rows=25 readonly >{0}</textarea></details>'.format(open(log.getLogger().handlers[0].baseFilename, "r", encoding="utf-8").read().strip()) }}
 
 
 %}
@@ -711,6 +711,7 @@ if data.get('fades'):
 
 <script>((window.gitter = {}).chat = {}).options = { room: 'juancarlospaco/dookumentation' }</script>
 <script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+
 
 <!-- Dookumentation
 
