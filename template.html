@@ -621,6 +621,10 @@ if data.get('fades'):
             document.querySelector("#statistics").style.minWidth = ancho;
         };
 
+        if ( !!document.querySelector("#fades") ) {
+            document.querySelector("#fades").style.minWidth      = ancho;
+        };
+
         // Force scroll to bottom (sometimes it didnt work?)
         window.scrollTo(0, document.body.scrollHeight            ||
                            document.documentElement.scrollHeight ||
