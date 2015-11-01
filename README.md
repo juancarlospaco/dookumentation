@@ -1,9 +1,8 @@
 # dookumentation
 
-[![Join the chat at https://gitter.im/juancarlospaco/dookumentation](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/juancarlospaco/dookumentation?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ![The Dark Side of Documentation](https://raw.githubusercontent.com/juancarlospaco/dookumentation/master/dookumentation.jpg "The Dark Side of Documentation !")
 
-[![GPL License](http://img.shields.io/badge/license-GPL-blue.svg?style=plastic)](http://opensource.org/licenses/GPL-3.0) [![LGPL License](http://img.shields.io/badge/license-LGPL-blue.svg?style=plastic)](http://opensource.org/licenses/LGPL-3.0) [![Python Version](https://img.shields.io/badge/Python-3-brightgreen.svg?style=plastic)](http://python.org) 
+[![GPL License](http://img.shields.io/badge/license-GPL-blue.svg?style=plastic)](http://opensource.org/licenses/GPL-3.0) [![LGPL License](http://img.shields.io/badge/license-LGPL-blue.svg?style=plastic)](http://opensource.org/licenses/LGPL-3.0) [![Python Version](https://img.shields.io/badge/Python-3-brightgreen.svg?style=plastic)](http://python.org) [![Join the chat at https://gitter.im/juancarlospaco/dookumentation](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/juancarlospaco/dookumentation?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
 ### Screenshots
