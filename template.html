@@ -288,17 +288,17 @@ with open(data['fullpath'], 'r', encoding='utf-8') as _code:
 ############################# Table of Contents ##############################
 
 
-{{ '<details id=toc open title="Table of Contents"><summary>&ccupssm; <a href="#toc">Table of Contents</a></summary><table class="mdl-data-table mdl-data-table--selectable"><th>Name<th>Description</th><tr><td><a href="#statistics">Statistics</a><td><i>Statistics about current source code.</i><tr><td><a href="#toc">Table of Contents</a><td><i>This Table of Contents.</i><tr><td><a href="#" onclick="overly()">Source Code View</a><td><i>Overlay with current raw source code.</i><tr><td><a>Footer</a><td><i>Export JSON/MarkDown and Print.</i>' }}
+{{ '<details id=toc open title="Table of Contents"><summary>&ccupssm; <a href="#toc">Table of Contents</a></summary><table class="mdl-data-table mdl-data-table--selectable"><th>Name<th>Description</th><tr><td><a href="#statistics">Statistics</a><td><i>Statistics about current source code.</i><tr><td><a href="#toc">Table of Contents</a><td><i>This Table of Contents.</i><tr><td><a href="#" onclick="overly()">Source Code View</a><td><i>Overlay with current raw source code.</i><tr><td><a>Footer</a><td><i>Export JSON/MD,Print,HelpChat,etc.</i>' }}
 if data.get('imports'):
     {{ '<tr><td><a href="#imports">Imports</a><td><i>Information about all the Imports.</i>' }}
 if data.get('functions'):
-    {{ '<tr><td><a href="#functions">Functions</a><td><i>Functions (does not include Methods).</i>' }}
+    {{ '<tr><td><a href="#functions">Functions</a><td><i>Functions (not Methods).</i>' }}
 if data.get('classes'):
-    {{ '<tr><td><a href="#classes">Classes</a><td><i>Classes and its Methods.</i>' }}
+    {{ '<tr><td><a href="#classes">Classes</a><td><i>Classes and Methods.</i>' }}
 if data.get('attributes'):
-    {{ '<tr><td><a href="#attributes">Attributes</a><td><i>Attributes, probably on Global namespace.</i>' }}
+    {{ '<tr><td><a href="#attributes">Attributes</a><td><i>Attributes (probably Global).</i>' }}
 if data.get('pylama'):
-    {{ '<tr><td><a href="#bugs">Bugs</a><td><i>Bugs and imperfections on the code.</i>' }}
+    {{ '<tr><td><a href="#bugs">Bugs</a><td><i>Imperfections on the code.</i>' }}
 if data.get('todo'):
     {{ '<tr><td><a href="#todo">ToDo</a><td><i>Auto-generated To-Do Lists.</i>' }}
 if data.get('fades'):
@@ -698,6 +698,8 @@ if data.get('fades'):
 
 </script>
 
+<script>((window.gitter = {}).chat = {}).options = { room: 'juancarlospaco/dookumentation' }</script>
+<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
 
 <!-- Dookumentation
 
