@@ -288,7 +288,7 @@ with open(data['fullpath'], 'r', encoding='utf-8') as _code:
 ############################# Table of Contents ##############################
 
 
-{{ '<details id=toc open title="Table of Contents"><summary>&ccupssm; <a href="#toc">Table of Contents</a></summary><table class="mdl-data-table mdl-data-table--selectable"><th>Name<th>Description</th><tr><td><a href="#statistics">Statistics</a><td><i>Statistics about current source code.</i><tr><td><a href="#toc">Table of Contents</a><td><i>This Table of Contents.</i><tr><td><a href="#" onclick="overly()">Source Code View</a><td><i>Overlay with current raw source code.</i><tr><td><a>Footer</a><td><i>Export JSON/MD,Print,HelpChat,etc.</i>' }}
+{{ '<details id=toc open title="Table of Contents"><summary>&ccupssm; <a href="#toc">Table of Contents</a></summary><table class="mdl-data-table mdl-data-table--selectable"><th>Name<th>Description</th><tr><td><a href="#statistics">Statistics</a><td><i>Statistics about current source code.</i><tr><td><a href="#toc">Table of Contents</a><td><i>This Table of Contents.</i><tr><td><a href="#" onclick="overly()">Source Code View</a><td><i>Overlay with current raw source code.</i><tr><td><a>Footer</a><td><i>Export JSON/MD,Print,HelpChat,etc.</i><tr><td><a href="#logs">Build Logs</a><td><i>Build Logs for Developers and Debug.</i>' }}
 if data.get('imports'):
     {{ '<tr><td><a href="#imports">Imports</a><td><i>Information about all the Imports.</i>' }}
 if data.get('functions'):
@@ -440,6 +440,13 @@ if data.get('fades'):
     for _ in data['fades']:
         {{ ' <li> <b>{0}</b> on <a title="{2}" alt="{0}" target=_blank href="javascript:void(0)" onclick="overly()">Line {1}</a> &raquo; <i> {2} </i> '.format(_['type'].upper(), _['lnum'], _['text'][:99]) }}
     {{ '</ol><br><br><i>We parse and collect all Fades code comments matching Regular Expression: r(# fades).<br><a title="We recommend using Fades" alt="We recommend using Fades" target=_blank href="https://github.com/PyAr/fades">We recommend Fades</a></i><br></details>' }}
+
+
+##################################### Logs ###################################
+
+
+{{ '<details id=logs title="Build Logs for Debugging and Developers"><summary>&ccupssm; <a href="#logs">Logs</a></summary><h4>&ggg; Build Logs for Debugging and Developers</h4>' }}
+{{ '<textarea cols=50 rows=25 readonly >{0}</textarea></details>'.format(open(log.getLogger().handlers[0].baseFilename, "r", encoding="utf-8").read()) }}
 
 
 %}
