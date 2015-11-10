@@ -6,8 +6,7 @@
 
 {{ '<title>{0} - Dookumentation</title>'.format("Index" if data.get('is_index') else data['basename'][:99]) }}
 favicon_file = os.path.join(data.get("relpath"), "doc", "html", "favicon.ico")
-{{ '<link rel="shortcut icon" href="{0}"/>'.format(favicon_file if os.path.isfile(favicon_file) else "https://www.python.org/static/favicon.ico") }}
-print("You can use a Custom Favicon from '/doc/html/favicon.ico' !.")
+{{ '<link rel="shortcut icon" href="{0}"/><!-- You can use Custom Favicon from /doc/html/favicon.ico -->'.format(favicon_file if os.path.isfile(favicon_file) else "https://www.python.org/static/favicon.ico") }}
 if not livereload:
     {{ '<meta http-equiv=refresh content=480 ><!-- LiveReload not installed -->' }}
 
@@ -232,15 +231,17 @@ css_folder, js_folder = os.path.join(data.get("relpath"), "doc", "html", "css"),
 try:
     for css_file in walkdir_to_filelist(css_folder, (".css", ), tuple()):
         {{ open(css_file, "r", encoding="utf-8").read().strip() }}
+    {{ "/* You can use Custom CSS from /doc/html/css/*.css */" }}
 except:
-    print("'/doc/html/css/*.css' not found or empty (You can use Custom CSS from there).")
+    pass
 finally:
     {{ '</style><script>' }}
 try:
     for js_file in walkdir_to_filelist(js_folder, (".js", ), tuple()):
         {{ open(js_file, "r", encoding="utf-8").read().strip() }}
+    {{ "/* You can use Custom JS from /doc/html/js/*.js */" }}
 except:
-    print("'/doc/html/js/*.js' not found or empty (You can use Custom JS from there).")
+    pass
 finally:
     {{ '</script>' }}
 
@@ -282,7 +283,7 @@ finally:
         <br>
         <div class=overlay id=overlay_container >
             <a href="javascript:void(0)" id=btoverl onclick="document.getElementById('overlay_container').style.display='none'" style="position:absolute;right:1em">
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent mdl-button mdl-js-ripple-effect" style="z-index:1000">
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent mdl-js-ripple-effect" style="z-index:1000">
                     <b>&cross;</b>
                 </button>
             </a>
@@ -302,8 +303,7 @@ if not data.get('is_index'):
             {{ str(highlight(_code.read(), PythonLexer(), formater))  }}
             {{ '<style>{0}</style>'.format(formater.get_style_defs()) }}
         except ImportError:  # Dont Die if is not installed.
-            {{ '<textarea name=editContent id=source_code readonly >{}</textarea><!-- Pygments not installed -->'.format(_code.read().strip()) }}
-            {{ '<script>createTextAreaWithLines("source_code")</script>' }}
+            {{ '<textarea name=editContent id=source_code readonly onclick=this.select() >{}</textarea><!-- Pygments is not installed -->'.format(_code.read().strip()) }}
 {{ '</div></div><section>' }}
 
 
@@ -700,48 +700,51 @@ if data.get('is_index') and data.get('html_files'):
     function createTextAreaWithLines(id) {
 
         // Create a textarea with Line Numbers, ~80 chars red margin, etc.
-        var el = document.createElement('div');
         var ta = document.getElementById(id);
-        ta.style.height = (ta.innerHTML.split("\n").length + 1) * 31 + "px";
-        var string = '';
-        for (var no=1 ; no < ta.innerHTML.split("\n").length + 1 ; no++) {
-            if (string.length > 0) {
-                string += "\n"
+        if ( !!ta ) {
+            var el = document.createElement('div');
+            ta.style.height = (ta.innerHTML.split("\n").length + 1) * 31 + "px";
+            var string = '';
+            for (var no=1 ; no < ta.innerHTML.split("\n").length + 1 ; no++) {
+                if (string.length > 0) {
+                    string += "\n"
+                };
+                string += "<a href='#L" + no + "' title='Line " + no + "' onclick='this.scrollIntoView()'><b>" + no + "</b></a><br>";
             };
-            string += "<a href='#L" + no + "' title='Line " + no + "' onclick='this.scrollIntoView()'><b>" + no + "</b></a><br>";
-        };
 
-        el.className          = 'source_code_lines';
-        el.disabled           = 'disabled';
-        el.style.height       = (ta.offsetHeight - 3) + "px";
-        el.style.width        = "50px";
-        el.style.position     = "absolute";
-        el.style.overflow     = 'hidden';
-        el.style.textAlign    = 'right';
-        el.style.paddingRight = '0.1em';
-        el.innerHTML          = string;
-        el.style.zIndex       = 0;
-        ta.style.zIndex       = 1;
-        ta.style.position     = "relative";
-        ta.parentNode.insertBefore(el, ta.nextSibling);
-        setLine();
-        ta.focus();
+            el.className          = 'source_code_lines';
+            el.disabled           = 'disabled';
+            el.style.height       = (ta.offsetHeight - 3) + "px";
+            el.style.width        = "50px";
+            el.style.position     = "absolute";
+            el.style.overflow     = 'hidden';
+            el.style.textAlign    = 'right';
+            el.style.paddingRight = '0.1em';
+            el.innerHTML          = string;
+            el.style.zIndex       = 0;
+            ta.style.zIndex       = 1;
+            ta.style.position     = "relative";
+            ta.parentNode.insertBefore(el, ta.nextSibling);
+            setLine();
+            ta.focus();
 
-        ta.onkeydown   = function() { setLine() };
-        ta.onmousedown = function() { setLine() };
-        ta.onscroll    = function() { setLine() };
-        ta.onblur      = function() { setLine() };
-        ta.onfocus     = function() { setLine() };
-        ta.onmouseover = function() { setLine() };
-        ta.onmouseup   = function() { setLine() };
+            ta.onkeydown   = function() { setLine() };
+            ta.onmousedown = function() { setLine() };
+            ta.onscroll    = function() { setLine() };
+            ta.onblur      = function() { setLine() };
+            ta.onfocus     = function() { setLine() };
+            ta.onmouseover = function() { setLine() };
+            ta.onmouseup   = function() { setLine() };
 
-        function setLine() {
-            el.scrollTop  =  ta.scrollTop;
-            el.style.top  = (ta.offsetTop) + "px";
-            el.style.left = (ta.offsetLeft - 55) + "px";
+            function setLine() {
+                el.scrollTop  =  ta.scrollTop;
+                el.style.top  = (ta.offsetTop) + "px";
+                el.style.left = (ta.offsetLeft - 55) + "px";
+            };
         };
     };
 
+createTextAreaWithLines("source_code");
 </script>
 
 <script>((window.gitter = {}).chat = {}).options = { room: 'juancarlospaco/dookumentation' }</script>
