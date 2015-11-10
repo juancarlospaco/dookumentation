@@ -373,7 +373,8 @@ def check_working_folder(folder_to_check: str=os.path.expanduser("~")) -> bool:
         else:  # < 1 Gb
             log.critical("Total Free Space is < 1 GigaByte; Epic Fail !.")
             return False
-    basic_folders = ("json", "html", "md", "rst", "odt", "plugins")
+    basic_folders = ("json", "html", "md", "rst", "odt", "plugins",
+                     os.path.join("html", "css"), os.path.join("html", "js"))
     for subfolder in [os.path.join(folder_to_check, _) for _ in basic_folders]:
         if not os.path.isdir(subfolder):
             log.warning("Creating Required Sub-Folder: {0}/".format(subfolder))
@@ -784,8 +785,6 @@ def main():
     log.debug("OUTPUT: Writing HTML5 Docs Index {0}.".format(new_html_file))
     with open(new_html_file, "w", encoding="utf-8") as html_file:
             html_file.write(html_index)
-
-
     if args.after and getoutput:
         log.info(getoutput(str(args.after)))
     if args.serve and os.path.isdir(html_folder):  # HTML to HTTP LiveReload
