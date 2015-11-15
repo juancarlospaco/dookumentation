@@ -13,20 +13,22 @@
  - [**Source Code View**](#sourcecode "Source Code View"): Source Code Raw View.
  - [**Imports**](#imports "Imports"): Information about all the Imports.
 {%
+toc_items = ""
 if data.get('functions'):
-    {{ ' - [**Functions**](#functions "Functions"): Functions (not Methods).\n' }}
+    toc_items += ' - [**Functions**](#functions "Functions"): Functions (not Methods).\n'
 if data.get('classes'):
-    {{ ' - [**Classes**](#classes "Classes"):  Classes and Methods.\n' }}
+    toc_items += ' - [**Classes**](#classes "Classes"):  Classes and Methods.\n'
 if data.get('attributes'):
-    {{ ' - [**Attributes**](#attributes "Attributes"): Attributes (probably Global).\n' }}
+    toc_items += ' - [**Attributes**](#attributes "Attributes"): Attributes (probably Global).\n'
 if data.get('pylama'):
-    {{ ' - [**Bugs**](#bugs "Imperfections on the code"):  Imperfections on the code.\n' }}
+    toc_items += ' - [**Bugs**](#bugs "Imperfections on the code"):  Imperfections on the code.\n'
 if data.get('todo'):
-    {{ ' - [**ToDo**](#todo "Auto-generated To-Do Lists"): Auto-generated To-Do Lists.\n' }}
+    toc_items += ' - [**ToDo**](#todo "Auto-generated To-Do Lists"): Auto-generated To-Do Lists.\n'
 if data.get('fades'):
-    {{ ' - [**Fades**](#fades "Information about Fades"): Information about Fades.\n' }}
+    toc_items += ' - [**Fades**](#fades "Information about Fades"): Information about Fades.\n'
 if data.get('links'):
-    {{ ' - [**Links Farm**](#links "Links Farm"): All Links found on the code together.\n' }}
+    toc_items += ' - [**Links Farm**](#links "Links Farm"): All Links found on the code together.\n'
+{{ toc_items }}
 %}
 
  ---
@@ -35,11 +37,12 @@ if data.get('links'):
 {%
 if data.get('imports'):
     {{ ' **&check; {0} Imports!.**\n\n'.format(len(data['imports']['imports']) + len(data['imports']['from_imports'])) }}
+    imports_content = ""
     for _ in data['imports']['imports'].items() :
-        {{ ' - ` import {mod} {ass}` &raquo; Line {lin}\n\n'.format(mod=_[0], ass="as {}".format(_[1]['asname']) if _[1]['asname'] else "", lin=_[1]['lineno']) }}
+        imports_content += ' - ` import {mod} {ass}` &raquo; Line {lin}\n\n'.format(mod=_[0], ass="as {}".format(_[1]['asname']) if _[1]['asname'] else "", lin=_[1]['lineno'])
     for _ in data['imports']['from_imports'].items():
-        {{ ' - ` from {0} import {1} {2}` &raquo; Line {3}\n\n'.format(_[1]['module'], _[0], "as {}".format(_[1]['asname']) if _[1]['asname'] else "", _[1]['lineno'] ) }}
-    {{ ' [We recommend using iSort](https://github.com/timothycrosley/isort "We recommend using iSort")' }}
+        imports_content += ' - ` from {0} import {1} {2}` &raquo; Line {3}\n\n'.format(_[1]['module'], _[0], "as {}".format(_[1]['asname']) if _[1]['asname'] else "", _[1]['lineno'])
+    {{ imports_content + ' [We recommend using iSort](https://github.com/timothycrosley/isort "We recommend using iSort")' }}
 %}
 
  ---
@@ -109,9 +112,10 @@ if data.get('functions'):
  [Attributes](#attributes "Attributes")
 {%
 if data.get('attributes'):
-    {{ ' **&Diamond; {0} Attributes!.**\n\n'.format(len(data.get('attributes'))) }}
+    attributes_content = ""
     for _ in sorted(data['attributes'].items()):
-        {{ ' - `{1}` &raquo; Line {0}\n\n'.format(_[1], _[0]) }}
+        attributes_content += ' - `{1}` &raquo; Line {0}\n\n'.format(_[1], _[0])
+    {{ ' **&Diamond; {0} Attributes!.**\n\n'.format(len(data.get('attributes'))) + attributes_content }}
 %}
 
  ---
@@ -119,16 +123,12 @@ if data.get('attributes'):
  [&hercon; Bugs](#bugs "Bugs")
 {%
 if data.get('pylama'):
+    bugs_content = ""
     if data.get('lines_per_bug'):
         {{ ' **&star; You wrote 1 Bug every {0} Lines of Code!.**\n\n'.format(data['lines_per_bug']) }}
     for _ in data['pylama']:
-        {{ ' - Line {0} Column {1} found by {2}: &raquo; `{3}`.\n\n'.format(_['lnum'], _['col'], _['linter'].upper(), _['text']) }}
-    {{ ' [We recommend using PyLama](https://github.com/klen/pylama#-pylama "We recommend using PyLama")' }}
-else:
-    if check_path and parse_options:  # Theres PyLama but theres no Errors.
-        {{ ' <p style="color:green">No Bugs !, PyLama cant find any Errors.' }}
-    else:  # Theres NO PyLama, but may or may not be no Errors ?.
-        {{ ' <p style="color:red">No PyLama!, Install PyLama using PIP !.' }}
+        bugs_content += ' - Line {0} Column {1} found by {2}: &raquo; `{3}`.\n\n'.format(_['lnum'], _['col'], _['linter'].upper(), _['text'])
+    {{ bugs_content + ' [We recommend using PyLama](https://github.com/klen/pylama#-pylama "We recommend using PyLama")' }}
 %}
 
  ---
@@ -136,10 +136,10 @@ else:
  [&hercon; Fades](#fades "Fades")
 {%
 if data.get('fades'):
-    {{ ' **&star; You use {0} Fades comments !.**\n\n'.format(len(data['fades'])) }}
+    fades_content = ""
     for _ in data['fades']:
-        {{ ' - `{0}` on Line {1} &raquo; *{2}*\n\n'.format(_['type'].upper(), _['lnum'], _['text'][:99]) }}
-    {{ ' [We recommend Fades](https://github.com/PyAr/fades "We recommend using Fades")' }}
+        fades_content += ' - `{0}` on Line {1} &raquo; *{2}*\n\n'.format(_['type'].upper(), _['lnum'], _['text'][:99])
+    {{ ' **&star; You use {0} Fades comments !.**\n\n'.format(len(data['fades'])) + fades_content + ' [We recommend Fades](https://github.com/PyAr/fades "We recommend using Fades")' }}
 %}
 
  ---
@@ -147,11 +147,10 @@ if data.get('fades'):
  [&check; Things To Do](#todo "To Do")
 {%
 if data.get('todo'):
-    {{ ' &star; You have {0} Things to do!.\n\n'.format(len(data['todo'])) }}
+    todo_content = ""
     for _ in data['todo']:
-        {{ ' - {0} on Line {1} &raquo;&nbsp;&nbsp;&nbsp;`{2}`.{3}'.format(_['type'].upper(), _['lnum'], str(_['text'])[:99], os.linesep) }}
-else:
-    {{ ' <p style="color:green">No Things To Do!.' }}
+        todo_content += ' - {0} on Line {1} &raquo;&nbsp;&nbsp;&nbsp;`{2}`.{3}'.format(_['type'].upper(), _['lnum'], str(_['text'])[:99], os.linesep)
+    {{ ' &star; You have {0} Things to do!.\n\n'.format(len(data['todo'])) + todo_content }}
 %}
 
  ---
@@ -159,18 +158,19 @@ else:
  [&check; Link Farm](#links "All Links found on the code will be here")
 {%
 if data.get("links"):
-    {{ ' **&diam; {0} Links found on the code.**\n\n'.format(len(data.get("links"))) }}
-    {{ ' ```\n\n {0}\n\n ```\n\n'.format(data.get("links")) }}
+    {{ ' **&diam; {0} Links found on the code.**\n\n ```\n\n {1}\n\n ```\n\n'.format(len(data.get("links")), data.get("links")) }}
 %}
 
  ---
 
  [&check; Logs](#logs "Build Logs for Debugging and Developers")
 {%
-{{ ' **&ggg; Build Logs for Debugging and Developers**\n\n ```\n\n' }}
-for line in open(log.getLogger().handlers[0].baseFilename, "r", encoding="utf-8").readlines():
-    {{ ' ' + line }}
-{{' ```\n\n' }}
+logs_content = ""
+logs_content += ' **&ggg; Build Logs for Debugging and Developers**\n\n ```\n\n'
+with open(log.getLogger().handlers[0].baseFilename, "r", encoding="utf-8") as __logs:
+    for line in __logs.readlines():
+        logs_content += ' ' + line
+{{ logs_content + ' ```\n\n' }}
 %}
 
  ---
@@ -236,9 +236,11 @@ for line in open(log.getLogger().handlers[0].baseFilename, "r", encoding="utf-8"
 
  ```
 {%
-for line in open(data['fullpath'], 'r', encoding='utf-8').readlines():
-    {{ ' ' + line }}
-{{' ```\n\n' }}
+code_contents = ""
+with open(data['fullpath'], 'r', encoding='utf-8') as __code:
+    for line in __code.readlines():
+        code_contents += ' ' + line
+{{ code_contents + ' ```\n\n' }}
 %}
 
  ---
@@ -275,20 +277,22 @@ for line in open(data['fullpath'], 'r', encoding='utf-8').readlines():
 - `Build Logs <#logs>`_: Build Logs for Developers and Debug.
 - `Imports <#imports>`_: Information about all the Imports.
 {%
+toc_items = ""
 if data.get('functions'):
-    {{ '- `Functions <#functions>`_: Functions (not Methods).\n' }}
+    toc_items += '- `Functions <#functions>`_: Functions (not Methods).\n'
 if data.get('classes'):
-    {{ '- `Classes <#classes>`_:  Classes and Methods.\n' }}
+    toc_items += '- `Classes <#classes>`_:  Classes and Methods.\n'
 if data.get('attributes'):
-    {{ '- `Attributes <#attributes>`_: Attributes (probably Global).\n' }}
+    toc_items += '- `Attributes <#attributes>`_: Attributes (probably Global).\n'
 if data.get('pylama'):
-    {{ '- `Bugs <#bugs>`_:  Imperfections on the code.\n' }}
+    toc_items += '- `Bugs <#bugs>`_:  Imperfections on the code.\n'
 if data.get('todo'):
-    {{ '- `ToDo <#todo>`_: Auto-generated To-Do Lists.\n' }}
+    toc_items += '- `ToDo <#todo>`_: Auto-generated To-Do Lists.\n'
 if data.get('fades'):
-    {{ '- `Fades <#fades>`_: Information about Fades.\n' }}
+    toc_items += '- `Fades <#fades>`_: Information about Fades.\n'
 if data.get('links'):
-    {{ '- `Links Farm <#links>`_: All Links found on the code together.\n' }}
+    toc_items += '- `Links Farm <#links>`_: All Links found on the code together.\n'
+{{ toc_items }}
 %}
 
 -------------------------------------------------------------------------------
@@ -297,12 +301,12 @@ if data.get('links'):
 ---------------------
 {%
 if data.get('imports'):
-    {{ '**{0} Imports!.**\n\n'.format(len(data['imports']['imports']) + len(data['imports']['from_imports'])) }}
+    imports_content = ""
     for _ in data['imports']['imports'].items() :
-        {{ '- ``import {mod}{ass}`` Line {lin}\n\n'.format(mod=_[0], ass=" as {}".format(_[1]['asname']) if _[1]['asname'] else "", lin=_[1]['lineno']) }}
+        imports_content += '- ``import {mod}{ass}`` Line {lin}\n\n'.format(mod=_[0], ass=" as {}".format(_[1]['asname']) if _[1]['asname'] else "", lin=_[1]['lineno'])
     for _ in data['imports']['from_imports'].items():
-        {{ '- ``from {0} import {1}{2}`` Line {3}\n\n'.format(_[1]['module'], _[0], " as {}".format(_[1]['asname']) if _[1]['asname'] else "", _[1]['lineno'] ) }}
-    {{ '`We recommend using iSort <https://github.com/timothycrosley/isort>`_' }}
+        imports_content += '- ``from {0} import {1}{2}`` Line {3}\n\n'.format(_[1]['module'], _[0], " as {}".format(_[1]['asname']) if _[1]['asname'] else "", _[1]['lineno'] )
+    {{ '**{0} Imports!.**\n\n'.format(len(data['imports']['imports']) + len(data['imports']['from_imports'])) + imports_content + '`We recommend using iSort <https://github.com/timothycrosley/isort>`_' }}
 %}
 
 -------------------------------------------------------------------------------
@@ -361,9 +365,10 @@ if data.get('functions'):
 
 {%
 if data.get('attributes'):
-    {{ '**{0} Attributes!.**\n\n'.format(len(data.get('attributes'))) }}
+    attributes_content = ""
     for _ in sorted(data['attributes'].items()):
-        {{ '- ``{1}`` Line {0}\n\n'.format(_[1], _[0]) }}
+        attributes_content += '- ``{1}`` Line {0}\n\n'.format(_[1], _[0])
+    {{ '**{0} Attributes!.**\n\n'.format(len(data.get('attributes'))) + attributes_content }}
 %}
 
 -------------------------------------------------------------------------------
@@ -373,16 +378,12 @@ if data.get('attributes'):
 
 {%
 if data.get('pylama'):
+    bugs_content = ""
     if data.get('lines_per_bug'):
         {{ '**You wrote 1 Bug every {0} Lines of Code!.**\n\n'.format(data['lines_per_bug']) }}
     for _ in data['pylama']:
-        {{ '- Line {0} Column {1} found by {2}: ``{3}``\n\n'.format(_['lnum'], _['col'], _['linter'].upper(), _['text']) }}
-    {{ '`We recommend PyLama <https://github.com/klen/pylama#-pylama>`_' }}
-else:
-    if check_path and parse_options:  # Theres PyLama but theres no Errors.
-        {{ '- No Bugs !, PyLama cant find any Errors.\n\n' }}
-    else:  # Theres NO PyLama, but may or may not be no Errors ?.
-        {{ '- No PyLama!, Install PyLama using PIP !.\n\n' }}
+        bugs_content += '- Line {0} Column {1} found by {2}: ``{3}``\n\n'.format(_['lnum'], _['col'], _['linter'].upper(), _['text'])
+    {{ bugs_content + '`We recommend PyLama <https://github.com/klen/pylama#-pylama>`_' }}
 %}
 
 -------------------------------------------------------------------------------
@@ -392,10 +393,10 @@ else:
 
 {%
 if data.get('fades'):
-    {{ '**You use {0} Fades comments !.**\n\n'.format(len(data['fades'])) }}
+    fades_content = ""
     for _ in data['fades']:
-        {{ '- **{0}** on Line {1}: *{2}*\n\n'.format(_['type'].upper(), _['lnum'], _['text'][:99]) }}
-    {{ '`We recommend Fades <https://github.com/PyAr/fades>`_' }}
+        fades_content += '- **{0}** on Line {1}: *{2}*\n\n'.format(_['type'].upper(), _['lnum'], _['text'][:99])
+    {{  '**You use {0} Fades comments !.**\n\n'.format(len(data['fades'])) + fades_content + '`We recommend Fades <https://github.com/PyAr/fades>`_' }}
 %}
 
 -------------------------------------------------------------------------------
@@ -405,11 +406,10 @@ if data.get('fades'):
 
 {%
 if data.get('todo'):
-    {{ '**You have {0} Things to do!.**\n\n'.format(len(data['todo'])) }}
+    todo_content = ""
     for _ in data['todo']:
-        {{ '- {0} on Line {1} ``{2}``.\n\n'.format(_['type'].upper(), _['lnum'], str(_['text'])[:99]) }}
-else:
-    {{ '- No Things To Do!.\n\n' }}
+        todo_content += '- {0} on Line {1} ``{2}``.\n\n'.format(_['type'].upper(), _['lnum'], str(_['text'])[:99])
+    {{ '**You have {0} Things to do!.**\n\n'.format(len(data['todo'])) + todo_content }}
 %}
 
 -------------------------------------------------------------------------------
@@ -419,8 +419,7 @@ else:
 
 {%
 if data.get("links"):
-    {{ '**{0} Links found on the code.**\n\n'.format(len(data.get("links"))) }}
-    {{ '``{0}``\n\n'.format(data.get("links")) }}
+    {{ '**{0} Links found on the code.**\n\n``{1}``\n\n'.format(len(data.get("links")), data.get("links")) }}
 %}
 
 -------------------------------------------------------------------------------
@@ -429,9 +428,8 @@ if data.get("links"):
 ---------------------
 
 {%
-{{ '**Build Logs for Debugging and Developers**\n\n' }}
 with open(log.getLogger().handlers[0].baseFilename, "r", encoding="utf-8") as __log:
-    {{ '``{0}``\n\n'.format(__log.read().strip()) }}
+    {{ '**Build Logs for Debugging and Developers**\n\n``{0}``\n\n'.format(__log.read().strip()) }}
 %}
 
 -------------------------------------------------------------------------------
@@ -482,22 +480,3 @@ with open(log.getLogger().handlers[0].baseFilename, "r", encoding="utf-8") as __
     Dookumentation https://github.com/juancarlospaco/dookumentation#dookumentation
 
 ..  --->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
