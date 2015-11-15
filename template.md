@@ -12,7 +12,7 @@
 - [**Imports**](#imports "Imports"): Information about all the Imports.
 {%
 if data.get('functions'):
-    {{ '- [**Functions**](#toc "Functions"): Functions (not Methods).\n' }}
+    {{ '- [**Functions**](#functions "Functions"): Functions (not Methods).\n' }}
 if data.get('classes'):
     {{ '- [**Classes**](#classes "Classes"):  Classes and Methods.\n' }}
 if data.get('attributes'):
@@ -24,7 +24,7 @@ if data.get('todo'):
 if data.get('fades'):
     {{ '- [**Fades**](#fades "Information about Fades"): Information about Fades.\n' }}
 if data.get('links'):
-    {{ '- [**Links Farm**](#toc "Links Farm"): All Links found on the code together.\n' }}
+    {{ '- [**Links Farm**](#links "Links Farm"): All Links found on the code together.\n' }}
 %}
 
 ---
