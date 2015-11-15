@@ -106,7 +106,7 @@ if data.get('functions'):
 
 ### [Attributes](#attributes "Attributes")
 {%
-if data.get('attributes') and not data.get('is_index'):
+if data.get('attributes'):
     {{ '**&Diamond; {0} Attributes!.**\n\n'.format(len(data.get('attributes'))) }}
     for _ in sorted(data['attributes'].items()):
         {{ '- `{1}` &raquo; Line {0}\n\n'.format(_[1], _[0]) }}
@@ -133,7 +133,7 @@ else:
 
 ### [&hercon; Fades](#fades "Fades")
 {%
-if data.get('fades') and not data.get('is_index'):
+if data.get('fades'):
     {{ '**&star; You use {0} Fades comments !.**\n\n'.format(len(data['fades'])) }}
     for _ in data['fades']:
         {{ '- `{0}` on Line {1} &raquo; *{2}*\n\n'.format(_['type'].upper(), _['lnum'], _['text'][:99]) }}
@@ -224,23 +224,14 @@ if data.get("links"):
 
 | Date of last Modification (ISO Format) | Date of last Accessed (ISO Format) |
 | -------------------------------------- | ---------------------------------- |
-|  {%{{ data['modified'] + "             |      " + data['accessed']          }}%}
+|  {%{{ data['modified'] + "             |      " + data['accessed']       }}%}
 
 ---
 
 ### [&check; Source Code View](#sourcecode "Source Code Raw View")
 {%
-if not data.get('is_index'):
-    with open(data['fullpath'], 'r', encoding='utf-8') as _code:
-        try:  # Use pygments if is installed.
-            from pygments import highlight
-            from pygments.lexers import PythonLexer
-            from pygments.formatters import HtmlFormatter
-            formater = HtmlFormatter(linenos=True, anchorlinenos=True, nobackground=True)
-            {{ str(highlight(_code.read(), PythonLexer(), formater))  }}
-            {{ '<style>{0}</style>'.format(formater.get_style_defs()) }}
-        except ImportError:  # Dont Die if is not installed.
-            {{ '```python\n{}\n\n```\n<!-- Pygments is not installed -->'.format(_code.read().strip()) }}
+with open(data['fullpath'], 'r', encoding='utf-8') as _code:
+    {{ '\n\n```python\n\n{0}\n\n```\n\n'.format(_code.read().strip()) }}
 %}
 
 ---
