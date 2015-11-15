@@ -165,8 +165,7 @@ if data.get("links"):
 
 ### [&check; Logs](#logs "Build Logs for Debugging and Developers")
 {%
-{{ '**&ggg; Build Logs for Debugging and Developers**\n\n' }}
-{{ '```\n\n{0}\n\n```\n\n'.format(open(log.getLogger().handlers[0].baseFilename, "r", encoding="utf-8").read().strip()) }}
+{{ '**&ggg; Build Logs for Debugging and Developers**\n\n```\n\n{0}\n\n```\n\n'.format(open(log.getLogger().handlers[0].baseFilename, "r", encoding="utf-8").read().strip()) }}
 %}
 ---
 
@@ -220,7 +219,6 @@ if data.get("links"):
 |  SHA-1 CheckSum Hash of the file (UTF-8)  |
 | ----------------------------------------- |
 |       ` {%{{ data['sha1'] }}%} `          |
-
 
 | Date of last Modification (ISO Format) | Date of last Accessed (ISO Format) |
 | -------------------------------------- | ---------------------------------- |
