@@ -281,7 +281,7 @@ finally:
                     <b>&cross;</b>
                 </button>
             </a>
-            <div class="mdl-tooltip mdl-tooltip--large" for=btoverl>Close</div>
+            <div class="mdl-tooltip mdl-tooltip--large" for=btoverl >Close</div>
             <div id=overlay >
 
 {%
@@ -546,17 +546,17 @@ if data.get('is_index') and data.get('html_files'):
 
     <footer id=footer class="mdl-mini-footer">
         <button id=btfscreen onclick="window.open(window.location.href, 'Dookumentation' , 'type=fullWindow, fullscreen, scrollbars=auto')" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent mdl-button mdl-js-ripple-effect">FullScreen</button>
-        <div class="mdl-tooltip mdl-tooltip--large" for=btfscreen>Open in Full-Screen mode</div>
+        <div class="mdl-tooltip mdl-tooltip--large" for=btfscreen >Open in Full-Screen mode</div>
         &nbsp;
         <a href="javascript:(function(){function%20loadScript(a,b){var%20c=document.createElement('script'),d=document.getElementsByTagName('head')[0],e=!1;c.src=a,c.onload=c.onreadystatechange=function(){e||this.readyState&&'loaded'!=this.readyState&&'complete'!=this.readyState||(e=!0,b())},d.appendChild(c)}loadScript('https://css-tricks.github.io/The-Printliminator/printliminator.min.js',function(){thePrintliminator.init()})})()">
             <button id=btprint class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent mdl-button mdl-js-ripple-effect">Print</button>
         </a>
-        <div class="mdl-tooltip mdl-tooltip--large" for=btprint>Print to Printer</div>
+        <div class="mdl-tooltip mdl-tooltip--large" for=btprint >Print to Printer</div>
         &nbsp;
         <a href="javascript:window.open('view-source:' + window.location.href, '_blank')">
             <button id=btsource class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent mdl-button mdl-js-ripple-effect">Source</button>
         </a>
-        <div class="mdl-tooltip mdl-tooltip--large" for=btsource>View Page Source Code</div>
+        <div class="mdl-tooltip mdl-tooltip--large" for=btsource >View Page Source Code</div>
         &nbsp;
         <br>
         &nbsp;
@@ -565,8 +565,8 @@ if data.get('is_index') and data.get('html_files'):
             <b class="mdl-logo" title="Created using Dookumentation">Dookumentation</b>
             <ul class="mdl-mini-footer__link-list">
                 <li>Made with <big style="color:red">&hearts;</big> and
-                    <a href="https://www.python.org" title=Python>Python</a> by
-                    <a href="{%{{__url__}}%}" title=JuanCarlos>Juan</a>!.
+                    <a href="https://www.python.org" title=Python >Python</a> by
+                    <a href="{%{{__url__}}%}" title=JuanCarlos >Juan</a>!.
 
                 <li><center>
                         <input type=checkbox class=check0 id=bugreport unchecked />
@@ -616,6 +616,7 @@ if data.get('is_index') and data.get('html_files'):
                             <a title="Export to JSON (Pretty-Printed)" target=_blank alt='Export to JSON' download='{%{{ data["basename"] if not data.get("is_index") else "index" }}%}.json' href="data:application/json;charset=utf-8,{%{{parse.quote(str(data), encoding='utf-8')}}%}">JSON</a>
                             <br><!-- this should be always the last render -->
                             <a title="Export to MarkDown MD (GitHub compatible)" target=_blank alt='Export to MarkDown MD GitHub Compatible' download='{%{{ data["basename"] if data.get("is_index") else "index" }}%}.md' href="{%{{ 'data:text/plain;charset=utf-8,' + parse.quote(str(json_meta_to_templar(data, MD, False)), encoding='utf-8') if not data.get('is_index') else '' }}%}">MarkDown</a>
+                        </div>
                     </center>
         </div>
         <div id=google_translate_element></div><script>function googleTranslateElementInit(){new google.translate.TranslateElement({pageLanguage:'en',layout:google.translate.TranslateElement.InlineLayout.SIMPLE},'google_translate_element')}</script><script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
