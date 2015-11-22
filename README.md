@@ -123,6 +123,11 @@ If your plugin is named `template.xml` then save it to `./doc/plugins/` being th
 sudo pip3 install dookumentation
 ```
 
+**PIP from Git:** *(Not Recommended)*
+```
+sudo pip3 install git+https://raw.githubusercontent.com/juancarlospaco/dookumentation/master/dookumentation.py
+```
+
 **WGET:** *(Not Recommended)*
 ```
 sudo wget -O /usr/bin/dookumentation.py https://raw.githubusercontent.com/juancarlospaco/dookumentation/master/dookumentation.py
