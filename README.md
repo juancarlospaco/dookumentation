@@ -4,6 +4,8 @@
 
 [![GPL License](http://img.shields.io/badge/license-GPL-blue.svg?style=plastic)](http://opensource.org/licenses/GPL-3.0) [![LGPL License](http://img.shields.io/badge/license-LGPL-blue.svg?style=plastic)](http://opensource.org/licenses/LGPL-3.0) [![Python Version](https://img.shields.io/badge/Python-3-brightgreen.svg?style=plastic)](http://python.org) [![Join the chat at https://gitter.im/juancarlospaco/dookumentation](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/juancarlospaco/dookumentation?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+https://pypi.python.org/pypi/dookumentation
+
 
 ### Screenshots
 
@@ -100,15 +102,17 @@ If your plugin is named `template.xml` then save it to `./doc/plugins/` being th
 /                   "This is the relative path to the project being Documented (eg. *.py)."
 │
 └── doc/
-    ├── html/       "HTML Documentation files are saved here (eg. *.html)."
-    ├── md/         "MarkDown Documentation files are saved here (eg. *.md)."
-    ├── rst/        "ReSTructuredText Documentation files are saved here (eg. *.rst)."
-    ├── odt/        "ODT ODF Documentation files are saved here (eg. *.fodt)."
-    ├── json/       "JSON Documentation files are saved here (eg. *.json)."
-    ├── txt/        "Unformatted Plain Text Documentation files are saved here (eg. *.txt)."
-    ├── plugins/    "Template-Plugin files are read from here (eg. SVG, XML, etc)."
-    ├── html.epub   "Compressed eBook Documentation from HTML5 (if --ebook is used)."
-    └── html.zip    "HTML Documentation on Compressed ZIP file (if --zip is used)."
+    ├── html/            "HTML Documentation files are saved here (eg. *.html)."
+    │    ├── css/        "Custom CSS StyleSheets files are read from here (eg. *.css)."
+    │    ├── js/         "Custom JavaScript files are read from here (eg. *.js)."
+    │    └── favicon.ico "Custom FavIcon.ico file are read from here (eg. favicon.ico)."
+    ├── md/              "MarkDown Documentation files are saved here (eg. *.md)."
+    ├── rst/             "ReSTructuredText Documentation files are saved here (eg. *.rst)."
+    ├── odt/             "ODT ODF Documentation files are saved here (eg. *.fodt)."
+    ├── json/            "JSON Documentation files are saved here (eg. *.json)."
+    ├── plugins/         "Template-Plugin files are read from here (eg. SVG, XML, etc)."
+    ├── html.epub        "Compressed eBook Documentation from HTML5 (if --ebook is used)."
+    └── html.zip         "HTML Documentation on Compressed ZIP file (if --zip is used)."
 ```
 
 
