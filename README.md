@@ -159,6 +159,7 @@ dookumentation.py
 
 - [PyLama](https://github.com/klen/pylama#-pylama)
 - Pygments
+- [LiveReload](https://github.com/lepture/python-livereload)
 
 
 ### Coding Style Guide:
