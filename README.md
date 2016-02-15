@@ -158,6 +158,7 @@ dookumentation.py
 **Optionals:**
 
 - [PyLama](https://github.com/klen/pylama#-pylama)
+- Pygments
 
 
 ### Coding Style Guide:
