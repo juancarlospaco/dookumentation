@@ -106,3 +106,9 @@
 </svg>
 
 <!-- Dookumentation! https://github.com/juancarlospaco/dookumentation -->
+
+
+<!--
+    Support for this format is very limited,
+    I keep searching a way to do Text non-nested non-absolute-positioned on SVG.
+-->
