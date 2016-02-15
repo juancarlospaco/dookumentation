@@ -2,8 +2,7 @@
 
 
 def json2xml(json_obj, line_padding=""):
-    result_list = list()
-    json_obj_type = type(json_obj)
+    result_list, json_obj_type = [], type(json_obj)
 
     if json_obj_type is list:
         for sub_elem in json_obj:
@@ -25,3 +24,5 @@ def json2xml(json_obj, line_padding=""):
 
 
 %}
+
+<!-- Dookumentation! https://github.com/juancarlospaco/dookumentation -->
