@@ -104,51 +104,8 @@ def make_logger(name=str(os.getpid())):
     log.basicConfig(level=-1, filemode="w", filename=log_file,
                     format="%(levelname)s:%(asctime)s %(message)s %(lineno)s")
     log.getLogger().addHandler(log.StreamHandler(sys.stderr))
-    adrs = "/dev/log" if sys.platform.startswith("lin") else "/var/run/syslog"
-    try:
-        handler = log.handlers.SysLogHandler(address=adrs)
-    except Exception:
-        log.warning("Unix SysLog Server not found,ignored Logging to SysLog.")
-    else:
-        log.addHandler(handler)
     log.debug("Logger created with Log file at: {0}.".format(log_file))
     return log
-
-
-# Should be all UTF-8 for best results
-def make_root_check_and_encoding_debug():
-    """Debug and Log Encodings and Check for root/administrator,return Boolean.
-
-    >>> make_root_check_and_encoding_debug()
-    True
-    """
-    log.info(__doc__)
-    log.debug("STDIN Encoding: {0}.".format(sys.stdin.encoding))
-    log.debug("STDERR Encoding: {0}.".format(sys.stderr.encoding))
-    log.debug("STDOUT Encoding:{}".format(getattr(sys.stdout, "encoding", "")))
-    log.debug("Default Encoding: {0}.".format(sys.getdefaultencoding()))
-    log.debug("FileSystem Encoding: {0}.".format(sys.getfilesystemencoding()))
-    log.debug("PYTHONIOENCODING Encoding: {0}.".format(
-        os.environ.get("PYTHONIOENCODING", None)))
-    os.environ["PYTHONIOENCODING"] = "utf-8"
-    if not sys.platform.startswith("win"):  # root check
-        if not os.geteuid():
-            log.critical("Runing as root is not Recommended,NOT Run as root!.")
-            return False
-    return True
-
-
-def set_process_name_and_cpu_priority(name):
-    """Set process name and cpu priority.
-
-    >>> set_process_name_and_cpu_priority("test_test")
-    True
-    """
-    try:
-        os.nice(19)  # smooth cpu priority
-        return True
-    except Exception:
-        return False  # this may fail on windows and its normal, so be silent.
 
 
 def find_this(search, source=SOURCE):
@@ -190,8 +147,6 @@ def parse_requirements(path=REQUIREMENTS_FILE):
 
 
 make_logger()
-make_root_check_and_encoding_debug()
-set_process_name_and_cpu_priority("setup_py")
 install_requires_list, dependency_links_list = parse_requirements()
 log.info("Starting build of setuptools.setup().")
 
