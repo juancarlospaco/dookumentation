@@ -29,12 +29,9 @@
 """Setup.py for Python, as Generic as possible."""
 
 
-import logging as log
 import os
 import re
 import sys
-from copy import copy
-from tempfile import gettempdir
 
 from setuptools import setup
 
@@ -56,56 +53,8 @@ REQUIREMENTS_FILE = os.path.join(os.path.dirname(__file__), "requirements.txt")
 # Dont touch below
 
 
-try:
-    with open(str(MODULE_PATH), "r", encoding="utf-8-sig") as source_code_file:
-        SOURCE = source_code_file.read()
-except:
-    with open(str(MODULE_PATH),  "r") as source_code_file:
-        SOURCE = source_code_file.read()
-
-
-def make_logger(name=str(os.getpid())):
-    """Build and return a Logging Logger."""
-    if not sys.platform.startswith("win") and sys.stderr.isatty():
-        def add_color_emit_ansi(fn):
-            """Add methods we need to the class."""
-            def new(*args):
-                """Method overload."""
-                if len(args) == 2:
-                    new_args = (args[0], copy(args[1]))
-                else:
-                    new_args = (args[0], copy(args[1]), args[2:])
-                if hasattr(args[0], 'baseFilename'):
-                    return fn(*args)
-                levelno = new_args[1].levelno
-                if levelno >= 50:
-                    color = '\x1b[31;5;7m\n '  # blinking red with black
-                elif levelno >= 40:
-                    color = '\x1b[31m'  # red
-                elif levelno >= 30:
-                    color = '\x1b[33m'  # yellow
-                elif levelno >= 20:
-                    color = '\x1b[32m'  # green
-                elif levelno >= 10:
-                    color = '\x1b[35m'  # pink
-                else:
-                    color = '\x1b[0m'  # normal
-                try:
-                    new_args[1].msg = color + str(new_args[1].msg) + ' \x1b[0m'
-                except Exception as reason:
-                    print(reason)  # Do not use log here.
-                return fn(*new_args)
-            return new
-        # all non-Windows platforms support ANSI Colors so we use them
-        log.StreamHandler.emit = add_color_emit_ansi(log.StreamHandler.emit)
-    else:
-        log.debug("Colored Logs not supported on {0}.".format(sys.platform))
-    log_file = os.path.join(gettempdir(), str(name).lower().strip() + ".log")
-    log.basicConfig(level=-1, filemode="w", filename=log_file,
-                    format="%(levelname)s:%(asctime)s %(message)s %(lineno)s")
-    log.getLogger().addHandler(log.StreamHandler(sys.stderr))
-    log.debug("Logger created with Log file at: {0}.".format(log_file))
-    return log
+with open(str(MODULE_PATH), "r", encoding="utf-8-sig") as source_code_file:
+    SOURCE = source_code_file.read()
 
 
 def find_this(search, source=SOURCE):
@@ -146,9 +95,8 @@ def parse_requirements(path=REQUIREMENTS_FILE):
     return pkgs, links
 
 
-make_logger()
 install_requires_list, dependency_links_list = parse_requirements()
-log.info("Starting build of setuptools.setup().")
+print("Starting build of setuptools.setup().")
 
 
 ##############################################################################
@@ -174,9 +122,7 @@ setup(
     include_package_data=True,
     zip_safe=True,
 
-    extras_require={"pip": ["pip"]},
-    tests_require=['pip'],
-    requires=['pip', 'pylama'],
+    requires=['anglerfish', 'pylama', 'pygments'],
 
     install_requires=install_requires_list,
     dependency_links=dependency_links_list,
@@ -212,7 +158,7 @@ setup(
 
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
 
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
@@ -223,4 +169,4 @@ setup(
 )
 
 
-log.info("Finished build of setuptools.setup().")
+print("Finished build of setuptools.setup().")
