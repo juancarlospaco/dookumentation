@@ -361,7 +361,7 @@ def json_to_json(json_meta, json_new):
     return json_meta  # return the Big Ol' JSON
 
 
-def json_meta_to_templar(json_meta, template, mini=False):
+def json_meta_to_template(json_meta, template, mini=False):
     """Take json_meta string, convert it to Template file, optional minify."""
     html = TemplatePython(template)  # give template string,render.
     return html(data=json_meta, mini=mini)  # mini is Minification.
@@ -401,13 +401,13 @@ def process_single_python_file(python_filepath: str):
     log.debug("OUTPUT: Writing MetaData JSON file {0}.".format(new_json_file))
     with open(new_json_file, "w", encoding="utf-8") as json_file:
             json_file.write(json_pretty(json_meta))
-    html = json_meta_to_templar(json_meta, HTML, bool(not pygments))
+    html = json_meta_to_template(json_meta, HTML, bool(not pygments))
     new_html_file = os.path.join(os.path.dirname(args.fullpath), "doc", "html",
                                  os.path.basename(python_filepath) + ".html")
     log.debug("OUTPUT: Writing HTML5 Documentation {0}.".format(new_html_file))
     with open(new_html_file, "w", encoding="utf-8") as html_file:
             html_file.write(html)
-    md = rst = json_meta_to_templar(json_meta, MD, False)
+    md = rst = json_meta_to_template(json_meta, MD, False)
     new_md_file = os.path.join(os.path.dirname(args.fullpath), "doc", "md",
                                os.path.basename(python_filepath) + ".md")
     log.debug("OUTPUT: Writing MD Documentation {0}.".format(new_md_file))
@@ -418,7 +418,7 @@ def process_single_python_file(python_filepath: str):
     log.debug("OUTPUT: Writing RST Documentation {0}.".format(new_rst_file))
     with open(new_rst_file, "w", encoding="utf-8") as md_file:
             md_file.write(rst)
-    fodt = json_meta_to_templar(json_meta, ODT, False)
+    fodt = json_meta_to_template(json_meta, ODT, False)
     new_fodt_file = os.path.join(os.path.dirname(args.fullpath), "doc", "odt",
                                  os.path.basename(python_filepath) + ".fodt")
     log.debug("OUTPUT: Writing ODT Documentation {0}.".format(new_fodt_file))
@@ -519,7 +519,7 @@ def main():
     log.debug("OUTPUT: Writing JSON Index file {0}.".format(new_json_file))
     with open(new_json_file, "w", encoding="utf-8") as json_file:
             json_file.write(json_pretty(json_meta))
-    html_index = json_meta_to_templar(json_meta, HTML, bool(not pygments))
+    html_index = json_meta_to_template(json_meta, HTML, bool(not pygments))
     new_html_file = os.path.join(html_folder, "index.html")
     log.debug("OUTPUT: Writing HTML5 Docs Index {0}.".format(new_html_file))
     with open(new_html_file, "w", encoding="utf-8") as html_file:
