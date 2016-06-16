@@ -5,8 +5,8 @@
 """Dookumentation."""
 
 
-import atexit
 import ast
+import atexit
 import base64
 import binascii
 import logging as log
@@ -17,7 +17,6 @@ import sys
 import zlib
 
 from argparse import ArgumentParser
-
 from datetime import datetime
 from hashlib import sha1
 from json import loads
@@ -28,13 +27,12 @@ from string import punctuation
 from subprocess import getoutput
 from time import sleep
 
-import _ast
+from anglerfish import (TemplatePython, beep, check_encoding,  # fades.pypi
+                        check_folder, get_free_port, html2ebook, json_pretty,
+                        make_logger, make_post_exec_msg, set_process_name,
+                        set_single_instance, set_terminal_title, walk2list)
 
-from anglerfish import (set_terminal_title, make_post_exec_msg,  # fades.pypi
-                        TemplatePython, html2ebook, set_single_instance,
-                        walk2list, set_process_name, json_pretty, beep,
-                        check_folder, check_encoding, make_logger,
-                        get_free_port)
+import _ast
 
 try:
     from pylama.main import check_path, parse_options
