@@ -28,11 +28,9 @@ https://pypi.python.org/pypi/dookumentation
 ### Features
 
 - **KISS**, Takes a full path to anything, a file or a folder, parse and generate multiple documentation formats.
-- **Standalone**, uses ONLY Standard Libraries, built-in on Python 3.
 - **Async**, does not Block or Slows down even with large amount of files and folders to process.
 - **Watch**, Watch for changes on files re-process only the changes, you code and forget about Documentations.
 - **Zero Config**, No configurations, No settings, No `*.yml` or `makefile` files required to work, ever.
-- **Single-File**, everything is just 1 file, with PEP-8, Lint and other Python Best Practices, very readable.
 - **Python3 ready**, it will only work with Python >= 3, instead of soon to be deprecated *(year 2020)* python2.
 - **Unicode ready**, it should handle correctly any kind of character that `UTF-8` can support without escaping.
 - **Plugins**, write your own plugins with native unrestricted Python 3, plugins are single file plain text.
@@ -123,24 +121,9 @@ If your plugin is named `template.xml` then save it to `./doc/plugins/` being th
 ### Install
 **PIP:** *(Recommended!)*
 ```
-sudo pip3 install dookumentation
+pip3 install dookumentation
 ```
-
-**PIP from Git:** *(Not Recommended)*
-```
-sudo pip3 install git+https://raw.githubusercontent.com/juancarlospaco/dookumentation/master/dookumentation.py
-```
-
-**WGET:** *(Not Recommended)*
-```
-sudo wget -O /usr/bin/dookumentation.py https://raw.githubusercontent.com/juancarlospaco/dookumentation/master/dookumentation.py
-sudo chmod +x /usr/bin/dookumentation.py
-dookumentation.py
-```
-
-**MANUALLY:**
-
-- Save [this file](https://raw.githubusercontent.com/juancarlospaco/dookumentation/master/dookumentation.py) and run it with Python3.
+- Use `sudo pip3 install dookumentation` for System-wide installation.
 
 
 ### Why?:
@@ -153,7 +136,8 @@ dookumentation.py
 
 ### Requisites:
 
-- [Python 3.x](https://www.python.org "Python Homepage") *(or PyPy 3.x, or Python Nightly)*
+- [Python 3.x](https://www.python.org "Python Homepage")
+- Anglerfish
 
 **Optionals:**
 
@@ -185,10 +169,3 @@ dookumentation.py
 ### Licence:
 
 - GNU GPL Latest Version, GNU LGPL Latest Version, GNU AGPL Latest Version, MIT Latest Version, any Licence [YOU Request via Bug Report](https://github.com/juancarlospaco/dookumentation/issues/new).
-
-
-### Donate, Charityware :
-
-- [Charityware](https://en.wikipedia.org/wiki/Donationware) is a licensing model that supplies fully operational unrestricted software to the user and requests an optional donation be paid to a third-party beneficiary non-profit. The amount of donation may be left to the discretion of the user.
-- If you want to Donate please [click here](http://www.icrc.org/eng/donations/index.jsp) or [click here](http://www.atheistalliance.org/support-aai/donate) or [click here](http://www.msf.org/donate) or [click here](http://richarddawkins.net/) or [click here](http://www.supportunicef.org/) or [click here](http://www.amnesty.org/en/donate) or [click here](http://www.rescue.org/irc-fast-facts)
-
