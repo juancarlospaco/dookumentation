@@ -3,8 +3,7 @@ include LICENSE
 
 
 include dookumentation.py
+recursive-include core *.py
 
 
-include template.html
-include template.rst.md
-include template.fodt
+recursive-include templates *.*
