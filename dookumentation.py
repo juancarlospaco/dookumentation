@@ -23,13 +23,13 @@ from subprocess import getoutput
 from time import sleep
 
 from core.parser import PyParse
+from core.serve_http import serve_http
 from templates.variables import HTML, MD, ODT, XML
 
-from anglerfish import (beep, check_encoding,  # fades.pypi  #FIXME
+from anglerfish import (TemplatePython, beep, check_encoding,  # fades.pypi
                         check_folder, get_free_port, html2ebook, json_pretty,
                         make_logger, make_post_exec_msg, set_process_name,
                         set_single_instance, set_terminal_title, walk2list)
-
 
 try:
     from pylama.main import check_path, parse_options
@@ -42,14 +42,6 @@ try:
 except ImportError:
     pygments = None
     print("WARNING: Pygments Not Found !!!, Run: \nsudo pip3 install pygments")
-
-try:  # https://github.com/lepture/python-livereload
-    import livereload  # sudo pip3 install livereload
-except ImportError:
-    from webbrowser import open_new_tab
-    import http.server as server
-    from http.server import CGIHTTPRequestHandler
-    livereload = None  # Still works Ok without LiveReload
 
 
 __version__ = '2.0.0'
@@ -64,64 +56,6 @@ vuiltins = tuple(set([_.lower() for _ in sorted(
     sys.builtin_module_names + tuple(dir(__builtins__)) +
     tuple(__builtins__.__dict__.keys()) + tuple(globals().keys()))]))
 third_party_mods = tuple(set([_[1].lower() for _ in pkgutil.iter_modules()]))
-
-
-##############################################################################
-# Data handlers and miscellaneous
-
-
-"""Templar is a tiny Template Engine that Render and Runs native Python."""
-# Renamed from Templar to TemplatePython for easy of use.
-# Was about to use TemplateString, but will confuse with string.Template
-
-
-class TemplatePython(str):
-
-    """Templar is a tiny Template Engine that Render and Runs native Python."""
-
-    def __init__(self, template):
-        """Init the Template class."""
-        self.tokens = self.compile(template.strip())
-
-    @classmethod
-    def from_file(cls, fl):
-        """Load template from file.A str/file-like object supporting read()."""
-        return cls(str(open(fl).read() if isinstance(fl, str) else fl.read()))
-
-    def compile(self, t):
-        """Parse and Compile all Tokens found on the template string t."""
-        tokens = []
-        for i, p in enumerate(re.compile("\{\%(.*?)\%\}", re.DOTALL).split(t)):
-            if not p or not p.strip():
-                continue
-            elif i % 2 == 0:
-                tokens.append((False, p.replace("{\\%", "{%")))
-            else:
-                lines = tuple(p.replace("%\\}", "%}").replace(
-                    "{{", "spit(").replace("}}", "); ") .splitlines())
-                mar = min(len(_) - len(_.lstrip()) for _ in lines if _.strip())
-                al = "\n".join(line_of_code[mar:] for line_of_code in lines)
-                tokens.append((True, compile(al, "<t {}>".format(al), "exec")))
-        return tokens
-
-    def render(__self, __namespace={}, mini=False, **kw):
-        """Render template from __namespace dict + **kw added to namespace."""
-        html = []
-        __namespace.update(kw, **globals())
-
-        def spit(*args, **kwargs):
-            for _ in args:
-                html.append(str(_))
-            if kwargs:
-                for _ in tuple(kwargs.items()):
-                    html.append(str(_))
-
-        __namespace["spit"] = spit
-        for is_code, value in __self.tokens:
-            eval(value, __namespace) if is_code else html.append(value)
-        return re.sub('>\s+<', '> <', "".join(html)) if mini else "".join(html)
-
-    __call__ = render  # shorthand
 
 
 def set_folder_structure(folder4docs):
@@ -251,7 +185,7 @@ def json_to_json(json_meta, json_new):
 def json_meta_to_template(json_meta, template, mini=False):
     """Take json_meta string, convert it to Template file, optional minify."""
     html = TemplatePython(template)  # give template string,render.
-    return html(data=json_meta, mini=mini)  # mini is Minification.
+    return html(data=json_meta, mini=mini, **globals())
 
 
 def json_meta_to_plugins(plugin_folder, python_file_path, json_meta):
@@ -280,7 +214,6 @@ def json_meta_to_plugins(plugin_folder, python_file_path, json_meta):
 def process_single_python_file(python_filepath: str):
     """Process a single Python file."""
     log.info("Processing Python file: {0}".format(python_filepath))
-    global args
     if os.path.isfile(python_filepath) and os.access(python_filepath, os.R_OK):
         json_meta = python_file_to_json_meta(python_filepath)
     new_json_file = os.path.join(os.path.dirname(args.fullpath), "doc", "json",
@@ -324,19 +257,6 @@ def process_single_python_file(python_filepath: str):
     plugin_dir = os.path.join(os.path.dirname(args.fullpath), "doc", "plugins")
     log.debug("Checking for Plugins and Running from {0}.".format(plugin_dir))
     json_meta_to_plugins(plugin_dir, python_filepath, json_meta)
-
-
-def serve_http(where=os.getcwd()):
-    """Serve HTTP files and HTML on the where folder,with LiveReload if any."""
-    prt = get_free_port()
-    if livereload:  # with LiveReload
-        livereload.Server().serve(port=prt, host="0.0.0.0",
-                                  open_url_delay=1, root=where)
-    else:  # without LiveReload
-        log.info("Run:pip install livereload\nServer running on localhost...")
-        httpd = server.HTTPServer(('', prt), CGIHTTPRequestHandler)
-        open_new_tab("http://localhost:{0}/".format(prt))
-        httpd.serve_forever()
 
 
 def make_arguments_parser():
