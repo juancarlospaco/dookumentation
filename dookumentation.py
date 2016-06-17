@@ -251,9 +251,9 @@ class PyParse(object):
 
 
 def set_folder_structure(folder4docs):
-    """Check working folder,passed as arg,for everything that can go wrong."""
+    """Recreate the required folder structure for documentation files."""
     folder4docs = os.path.join(os.path.abspath(folder4docs), "doc")
-    log.debug("Checking the Working Folder: '{0}'".format(folder4docs))
+    log.debug("Recreating required folder structure: {0}".format(folder4docs))
     if not os.path.isdir(folder4docs):  # What if folder is not a folder.
         log.warning("Creating Required Folder: {0}/".format(folder4docs))
         os.makedirs(folder4docs, exist_ok=True)
@@ -263,7 +263,6 @@ def set_folder_structure(folder4docs):
         if not os.path.isdir(subfolder):
             log.warning("Creating Required Sub-Folder: {0}/".format(subfolder))
             os.makedirs(subfolder, exist_ok=True)
-    return True
 
 
 def process_multiple_files(file_path):
