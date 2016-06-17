@@ -31,7 +31,6 @@
 
 import os
 import re
-import sys
 
 from setuptools import setup
 
@@ -46,56 +45,26 @@ Unicode Python3 Multi-Format Auto Documentation Generator.
 Imagine that we mix together Sphinx, PanDoc, Material Design, MkDocs, eBooks,
 LibreOffice Docs, K.I.S.S. principle and take out all the bloat,
 then Dookumentation born, enjoy 'The Dark Side of Documentation' !.""")
-REQUIREMENTS_FILE = os.path.join(os.path.dirname(__file__), "requirements.txt")
 
 
 ##############################################################################
 # Dont touch below
 
 
-with open(str(MODULE_PATH), "r", encoding="utf-8-sig") as source_code_file:
+with open(str(MODULE_PATH), "r", encoding="utf-8") as source_code_file:
     SOURCE = source_code_file.read()
 
 
 def find_this(search, source=SOURCE):
     """Take a string and a filename path string and return the found value."""
-    log.debug("Searching for {what}.".format(what=search))
+    print("Searching for {what}.".format(what=search))
     if not search or not source:
-        log.warning("Not found on source: {what}.".format(what=search))
+        print("Not found on source: {what}.".format(what=search))
         return ""
     return str(re.compile(r".*__{what}__ = '(.*?)'".format(
         what=search), re.S).match(source).group(1)).strip().replace("'", "")
 
 
-def parse_requirements(path=REQUIREMENTS_FILE):
-    """Rudimentary parser for the requirements.txt file.
-
-    We just want to separate regular packages from links to pass them to the
-    'install_requires' and 'dependency_links' params of the 'setup()'.
-    """
-    log.debug("Parsing Requirements from file {what}.".format(what=path))
-    pkgs, links = ["pip"], []
-    if not os.path.isfile(path):
-        return pkgs, links
-    try:
-        requirements = map(str.strip, path.splitlines())
-    except Exception as reason:
-        log.warning(reason)
-        return pkgs, links
-    for req in requirements:
-        if not req:
-            continue
-        if 'http://' in req.lower() or 'https://' in req.lower():
-            links.append(req)
-            name, version = re.findall("\#egg=([^\-]+)-(.+$)", req)[0]
-            pkgs.append('{package}=={ver}'.format(package=name, ver=version))
-        else:
-            pkgs.append(req)
-    log.debug("Requirements found: {what}.".format(what=(pkgs, links)))
-    return pkgs, links
-
-
-install_requires_list, dependency_links_list = parse_requirements()
 print("Starting build of setuptools.setup().")
 
 
@@ -122,10 +91,8 @@ setup(
     include_package_data=True,
     zip_safe=True,
 
+    install_requires=['anglerfish'],
     requires=['anglerfish', 'pylama', 'pygments'],
-
-    install_requires=install_requires_list,
-    dependency_links=dependency_links_list,
 
     scripts=["dookumentation.py"],
 
