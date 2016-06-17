@@ -250,6 +250,22 @@ class PyParse(object):
 # Data handlers and miscellaneous
 
 
+def set_folder_structure(folder4docs):
+    """Check working folder,passed as arg,for everything that can go wrong."""
+    folder4docs = os.path.join(os.path.abspath(folder4docs), "doc")
+    log.debug("Checking the Working Folder: '{0}'".format(folder4docs))
+    if not os.path.isdir(folder4docs):  # What if folder is not a folder.
+        log.warning("Creating Required Folder: {0}/".format(folder4docs))
+        os.makedirs(folder4docs, exist_ok=True)
+    basic_folders = ("json", "html", "md", "rst", "odt", "plugins",
+                     os.path.join("html", "css"), os.path.join("html", "js"))
+    for subfolder in [os.path.join(folder4docs, _) for _ in basic_folders]:
+        if not os.path.isdir(subfolder):
+            log.warning("Creating Required Sub-Folder: {0}/".format(subfolder))
+            os.makedirs(subfolder, exist_ok=True)
+    return True
+
+
 def process_multiple_files(file_path):
     """Process multiple Python files with multiprocessing."""
     log.debug("Process {0} is Processing {1}.".format(os.getpid(), file_path))
@@ -477,6 +493,7 @@ def main():
     log.info(" ".join((__doc__, __version__, __url__, "by " + __author__)))
     log.debug((platform(), python_version(), str(os.environ), str(args)))
     check_folder(os.path.dirname(args.fullpath))
+    set_folder_structure(os.path.dirname(args.fullpath))
     if args.before and getoutput:
         log.info(getoutput(str(args.before)))
     files_exts, list_of_files = (".py", ".pyw"), str(args.fullpath)
