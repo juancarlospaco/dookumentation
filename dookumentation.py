@@ -23,9 +23,9 @@ from subprocess import getoutput
 from time import sleep
 
 from core.parser import PyParse
-from templates.variables import HTML, RST, MD, ODT, XML
+from templates.variables import HTML, MD, ODT, XML
 
-from anglerfish import ( beep, check_encoding,  # fades.pypi  #FIXME
+from anglerfish import (beep, check_encoding,  # fades.pypi  #FIXME
                         check_folder, get_free_port, html2ebook, json_pretty,
                         make_logger, make_post_exec_msg, set_process_name,
                         set_single_instance, set_terminal_title, walk2list)
@@ -74,7 +74,7 @@ third_party_mods = tuple(set([_[1].lower() for _ in pkgutil.iter_modules()]))
 # Renamed from Templar to TemplatePython for easy of use.
 # Was about to use TemplateString, but will confuse with string.Template
 
-from urllib import parse
+
 class TemplatePython(str):
 
     """Templar is a tiny Template Engine that Render and Runs native Python."""
@@ -108,12 +108,14 @@ class TemplatePython(str):
         """Render template from __namespace dict + **kw added to namespace."""
         html = []
         __namespace.update(kw, **globals())
+
         def spit(*args, **kwargs):
             for _ in args:
                 html.append(str(_))
             if kwargs:
                 for _ in tuple(kwargs.items()):
                     html.append(str(_))
+
         __namespace["spit"] = spit
         for is_code, value in __self.tokens:
             eval(value, __namespace) if is_code else html.append(value)
@@ -307,17 +309,18 @@ def process_single_python_file(python_filepath: str):
         fodt = json_meta_to_template(json_meta, ODT, False)
         new_fodt_file = os.path.join(
             os.path.dirname(args.fullpath), "doc", "odt",
-                os.path.basename(python_filepath) + ".fodt")
+            os.path.basename(python_filepath) + ".fodt")
         log.debug("OUTPUT: Writing ODT Documentation {}".format(new_fodt_file))
         with open(new_fodt_file, "w", encoding="utf-8") as fodt_file:
                 fodt_file.write(fodt)
     if args.xml:
         xml = json_meta_to_template(json_meta, XML)
-        new_xml_file = os.path.join(os.path.dirname(args.fullpath), "doc", "xml",
-                                     os.path.basename(python_filepath) + ".xml")
-        log.debug("OUTPUT: Writing XML Documentation {0}.".format(new_xml_file))
+        new_xml_file = os.path.join(
+            os.path.dirname(args.fullpath), "doc", "xml",
+            os.path.basename(python_filepath) + ".xml")
+        log.debug("OUTPUT: Writing XML Documentation {0}".format(new_xml_file))
         with open(new_xml_file, "w", encoding="utf-8") as xml_file:
-                xml_file.write(xtml)
+                xml_file.write(xml)
     plugin_dir = os.path.join(os.path.dirname(args.fullpath), "doc", "plugins")
     log.debug("Checking for Plugins and Running from {0}.".format(plugin_dir))
     json_meta_to_plugins(plugin_dir, python_filepath, json_meta)

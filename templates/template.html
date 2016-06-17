@@ -2,7 +2,7 @@
     <meta charset=utf-8 >
 
 {%
-
+from urllib import parse
 {{ '<title>{0} - Dookumentation</title>'.format("Index" if data.get('is_index') else data['basename'][:99]) }}
 favicon_file = os.path.join(data.get("relpath"), "doc", "html", "favicon.ico")
 {{ '<link rel="shortcut icon" href="{0}"/><!-- You can use Custom Favicon from /doc/html/favicon.ico -->'.format(favicon_file if os.path.isfile(favicon_file) else "https://www.python.org/static/favicon.ico") }}
