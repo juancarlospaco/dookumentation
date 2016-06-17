@@ -11,6 +11,9 @@ import ast
 import _ast
 
 
+__all__ = ["PyParse"]
+
+
 class PyParse(object):
 
     """Python source code file path to JSON string meta-data Parser."""
