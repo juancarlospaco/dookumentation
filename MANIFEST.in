@@ -1,0 +1,10 @@
+
+include LICENSE
+
+
+include dookumentation.py
+
+
+include template.html
+include template.rst.md
+include template.fodt
