@@ -23,7 +23,7 @@ from subprocess import getoutput
 from time import sleep
 
 from core.parser import PyParse
-from templates.variables import HTML, RST, MD, ODT
+from templates.variables import HTML, RST, MD, ODT, XML
 
 from anglerfish import ( beep, check_encoding,  # fades.pypi  #FIXME
                         check_folder, get_free_port, html2ebook, json_pretty,
@@ -57,8 +57,6 @@ __license__ = 'GPLv3+ LGPLv3+ AGPLv3+ MIT'
 __author__ = 'Juan Carlos'
 __email__ = 'juancarlospaco@gmail.com'
 __url__ = 'https://github.com/juancarlospaco/dookumentation'
-__source__ = ('https://raw.githubusercontent.com/juancarlospaco/'
-              'dookumentation/master/dookumentation.py')
 
 
 start_time, IGNORE = datetime.now(), (".scss", ".coffee", ".less", ".sass")
@@ -131,7 +129,7 @@ def set_folder_structure(folder4docs):
     if not os.path.isdir(folder4docs):  # What if folder is not a folder.
         log.warning("Creating Required Folder: {0}/".format(folder4docs))
         os.makedirs(folder4docs, exist_ok=True)
-    basic_folders = ("json", "html", "md", "rst", "odt", "plugins",
+    basic_folders = ("json", "html", "xml", "md", "rst", "odt", "plugins",
                      os.path.join("html", "css"), os.path.join("html", "js"))
     for subfolder in [os.path.join(folder4docs, _) for _ in basic_folders]:
         if not os.path.isdir(subfolder):
@@ -305,12 +303,21 @@ def process_single_python_file(python_filepath: str):
     log.debug("OUTPUT: Writing RST Documentation {0}.".format(new_rst_file))
     with open(new_rst_file, "w", encoding="utf-8") as md_file:
             md_file.write(rst)
-    fodt = json_meta_to_template(json_meta, ODT, False)
-    new_fodt_file = os.path.join(os.path.dirname(args.fullpath), "doc", "odt",
-                                 os.path.basename(python_filepath) + ".fodt")
-    log.debug("OUTPUT: Writing ODT Documentation {0}.".format(new_fodt_file))
-    with open(new_fodt_file, "w", encoding="utf-8") as fodt_file:
-            fodt_file.write(fodt)
+    if args.odt:
+        fodt = json_meta_to_template(json_meta, ODT, False)
+        new_fodt_file = os.path.join(
+            os.path.dirname(args.fullpath), "doc", "odt",
+                os.path.basename(python_filepath) + ".fodt")
+        log.debug("OUTPUT: Writing ODT Documentation {}".format(new_fodt_file))
+        with open(new_fodt_file, "w", encoding="utf-8") as fodt_file:
+                fodt_file.write(fodt)
+    if args.xml:
+        xml = json_meta_to_template(json_meta, XML)
+        new_xml_file = os.path.join(os.path.dirname(args.fullpath), "doc", "xml",
+                                     os.path.basename(python_filepath) + ".xml")
+        log.debug("OUTPUT: Writing XML Documentation {0}.".format(new_xml_file))
+        with open(new_xml_file, "w", encoding="utf-8") as xml_file:
+                xml_file.write(xtml)
     plugin_dir = os.path.join(os.path.dirname(args.fullpath), "doc", "plugins")
     log.debug("Checking for Plugins and Running from {0}.".format(plugin_dir))
     json_meta_to_plugins(plugin_dir, python_filepath, json_meta)
@@ -345,6 +352,8 @@ def make_arguments_parser():
     parser.add_argument('--watch', action='store_true', help="Watch changes.")
     parser.add_argument('--zip', action='store_true', help="HTML as ZIP file")
     parser.add_argument('--ebook', action='store_true', help="HTML as eBook")
+    parser.add_argument('--xml', action='store_true', help="XML Documentation")
+    parser.add_argument('--odt', action='store_true', help="ODT Documentation")
     parser.add_argument('--serve', action='store_true', help="HTTP Serve HTML")
     parser.add_argument('--beep', action='store_true',
                         help="Beep sound will be played when it ends at exit.")
