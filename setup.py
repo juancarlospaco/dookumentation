@@ -92,6 +92,8 @@ setup(
     zip_safe=True,
 
     install_requires=['anglerfish'],
+    setup_requires=['anglerfish'],
+    tests_require=['anglerfish'],
     requires=['anglerfish', 'pylama', 'pygments'],
 
     scripts=["dookumentation.py"],
