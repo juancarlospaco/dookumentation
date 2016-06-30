@@ -14,6 +14,9 @@ __all__ = ["HTML", "RST", "MD", "ODT", "XML"]
 here = os.path.dirname(__file__)
 
 
+HTML, RST, MD, ODT, XML = "", "", "", "", ""
+
+
 with open(os.path.join(here, "template.html"), encoding="utf-8") as __html:
     HTML = __html.read()
 
