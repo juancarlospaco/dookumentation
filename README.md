@@ -111,6 +111,7 @@ If your plugin is named `template.xml` then save it to `./doc/plugins/` being th
     ├── md/              "MarkDown Documentation files are saved here (eg. *.md)."
     ├── rst/             "ReSTructuredText Documentation files are saved here (eg. *.rst)."
     ├── odt/             "ODT ODF Documentation files are saved here (eg. *.fodt)."
+    ├── xml/             "XML Documentation files are saved here (eg. *.xml)."
     ├── json/            "JSON Documentation files are saved here (eg. *.json)."
     ├── plugins/         "Template-Plugin files are read from here (eg. SVG, XML, etc)."
     ├── html.epub        "Compressed eBook Documentation from HTML5 (if --ebook is used)."
