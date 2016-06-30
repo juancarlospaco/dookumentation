@@ -1,0 +1,189 @@
+
+Dookumentation - {% {{ data['basename'][:99] }} %}
+
+
+Table of Contents
+
+ - Statistics: Statistics about current source code.
+ - Table of Contents: This Table of Contents.
+ - Build Logs: Build Logs for Developers and Debug.
+ - Imports: Information about all the Imports.
+{%
+toc_items = ""
+if data.get('functions'):
+    toc_items += ' - Functions: Functions (not Methods).\n'
+if data.get('classes'):
+    toc_items += ' - Classes:  Classes and Methods.\n'
+if data.get('attributes'):
+    toc_items += ' - Attributes: Attributes (probably Global).\n'
+if data.get('pylama'):
+    toc_items += ' - Bugs:  Imperfections on the code.\n'
+if data.get('todo'):
+    toc_items += ' - ToDo: Auto-generated To-Do Lists.\n'
+if data.get('fades'):
+    toc_items += ' - Fades: Information about Fades.\n'
+if data.get('links'):
+    toc_items += ' - Links Farm: All Links found on the code together.\n'
+{{ toc_items }}
+%}
+
+
+Imports
+{%
+if data.get('imports'):
+    {{ ' {0} Imports!.\n\n'.format(len(data['imports']['imports']) + len(data['imports']['from_imports'])) }}
+    imports_content = ""
+    for _ in data['imports']['imports'].items() :
+        imports_content += ' - import {mod} {ass} Line {lin}\n\n'.format(mod=_[0], ass="as {}".format(_[1]['asname']) if _[1]['asname'] else "", lin=_[1]['lineno'])
+    for _ in data['imports']['from_imports'].items():
+        imports_content += ' - from {0} import {1} {2} Line {3}\n\n'.format(_[1]['module'], _[0], "as {}".format(_[1]['asname']) if _[1]['asname'] else "", _[1]['lineno'])
+    {{ imports_content + ' We recommend using iSort: https://github.com/timothycrosley/isort' }}
+%}
+
+
+Classes
+{%
+if data.get('classes'):
+    {{ ' {0} Classes!.\n\n'.format(len(data.get('classes'))) }}
+    for _ in data['classes'].items():
+        decoradore = '\n\n'.join(_[1]['decorators']) + '\n\n' if _[1]['decorators'] != [] else ''
+        attrivutes = ''
+        if len(_[1]['attributes']):
+            for atri in _[1]['attributes'].items():
+                attrivutes += '    {0} Line {1}\n\n'.format(atri[0], atri[1])
+        else:
+            attrivutes = '    \n\n'
+        {{ ' {deco} class {name}: Line {lin}\n\n    {docz}\n\n {atri}\n\n'.format(name=_[0], deco=decoradore, docz=_[1]['docstring'], lin=_[1]['lineno'], atri=attrivutes) }}
+        youtube_urls = re.findall(r'((?<=(v|V)/)|(?<=be/)|(?<=(\?|\&)v=)|(?<=embed/))([\w-]+)', _[1]['docstring'])
+        if len(youtube_urls):
+            for y_tuple in youtube_urls:
+                for y_id in y_tuple:
+                    if len(y_id) > 10:
+                        {{ ' youtube: https://www.youtube-nocookie.com/embed/{0} (Youtube link found on DocString of {1} Class at Line {2})\n'.format(y_id, _[0], _[1]['lineno']) }}
+        if len(_[1]['functions']):
+            for _ in _[1]['functions'].items():
+                decoradore = '\n\n'.join(['    ' + d for d in _[1]['decorators']]) + '\n\n' if _[1]['decorators'] != [] else ''
+                attrivutes = ''
+                if len(_[1]['attrs']):
+                    for atri in _[1]['attrs'].items():
+                        attrivutes += '    {0} Line {1}\n\n'.format(atri[0], atri[1])
+                else:
+                    attrivutes = '    . . .\n\n'
+                {{ ' {deco}\n    def {name}: Line {lin}\n\n   DocString: {docz}\n\n   {atri}'.format(name=_[0], deco=decoradore, docz=_[1]['docstring'], lin=_[1]['lineno'], atri=attrivutes) }}
+                youtube_urls = re.findall(r'((?<=(v|V)/)|(?<=be/)|(?<=(\?|\&)v=)|(?<=embed/))([\w-]+)', _[1]['docstring'])
+                if len(youtube_urls):
+                    for y_tuple in youtube_urls:
+                        for y_id in y_tuple:
+                            if len(y_id) > 10:
+                                {{ ' youtube: https://www.youtube-nocookie.com/embed/{0} (Youtube link found on DocString of {1} Function at Line {2})\n'.format(y_id, _[0], _[1]['lineno']) }}
+%}
+
+
+Functions
+{%
+if data.get('functions'):
+    {{ ' {0} Functions!.\n'.format(len(data.get('functions'))) }}
+    for _ in data['functions'].items():
+        decoradore = '\n\n'.join(_[1]['decorators']) + '\n\n' if _[1]['decorators'] != [] else ''
+        attrivutes = ''
+        if len(_[1]['attrs']):
+            for atri in _[1]['attrs'].items():
+                attrivutes += '    {0} Line {1}\n\n'.format(atri[0], atri[1])
+        else:
+            attrivutes = '   . . .\n\n'
+        {{ ' {deco}\n\n def {name}: Line {lin}\n\n    DocString: {docz}\n\n {atri}'.format(name=_[0], deco=decoradore, docz=_[1]['docstring'], lin=_[1]['lineno'], atri=attrivutes) }}
+        youtube_urls = re.findall(r'((?<=(v|V)/)|(?<=be/)|(?<=(\?|\&)v=)|(?<=embed/))([\w-]+)', _[1]['docstring'])
+        if len(youtube_urls):
+            for y_tuple in youtube_urls:
+                for y_id in y_tuple:
+                    if len(y_id) > 10:
+                        {{ ' youtube: https://www.youtube-nocookie.com/embed/{0}" (Youtube link found on DocString of {1} Function at Line {2})'.format(y_id, _[0], _[1]['lineno']) }}
+%}
+
+
+Attributes
+{%
+if data.get('attributes'):
+    attributes_content = ""
+    for _ in sorted(data['attributes'].items()):
+        attributes_content += ' - {1} Line {0}\n\n'.format(_[1], _[0])
+    {{ ' {0} Attributes!.\n\n'.format(len(data.get('attributes'))) + attributes_content }}
+%}
+
+
+Bugs
+{%
+if data.get('pylama'):
+    bugs_content = ""
+    if data.get('lines_per_bug'):
+        {{ ' You wrote 1 Bug every {0} Lines of Code!.\n\n'.format(data['lines_per_bug']) }}
+    for _ in data['pylama']:
+        bugs_content += ' - Line {0} Column {1} found by {2}: {3}.\n\n'.format(_['lnum'], _['col'], _['linter'].upper(), _['text'])
+    {{ bugs_content + ' We recommend using PyLama: https://github.com/klen/pylama#-pylama' }}
+%}
+
+
+Fades
+{%
+if data.get('fades'):
+    fades_content = ""
+    for _ in data['fades']:
+        fades_content += ' - {0} on Line {1} {2}\n\n'.format(_['type'].upper(), _['lnum'], _['text'][:99])
+    {{ ' You use {0} Fades comments !.\n\n'.format(len(data['fades'])) + fades_content + ' [We recommend Fades](https://github.com/PyAr/fades "We recommend using Fades")' }}
+%}
+
+
+Things To Do
+{%
+if data.get('todo'):
+    todo_content = ""
+    for _ in data['todo']:
+        todo_content += ' - {0} on Line {1} {2}.{3}'.format(_['type'].upper(), _['lnum'], str(_['text'])[:99], os.linesep)
+    {{ ' You have {0} Things to do!.\n\n'.format(len(data['todo'])) + todo_content }}
+%}
+
+
+Link Farm
+{%
+if data.get("links"):
+    {{ ' {0} Links found on the code.\n\n \n\n {1}\n\n \n\n'.format(len(data.get("links")), data.get("links")) }}
+%}
+
+
+Logs
+{%
+logs_content = ""
+logs_content += ' Build Logs for Debugging and Developers\n\n \n\n'
+# with open(log.getLogger().handlers[0].baseFilename, "r", encoding="utf-8") as __logs:
+#    for line in __logs.readlines():
+#        logs_content += ' ' + line
+# {{ logs_content + ' \n\n' }}
+%}
+
+
+Statistics
+
+- Lines Total:       {% {{ data['lines_total']       }} %}
+- Lines of Code:     {% {{ data['lines_code']        }} %}
+- Size (KiloBytes):  {% {{ data['kilobytes']         }} %}
+- Characters:        {% {{ data['characters']        }} %}
+- Words:             {% {{ data['words']             }} %}
+- Punctuations:      {% {{ data['punctuations']      }} %}
+- Permissions:       {% {{ data['permissions']       }} %}
+- Bugs ?:            {% {{ bool(len(data['pylama'])) }} %}
+- SymLink ?:         {% {{ data['symlink']           }} %}
+- Writable ?:        {% {{ data['writable']          }} %}
+- Executable ?:      {% {{ data['executable']        }} %}
+- Readable ?:        {% {{ data['readable']          }} %}
+- Has Print()?:      {% {{ data['has_print']         }} %}
+- Has import()?:     {% {{ data['import_procedural'] }} %}
+- Has BreakPoints ?: {% {{ data['has_set_trace']     }} %}
+- SheBang ?:         {% {{ data['has_shebang']       }} %}
+- Lines Total:       {% {{ data['lines_total']       }} %}
+
+- SHA-1 CheckSum Hash of the file (UTF-8): {% {{ data['sha1']     }} %}
+- Date of last Modification (ISO Format):  {% {{ data['modified'] }} %}
+- Date of last Accessed (ISO Format):      {% {{ data['accessed'] }} %}
+
+
+Dookumentation https://github.com/juancarlospaco/dookumentation#dookumentation
