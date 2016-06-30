@@ -8,13 +8,13 @@
 import os
 
 
-__all__ = ["HTML", "RST", "MD", "ODT", "XML"]
+__all__ = ["HTML", "RST", "MD", "ODT", "XML", "TXT"]
 
 
 here = os.path.dirname(__file__)
 
 
-HTML, RST, MD, ODT, XML = "", "", "", "", ""
+HTML, RST, MD, ODT, XML, TXT = "", "", "", "", "", ""
 
 
 with open(os.path.join(here, "template.html"), encoding="utf-8") as __html:
@@ -31,3 +31,7 @@ with open(os.path.join(here, "template.fodt"), encoding="utf-8") as __odt:
 
 with open(os.path.join(here, "template.xml"), encoding="utf-8") as __xml:
     XML = __xml.read()
+
+
+with open(os.path.join(here, "template.txt"), encoding="utf-8") as __txt:
+    TXT = __txt.read()

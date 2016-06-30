@@ -24,7 +24,7 @@ from time import sleep
 
 from core.parser import PyParse
 from core.serve_http import serve_http
-from templates.variables import HTML, MD, ODT, XML
+from templates.variables import HTML, MD, ODT, XML, TXT
 
 from anglerfish import (TemplatePython, beep, check_encoding,  # fades.pypi
                         check_folder, get_free_port, html2ebook, json_pretty,
@@ -65,8 +65,9 @@ def set_folder_structure(folder4docs):
     if not os.path.isdir(folder4docs):  # What if folder is not a folder.
         log.warning("Creating Required Folder: {0}/".format(folder4docs))
         os.makedirs(folder4docs, exist_ok=True)
-    basic_folders = ("json", "html", "xml", "md", "rst", "odt", "plugins",
-                     os.path.join("html", "css"), os.path.join("html", "js"))
+    basic_folders = (
+        "json", "html", "xml", "md", "rst", "odt", "plugins", "txt",
+        os.path.join("html", "css"), os.path.join("html", "js"))
     for subfolder in [os.path.join(folder4docs, _) for _ in basic_folders]:
         if not os.path.isdir(subfolder):
             log.warning("Creating Required Sub-Folder: {0}/".format(subfolder))
@@ -238,6 +239,12 @@ def process_single_python_file(python_filepath: str):
     log.debug("OUTPUT: Writing RST Documentation {0}.".format(new_rst_file))
     with open(new_rst_file, "w", encoding="utf-8") as md_file:
             md_file.write(rst)
+    txt = json_meta_to_template(json_meta, TXT)
+    new_txt_file = os.path.join(os.path.dirname(args.fullpath), "doc", "txt",
+                                os.path.basename(python_filepath) + ".txt")
+    log.debug("OUTPUT: Writing TXT Documentation {0}.".format(new_txt_file))
+    with open(new_txt_file, "w", encoding="utf-8") as txt_file:
+            txt_file.write(txt)
     if args.odt:
         log.warning("ODT Support is Pre-Alpha, since Design is unfinished.")
         fodt = json_meta_to_template(json_meta, ODT, False)
