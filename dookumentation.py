@@ -239,6 +239,7 @@ def process_single_python_file(python_filepath: str):
     with open(new_rst_file, "w", encoding="utf-8") as md_file:
             md_file.write(rst)
     if args.odt:
+        log.warning("ODT Support is Pre-Alpha, since Design is unfinished.")
         fodt = json_meta_to_template(json_meta, ODT, False)
         new_fodt_file = os.path.join(
             os.path.dirname(args.fullpath), "doc", "odt",
@@ -293,7 +294,7 @@ def main():
     set_process_name("dookumentation")  # set Name
     set_single_instance("dookumentation")  # Auto set Single Instance
     set_terminal_title("dookumentation")
-    log.disable(log.CRITICAL) if args.quiet else log.debug("Max Logging ON")
+    log.disable(log.CRITICAL) if args.quiet else log.debug("Max Logging ON.")
     atexit.register(beep) if args.beep else log.debug("Beep sound at exit OFF")
     log.info(" ".join((__doc__, __version__, __url__, "by " + __author__)))
     log.debug((platform(), python_version(), str(os.environ), str(args)))
@@ -347,6 +348,7 @@ def main():
     if args.after and getoutput:
         log.info(getoutput(str(args.after)))
     if args.serve and os.path.isdir(html_folder):  # HTML to HTTP LiveReload
+        log.debug("Serving HTML Docs via HTTP server.")
         serve_http(html_folder)
     log.info('\n {0} \n Files Processed: {1}.'.format('-' * 80, list_of_files))
     log.info('Number of Files Processed: ~{0}.'.format(
