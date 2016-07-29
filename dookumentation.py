@@ -30,7 +30,7 @@ from anglerfish import (TemplatePython, beep, check_encoding,  # fades.pypi
                         check_folder, get_free_port, html2ebook, json_pretty,
                         make_logger, make_post_exec_msg, set_process_name,
                         set_single_instance, set_terminal_title, walk2list,
-                        make_notification)
+                        make_notification, set_zip_comment)
 
 try:
     from pylama.main import check_path, parse_options
@@ -306,7 +306,8 @@ def main():
     set_terminal_title("dookumentation")
     log.disable(log.CRITICAL) if args.quiet else log.debug("Max Logging ON.")
     atexit.register(beep) if args.beep else log.debug("Beep sound at exit OFF")
-    log.info(" ".join((__doc__, __version__, __url__, "by " + __author__)))
+    _info = " ".join((__doc__, __version__, __url__, "by " + __author__))
+    log.info(_info)
     log.debug((platform(), python_version(), str(os.environ), str(args)))
     check_folder(os.path.dirname(args.fullpath))
     set_folder_structure(os.path.dirname(args.fullpath))
@@ -330,6 +331,10 @@ def main():
     if args.zip and make_archive and os.path.isdir(html_folder):  # HTML to ZIP
         log.debug("OUTPUT: Writing ZIP Documentation {0}.".format(html_folder))
         make_archive(html_folder, 'zip', html_folder, logger=log)
+        _c = "{0}. Documentation of Python source code. Creation: ~{1}".format(
+            _info, datetime.now().isoformat()[:-7])
+        if os.path.isfile(html_folder + '.zip'):
+            set_zip_comment(html_folder + '.zip', _c)
     if args.ebook and os.path.isdir(html_folder):  # HTML to eBook
         log.debug("OUTPUT: Writing EPUB Documentation {0}".format(html_folder))
         html2ebook(walk2list(html_folder, ("", ), IGNORE),
