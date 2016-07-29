@@ -23,7 +23,7 @@
 #
 # To Upload to PyPI by executing:
 # python3 setup.py register
-# python3 setup.py bdist_egg sdist --formats=bztar,gztar,zip upload --sign
+# python3 setup.py bdist_egg bdist_wheel --universal sdist --formats=bztar,gztar,zip upload --sign
 
 
 """Setup.py for Python, as Generic as possible."""
@@ -40,11 +40,9 @@ from setuptools import setup
 
 
 MODULE_PATH = os.path.join(os.path.dirname(__file__), "dookumentation.py")
-DESCRIPTION = ("""StandAlone Async single-file cross-platform no-dependencies
-Unicode Python3 Multi-Format Auto Documentation Generator.
-Imagine that we mix together Sphinx, PanDoc, Material Design, MkDocs, eBooks,
-LibreOffice Docs, K.I.S.S. principle and take out all the bloat,
-then Dookumentation born, enjoy 'The Dark Side of Documentation' !.""")
+DESCRIPTION = ("""StandAlone Async cross-platform Python3 Multi-Format
+Auto Documentation Generator.
+Dookumentation, enjoy 'The Dark Side of Documentation' !.""")
 
 
 ##############################################################################
@@ -77,7 +75,7 @@ setup(
     name="dookumentation",
     version=find_this("version"),
 
-    description=DESCRIPTION,
+    description="Multi-Format Auto Documentation Generator.",
     long_description=DESCRIPTION,
 
     url=find_this("url"),
