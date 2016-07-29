@@ -29,7 +29,8 @@ from templates.variables import HTML, MD, ODT, XML, TXT
 from anglerfish import (TemplatePython, beep, check_encoding,  # fades.pypi
                         check_folder, get_free_port, html2ebook, json_pretty,
                         make_logger, make_post_exec_msg, set_process_name,
-                        set_single_instance, set_terminal_title, walk2list)
+                        set_single_instance, set_terminal_title, walk2list,
+                        make_notification)
 
 try:
     from pylama.main import check_path, parse_options
@@ -288,6 +289,8 @@ def make_arguments_parser():
     parser.add_argument('--serve', action='store_true', help="HTTP Serve HTML")
     parser.add_argument('--beep', action='store_true',
                         help="Beep sound will be played when it ends at exit.")
+    parser.add_argument('--notify', action='store_true',
+                        help="Notification popup GUI shown when ends at exit.")
     global args
     args = parser.parse_args()
 
@@ -358,8 +361,9 @@ def main():
         log.debug("Serving HTML Docs via HTTP server.")
         serve_http(html_folder)
     log.info('\n {0} \n Files Processed: {1}.'.format('-' * 80, list_of_files))
-    log.info('Number of Files Processed: ~{0}.'.format(
-        len(list_of_files) if isinstance(list_of_files, tuple) else 1))
+    _l = int(len(list_of_files) if isinstance(list_of_files, tuple) else 1)
+    _m = '{0} source code files Documented!.'.format(_l)
+    make_notification("Dookumentation", _m) if args.notify else log.info(_m)
     set_terminal_title()
     make_post_exec_msg(start_time, "dookumentation")
 
