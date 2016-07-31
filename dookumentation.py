@@ -17,6 +17,7 @@ from hashlib import sha1
 from json import loads
 from multiprocessing import Pool, cpu_count
 from platform import platform, python_version
+from urllib import parse
 from shutil import make_archive
 from string import punctuation
 from subprocess import getoutput
@@ -24,7 +25,7 @@ from time import sleep
 
 from core.parser import PyParse
 from core.serve_http import serve_http
-from templates.variables import HTML, MD, ODT, XML, TXT
+from templates.variables import HTML_PLAIN, HTML_PLUS, MD, ODT, XML, TXT
 
 from anglerfish import (TemplatePython, beep, check_encoding,  # fades.pypi
                         check_folder, get_free_port, html2ebook, json_pretty,
@@ -43,6 +44,12 @@ try:
 except ImportError:
     pygments = None
     print("WARNING: Pygments Not Found !!!, Run: \nsudo pip3 install pygments")
+
+try:  # https://github.com/lepture/python-livereload
+    import livereload  # sudo pip3 install livereload
+except ImportError:
+    livereload = None  # Still works Ok without LiveReload
+    print("WARNING: LiveReload Not Found!,Run:\nsudo pip3 install livereload")
 
 
 __version__ = '2.0.0'
@@ -223,9 +230,17 @@ def process_single_python_file(python_filepath: str):
     log.debug("OUTPUT: Writing MetaData JSON file {0}.".format(new_json_file))
     with open(new_json_file, "w", encoding="utf-8") as json_file:
             json_file.write(json_pretty(json_meta))
-    html = json_meta_to_template(json_meta, HTML, bool(not pygments))
-    new_html_file = os.path.join(os.path.dirname(args.fullpath), "doc", "html",
-                                 os.path.basename(python_filepath) + ".html")
+    html = json_meta_to_template(json_meta, HTML_PLAIN, bool(not pygments))
+    new_html_file = os.path.join(
+        os.path.dirname(args.fullpath), "doc", "html",
+        os.path.basename(python_filepath) + ".plain.html")
+    log.debug("OUTPUT: Writing HTML5 Documentation {0}.".format(new_html_file))
+    with open(new_html_file, "w", encoding="utf-8") as html_file:
+            html_file.write(html)
+    html = json_meta_to_template(json_meta, HTML_PLUS, bool(not pygments))
+    new_html_file = os.path.join(
+        os.path.dirname(args.fullpath), "doc", "html",
+        os.path.basename(python_filepath) + ".html")
     log.debug("OUTPUT: Writing HTML5 Documentation {0}.".format(new_html_file))
     with open(new_html_file, "w", encoding="utf-8") as html_file:
             html_file.write(html)
@@ -355,7 +370,7 @@ def main():
     log.debug("OUTPUT: Writing JSON Index file {0}.".format(new_json_file))
     with open(new_json_file, "w", encoding="utf-8") as json_file:
             json_file.write(json_pretty(json_meta))
-    html_index = json_meta_to_template(json_meta, HTML, bool(not pygments))
+    html_index = json_meta_to_template(json_meta, HTML_PLUS, bool(not pygments))
     new_html_file = os.path.join(html_folder, "index.html")
     log.debug("OUTPUT: Writing HTML5 Docs Index {0}.".format(new_html_file))
     with open(new_html_file, "w", encoding="utf-8") as html_file:

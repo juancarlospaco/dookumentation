@@ -8,17 +8,21 @@
 import os
 
 
-__all__ = ["HTML", "RST", "MD", "ODT", "XML", "TXT"]
+__all__ = ["HTML_PLUS", "HTML_PLAIN", "RST", "MD", "ODT", "XML", "TXT"]
 
 
 here = os.path.dirname(__file__)
 
 
-HTML, RST, MD, ODT, XML, TXT = "", "", "", "", "", ""
+HTML_PLAIN, HTML_PLUS, RST, MD, ODT, XML, TXT = "", "", "", "", "", "", ""
+
+
+with open(os.path.join(here, "template.plain.html"), encoding="utf-8") as __html:
+    HTML_PLAIN = __html.read()
 
 
 with open(os.path.join(here, "template.html"), encoding="utf-8") as __html:
-    HTML = __html.read()
+    HTML_PLUS = __html.read()
 
 
 with open(os.path.join(here, "template.rst.md"), encoding="utf-8") as __rst_md:
