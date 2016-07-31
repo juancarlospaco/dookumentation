@@ -28,8 +28,8 @@ from core.serve_http import serve_http
 from templates.variables import HTML_PLAIN, HTML_PLUS, MD, ODT, XML, TXT
 
 from anglerfish import (TemplatePython, beep, check_encoding,  # fades.pypi
-                        check_folder, get_free_port, html2ebook, json_pretty,
-                        make_logger, make_post_exec_msg, set_process_name,
+                        check_folder, html2ebook, json_pretty, make_logger,
+                        make_post_exec_msg, set_process_name,
                         set_single_instance, set_terminal_title, walk2list,
                         make_notification, set_zip_comment)
 
@@ -370,7 +370,8 @@ def main():
     log.debug("OUTPUT: Writing JSON Index file {0}.".format(new_json_file))
     with open(new_json_file, "w", encoding="utf-8") as json_file:
             json_file.write(json_pretty(json_meta))
-    html_index = json_meta_to_template(json_meta, HTML_PLUS, bool(not pygments))
+    html_index = json_meta_to_template(json_meta, HTML_PLUS,
+                                       bool(not pygments))
     new_html_file = os.path.join(html_folder, "index.html")
     log.debug("OUTPUT: Writing HTML5 Docs Index {0}.".format(new_html_file))
     with open(new_html_file, "w", encoding="utf-8") as html_file:
