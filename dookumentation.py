@@ -296,6 +296,8 @@ def make_arguments_parser():
                         help="Command to execute after run (Experimental).")
     parser.add_argument('--before', type=str,
                         help="Command to execute before run (Experimental).")
+    parser.add_argument('--skip', type=str,
+                        help="Pattern to Skip when scanning source code files")
     parser.add_argument('--watch', action='store_true', help="Watch changes.")
     parser.add_argument('--zip', action='store_true', help="HTML as ZIP file")
     parser.add_argument('--ebook', action='store_true', help="HTML as eBook")
@@ -335,7 +337,8 @@ def main():
     elif os.path.isdir(args.fullpath):
         log.info("Target is Folder with *.PY & *.PYW Python Source Code Files")
         log.warning("Processing a whole Folder may take some time...")
-        list_of_files = walk2list(args.fullpath, files_exts, tuple())
+        list_of_files = walk2list(args.fullpath, files_exts,
+                                  tuple(args.skip if args.skip else "",))
         pool = Pool(cpu_count())  # Multiprocessing Async
         pool.map_async(process_multiple_files, list_of_files)
         pool.close()
