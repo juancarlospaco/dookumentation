@@ -37,19 +37,19 @@ try:
     from pylama.main import check_path, parse_options
 except ImportError:
     check_path = parse_options = None
-    print("WARNING: PyLama Not Found !!!, Run: \nsudo pip3 install pylama")
+    print("\x1b[29;5;7m PyLama Not Found !\n sudo pip install pylama \x1b[0m")
 
 try:
     import pygments
 except ImportError:
     pygments = None
-    print("WARNING: Pygments Not Found !!!, Run: \nsudo pip3 install pygments")
+    print("\x1b[29;5;7m Pygments Not Found\nsudo pip install pygments \x1b[0m")
 
 try:  # https://github.com/lepture/python-livereload
     import livereload  # sudo pip3 install livereload
 except ImportError:
     livereload = None  # Still works Ok without LiveReload
-    print("WARNING: LiveReload Not Found!,Run:\nsudo pip3 install livereload")
+    print("\x1b[29;5;7m LiveReload Not Found\n pip install livereload \x1b[0m")
 
 
 __version__ = '2.0.0'
