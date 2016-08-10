@@ -234,14 +234,7 @@ def process_single_python_file(python_filepath: str):
     new_html_file = os.path.join(
         os.path.dirname(args.fullpath), "doc", "html",
         os.path.basename(python_filepath) + ".plain.html")
-    log.debug("OUTPUT: Writing HTML5 Documentation {0}.".format(new_html_file))
-    with open(new_html_file, "w", encoding="utf-8") as html_file:
-            html_file.write(html)
-    html = json_meta_to_template(json_meta, HTML_PLUS, bool(not pygments))
-    new_html_file = os.path.join(
-        os.path.dirname(args.fullpath), "doc", "html",
-        os.path.basename(python_filepath) + ".html")
-    log.debug("OUTPUT: Writing HTML5 Documentation {0}.".format(new_html_file))
+    log.debug("OUTPUT: Writing Plain Flat HTML5 Doc {0}".format(new_html_file))
     with open(new_html_file, "w", encoding="utf-8") as html_file:
             html_file.write(html)
     md = rst = json_meta_to_template(json_meta, MD, False)
@@ -357,28 +350,25 @@ def main():
         log.debug("OUTPUT: Writing EPUB Documentation {0}".format(html_folder))
         html2ebook(walk2list(html_folder, ("", ), IGNORE),
                    html_folder + ".epub", {"des": __doc__ + __url__.upper()})
-    json_meta = {  # Some placeholders and initialization is needed.
-        "lines_total": 0, "characters": 0, "kilobytes": 0, "lines_code": 0,
-        "words": 0, "punctuations": 0, "has_shebang": [], "writable": 0,
-        "executable": 0, "readable": 0, "symlink": 0, "has_tab": 0,
-        "import_procedural": 0, "has_set_trace": 0, "has_print": 0,
-        "is_index": True, "files": {}, "generator": __doc__ + __version__,
-        "html_files": walk2list(html_folder, (".html", ), tuple())}
+    json_meta = {}
     json_folder = os.path.join(os.path.dirname(args.fullpath), "doc", "json")
-    for jotason in walk2list(json_folder, (".json", ), tuple()):
+    for jotason in walk2list(json_folder, (".json", ), ("index.json",)):
         log.debug("INPUT: Reading JSON file {0}.".format(jotason))
         with open(jotason, "r", encoding="utf-8") as jaison_file:
-            json_meta = json_to_json(json_meta, loads(jaison_file.read()))
+            json_meta[jotason.replace(".json", "")] = loads(jaison_file.read())
     new_json_file = os.path.join(json_folder, "index.json")
     log.debug("OUTPUT: Writing JSON Index file {0}.".format(new_json_file))
     with open(new_json_file, "w", encoding="utf-8") as json_file:
             json_file.write(json_pretty(json_meta))
-    html_index = json_meta_to_template(json_meta, HTML_PLUS,
-                                       bool(not pygments))
-    new_html_file = os.path.join(html_folder, "index.html")
-    log.debug("OUTPUT: Writing HTML5 Docs Index {0}.".format(new_html_file))
+
+    html = json_meta_to_template(json_meta, HTML_PLUS, False)
+    new_html_file = os.path.join(
+        os.path.dirname(args.fullpath), "doc", "html", "index.html")
+    log.debug("OUTPUT: Writing HTML5 Polymer Docs {0}.".format(new_html_file))
     with open(new_html_file, "w", encoding="utf-8") as html_file:
-            html_file.write(html_index)
+            html_file.write(html)
+
+
     if args.after and getoutput:
         log.info(getoutput(str(args.after)))
     if args.serve and os.path.isdir(html_folder):  # HTML to HTTP LiveReload
