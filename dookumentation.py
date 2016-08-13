@@ -18,14 +18,14 @@ from json import loads
 from multiprocessing import Pool, cpu_count
 from platform import platform, python_version
 from urllib import parse
-from shutil import make_archive
+from shutil import make_archive, unpack_archive
 from string import punctuation
 from subprocess import getoutput
 from time import sleep
 
 from core.parser import PyParse
 from core.serve_http import serve_http
-from templates.variables import HTML_PLAIN, HTML_PLUS, MD, ODT, XML, TXT
+from templates.variables import HTML_PLAIN, HTML_PLUS, MD, ODT, XML, TXT, ZIPY
 
 from anglerfish import (TemplatePython, beep, check_encoding,  # fades.pypi
                         check_folder, html2ebook, json_pretty, make_logger,
@@ -362,13 +362,12 @@ def main():
             json_file.write(json_pretty(json_meta))
 
     html = json_meta_to_template(json_meta, HTML_PLUS, False)
-    new_html_file = os.path.join(
-        os.path.dirname(args.fullpath), "doc", "html", "index.html")
+    new_html_dir = os.path.join(os.path.dirname(args.fullpath), "doc", "html")
+    new_html_file = os.path.join(new_html_dir, "index.html")
     log.debug("OUTPUT: Writing HTML5 Polymer Docs {0}.".format(new_html_file))
     with open(new_html_file, "w", encoding="utf-8") as html_file:
             html_file.write(html)
-
-
+    unpack_archive(ZIPY, new_html_dir, "zip")  # Extract bower_components.zip
     if args.after and getoutput:
         log.info(getoutput(str(args.after)))
     if args.serve and os.path.isdir(html_folder):  # HTML to HTTP LiveReload

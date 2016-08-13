@@ -8,13 +8,16 @@
 import os
 
 
-__all__ = ["HTML_PLUS", "HTML_PLAIN", "RST", "MD", "ODT", "XML", "TXT"]
+__all__ = ["HTML_PLUS", "HTML_PLAIN", "RST", "MD", "ODT", "XML", "TXT", "ZIPY"]
 
 
 here = os.path.dirname(__file__)
 
 
 HTML_PLAIN, HTML_PLUS, RST, MD, ODT, XML, TXT = "", "", "", "", "", "", ""
+
+
+ZIPY = os.path.join(here, "bower_components.zip")
 
 
 with open(os.path.join(here, "template.plain.html"), encoding="utf-8") as __html:
