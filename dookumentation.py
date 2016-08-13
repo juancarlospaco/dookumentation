@@ -102,6 +102,7 @@ def process_multiple_files(file_path):
 
 def python_file_to_json_meta(python_file_path):
     """Take python source code string and extract meta-data as json file."""
+    python_file_path = os.path.abspath(python_file_path)
     log.debug("INPUT: Reading Python file {0}.".format(python_file_path))
     with open(python_file_path, encoding="utf-8-sig") as python_file:
         python_code, json_meta = python_file.read(), {}
@@ -348,8 +349,9 @@ def main():
             set_zip_comment(html_folder + '.zip', _c)
     if args.ebook and os.path.isdir(html_folder):  # HTML to eBook
         log.debug("OUTPUT: Writing EPUB Documentation {0}".format(html_folder))
-        html2ebook(walk2list(html_folder, ("", ), IGNORE),
-                   html_folder + ".epub", {"des": __doc__ + __url__.upper()})
+        htm = walk2list(html_folder, (".html", ".htm", ".css"), IGNORE)
+        htm = [_ for _ in htm if "doc/html/bower_components/" not in _.lower()]
+        html2ebook(htm, html_folder + ".epub", {"des": __doc__ + __url__})
     json_meta = {}
     json_folder = os.path.join(os.path.dirname(args.fullpath), "doc", "json")
     for jotason in walk2list(json_folder, (".json", ), ("index.json",)):
