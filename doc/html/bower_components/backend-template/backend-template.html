@@ -1,0 +1,202 @@
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-flex-layout/classes/iron-flex-layout.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="../iron-selector/iron-selectable.html">
+<link rel="import" href="../neon-animation/neon-animated-pages.html">
+<link rel="import" href="../neon-animation/animations/fade-in-animation.html">
+<link rel="import" href="../neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="../paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-item/paper-icon-item.html">
+<link rel="import" href="../paper-menu/paper-menu.html">
+<link rel="import" href="../paper-menu/paper-submenu.html">
+<link rel="import" href="../paper-ripple/paper-ripple.html">
+<link rel="import" href="../paper-scroll-header-panel/paper-scroll-header-panel.html">
+<link rel="import" href="../paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../paper-styles/typography.html">
+<link rel="import" href="../paper-styles/classes/shadow.html">
+<link rel="import" href="../paper-styles/color.html">
+<link rel="import" href="../paper-styles/default-theme.html">
+<link rel="import" href="../paper-tabs/paper-tabs.html">
+<link rel="import" href="../paper-tabs/paper-tab.html">
+<link rel="import" href="../paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+
+Example:
+
+    <backend-template name="Backend title">
+      <backend-category icon="icons:home" name="Category 1" route="category-1">
+        <backend-page name="PAGE A" route="page-a">
+          <h1>Content page A</h1>
+        </backend-page>
+      <backend-category>
+    </backend-template>
+
+@group Seed Elements
+@element backend-template
+@demo demo/index.html
+@hero hero.svg
+-->
+<dom-module id="backend-template">
+
+  <template>
+    <style>
+      :host {
+        display: block;
+        box-sizing: border-box;
+        @apply(--paper-font-common-base);
+      }
+      paper-tabs {
+        --paper-tabs-selection-bar: {
+          height: 3px;
+        };
+      }
+      paper-tab {
+        font-weight: bold;
+        @apply(--layout-flex-auto);
+      }
+      paper-toolbar .middle {
+        height: 100%;
+        margin-left: 48px;
+        top:8px;
+      }
+      paper-menu {
+        padding: 0;
+        --paper-menu-focused-item-after: {
+          background: transparent;
+        };
+        --paper-menu-selected-item: {
+          color: var(--default-primary-color);
+        };
+      }
+      #name {
+        font-size: 18px;
+        font-weight: normal;
+      }
+      #categoryName {
+        padding-left: 60px;
+        font-weight: bold;
+        font-size: 28px;
+      }
+      paper-icon-item {
+        position: relative;
+        --paper-item-focused-before: {
+          display: none;
+        };
+        cursor: pointer;
+      }
+      paper-ripple {
+        color: var(--paper-grey-500);
+      }
+    </style>
+
+    <paper-drawer-panel drawer-width="[[drawerWidth]]">        
+      <paper-header-panel drawer mode="waterfall" class="shadow-elevation-16dp">
+        <paper-toolbar>
+          <span id="name">[[name]]</span>
+        </paper-toolbar>
+        <paper-menu attr-for-selected="route" selected="{{selected}}">
+          <template is="dom-repeat" items="[[items]]">
+            <paper-icon-item route="[[item.route]]">
+              <iron-icon icon="[[item.icon]]" item-icon></iron-icon>
+              [[item.name]]
+              <paper-ripple></paper-ripple>
+            </paper-icon-item>
+          </template>
+        </paper-menu>
+      </paper-header-panel>
+      <paper-scroll-header-panel
+        main
+        keep-condensed-header
+        scroll-away-topbar
+        no-reveal
+        header-state="{{headerState}}">
+        <paper-toolbar id="mainToolbar" class="tall shadow-transition">
+          <div class="center horizontal layout fit">
+            <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
+            <iron-pages
+              attr-for-selected="route"
+              selected="[[selected]]"
+              class="flex">
+              <template is="dom-repeat" items="[[items]]">
+                <span route="[[item.route]]" id="categoryName">[[item.name]]</span>
+              </template>
+            </iron-pages>
+          </div>
+          <iron-pages id="slideTop" attr-for-selected="route" selected="{{selected}}" class="middle center horizontal layout fit">
+            <template is="dom-repeat" items="[[items]]" as="category">
+              <paper-tabs attr-for-selected="page" route="[[category.route]]" selected="{{category.selected}}" noink>
+                <template is="dom-repeat" items="[[category.items]]" as="page">
+                  <paper-tab page="[[page.route]]">[[page.name]]</paper-tab>
+                </template>
+              </paper-tabs>
+            </template>
+          </iron-pages>
+        </paper-toolbar>
+        <neon-animated-pages
+          selected="{{selected}}"
+          attr-for-selected="route"
+          entry-animation="fade-in-animation"
+          exit-animation="fade-out-animation">
+          <content></content>
+        </neon-animated-pages>
+      </paper-scroll-header-panel>
+    </paper-drawer-panel>
+  </template>
+</dom-module>
+
+<script>
+
+  Polymer({
+
+    is: 'backend-template',
+
+    properties: {
+      drawerWidth: {
+        type: String,
+        value: '220px'
+      },
+      headerState: {
+        type: Number,
+        observer: 'headerStateChange'
+      },
+      name: {
+        type: String,
+        value: 'Backend'
+      },
+      selected: String,
+      attrForSelected: {
+        type: String,
+        value: 'route'
+      }
+    },
+    behaviors: [
+      Polymer.IronSelectableBehavior
+    ],
+    listeners: {
+      'paper-header-transform': 'transformToolbar'
+    },
+    attached: function() {
+      this.selected = this.items[0].route;
+    },
+    transformToolbar: function(e) {
+      Polymer.Base.transform('translate3d(0,' +  Math.min(1, e.detail.y / (e.detail.height - e.detail.condensedHeight)) * 100 + '%,0)', this.$.slideTop);
+    },
+    headerStateChange: function(headerState) {
+      switch (headerState) {
+        case Polymer.PaperScrollHeaderPanel.HEADER_STATE_HIDDEN:
+          this.toggleClass('shadow-elevation-4dp', true, this.$.mainToolbar);
+          break;
+        case Polymer.PaperScrollHeaderPanel.HEADER_STATE_INTERPOLATED:
+          this.toggleClass('shadow-elevation-4dp', false, this.$.mainToolbar);
+          break;
+      }
+    }
+
+  });
+
+</script>

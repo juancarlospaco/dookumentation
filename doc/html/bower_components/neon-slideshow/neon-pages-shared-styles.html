@@ -1,0 +1,21 @@
+<dom-module id="neon-pages-shared-styles">
+  <template>
+    <style>
+      :host #slides > ::content > * {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      :host #slides > ::content > :not(.iron-selected):not(.neon-animating) {
+        display: none !important;
+      }
+      :host #slides > ::content > .neon-animating {
+        pointer-events: none;
+      }
+      :host {
+        display: block;
+        overflow: hidden;
+      }
+    </style>
+  </template>
+</dom-module>

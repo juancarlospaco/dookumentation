@@ -1,0 +1,36 @@
+{
+  "name": "iron-drag",
+  "authors": [
+    "Anonymous <anonymous@example.com>"
+  ],
+  "description": "An element providing a solution to no problem in particular.",
+  "keywords": [
+    "web-component",
+    "polymer",
+    "seed"
+  ],
+  "main": "iron-drag.html",
+  "license": "http://polymer.github.io/LICENSE.txt",
+  "homepage": "https://github.com/<USERNAME>/seed-element/",
+  "ignore": [
+    "/.*",
+    "/test/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.1.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#~1.2.1"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "*"
+  },
+  "_release": "46e234a5fa",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "46e234a5fa44d7014ee71285304b78a7d675aba9"
+  },
+  "_source": "https://github.com/Zecat/iron-draggable.git",
+  "_target": "master",
+  "_originalSource": "https://github.com/Zecat/iron-draggable.git"
+}

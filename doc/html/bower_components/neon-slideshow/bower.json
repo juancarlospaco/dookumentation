@@ -1,0 +1,40 @@
+{
+  "name": "neon-slideshow",
+  "version": "1.0.3",
+  "authors": [
+    "Anonymous <anonymous@example.com>"
+  ],
+  "description": "An element providing a solution to no problem in particular.",
+  "keywords": [
+    "web-component",
+    "polymer",
+    "seed"
+  ],
+  "main": "neon-slideshow.html",
+  "license": "http://polymer.github.io/LICENSE.txt",
+  "homepage": "https://github.com/<USERNAME>/seed-element/",
+  "ignore": [
+    "/.*",
+    "/test/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.1.0",
+    "neon-animation": "PolymerElements/neon-animation#~1.0.8",
+    "iron-resizable-behavior": "PolymerElements/iron-resizable-behavior#~1.0.2",
+    "iron-selector": "PolymerElements/iron-selector#~1.0.8",
+    "iron-draggable": "https://github.com/Zecat/iron-draggable.git#master",
+    "neon-advanced-animations": "https://github.com/Zecat/neon-advanced-animations.git#~1.1.0",
+    "iron-controls": "https://github.com/Zecat/iron-controls.git#master",
+    "iron-overlay-behavior": "PolymerElements/iron-overlay-behavior#~1.1.1"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "*",
+    "paper-card": "PolymerElements/paper-card#~1.0.8",
+    "paper-button": "PolymerElements/paper-button#~1.0.8",
+    "paper-styles": "PolymerElements/paper-styles#~1.0.13",
+    "paper-toggle-button": "PolymerElements/paper-toggle-button#~1.0.11",
+    "paper-tabs": "PolymerElements/paper-tabs#~1.2.3",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#~1.2.0"
+  }
+}

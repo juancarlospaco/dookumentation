@@ -1,0 +1,72 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<script>
+
+  window.Zecat = window.Zecat || {};
+
+  /**
+   * @polymerBehavior Zecat.NeonCarouselBehavior
+   */
+  
+  Zecat.NeonCarouselBehavior = {
+    properties: {
+      /**
+       * If playing, the carousel slides automatically according to the delay
+       * provided.
+       */
+      delay: {
+        type: Number,
+        value: 3000
+      },
+      /**
+       * Get or set the animation playing state.
+       */
+      playing: {
+        type: Boolean,
+        value: false,
+        observer: '_playingChange',
+        notify: true
+      },
+      /**
+       * Get or set the animation direction, 'right' or 'left'
+       */
+      direction: {
+        type: String,
+        value: 'right'
+      }
+    },
+    /**
+     * Pause the automatic sliding.
+     */
+    pause: function() {
+      this.playing = false;
+    },
+    /**
+     * Run the automatic sliding according to the delay provide.
+     */
+    play: function() {
+      this.playing = true;
+    },
+    _run: function() {
+      if (this.playing) {
+        switch (this.direction) {
+          case 'right':
+            this.selectNext();
+            break;
+          case 'left':
+            this.selectPrevious();
+            break;
+          default:
+            this.selectNext();
+        }
+        this.async(this._run, this.delay);
+      }
+    },
+    _playingChange: function(playing) {
+      if (playing) {
+        this.async(this._run, this.delay);
+      }
+    }
+  };
+
+</script>

@@ -1,0 +1,98 @@
+<link rel="import" href="../neon-animation/neon-animation-behavior.html">
+<link rel="import" href="../neon-animation/web-animations.html">
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`<horizontal-scroll-animation>` animates the scrollLeft property of an element.
+
+Configuration:
+```
+{
+  name: 'transform-animation',
+  node: <node>,
+  x-shift: (String),
+  y-shift: (String),
+
+  timing: <animation-timing>
+}
+```
+-->
+
+<script>
+
+  Polymer({
+
+    is: 'scroll-animation',
+
+    behaviors: [
+      Polymer.NeonAnimationBehavior
+    ],
+
+    /**
+     * @param {{
+     *   node: !Element,
+     *   timing: (Object|undefined)
+     * }} config
+     */
+    configure: function(config) {
+      var node = config.node;
+      var initScrollLeft = node.scrollLeft;
+      var initScrollTop = node.scrollTop;
+      switch (config.xShift) {
+        case 'right':
+          var xShift = node.scrollWidth - node.scrollLeft - node.offsetWidth;
+          break;
+        case 'left':
+          var xShift = - node.scrollLeft;
+          break;
+        default:
+          var xShift = config.xShift;
+      }
+      switch (config.yShift) {
+        case 'bottom':
+          var yShift = node.scrollHeight - node.scrollTop - node.offsetHeight;
+          break;
+        case 'top':
+          var yShift = - node.scrollTop;
+          break;
+        default:
+          var yShift = config.yShift;
+      }
+      this._effect = new KeyframeEffect(node, [], this.timingFromConfig(config));
+
+      if (config.xShift && config.yShift) {
+        this._effect.onsample = function(timeFraction) {
+          // for last iteration
+          if (timeFraction == null) {
+            node.scrollLeft = initScrollLeft + xShift;
+            node.scrollTop = initScrollTop + yShift;
+            return;
+          }
+          node.scrollLeft = initScrollLeft + xShift*timeFraction;
+          node.scrollTop = initScrollTop + yShift*timeFraction;
+        }; 
+      } else if (config.xShift && !config.yShift) {
+        this._effect.onsample = function(timeFraction) {
+          // for last iteration
+          if (timeFraction == null) {
+            node.scrollLeft = initScrollLeft + xShift;
+            return;
+          }
+          node.scrollLeft = initScrollLeft + xShift*timeFraction;
+        }; 
+      } else if (!config.xShift && config.yShift) {
+        this._effect.onsample = function(timeFraction) {
+          // for last iteration
+          if (timeFraction == null) {
+            node.scrollTop = initScrollTop + yShift;
+            return;
+          }
+          node.scrollTop = initScrollTop + yShift*timeFraction;
+        }; 
+      }
+      return this._effect;
+    },
+
+  });
+
+</script>

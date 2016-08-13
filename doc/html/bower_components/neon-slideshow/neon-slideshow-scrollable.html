@@ -1,0 +1,48 @@
+<link rel="import" href="../iron-controls/iron-slideshow-controls.html">
+<link rel="import" href="../iron-controls/iron-controllable-behavior.html">
+<link rel="import" href="neon-slideshow-scrollable-behavior.html">
+
+<!--
+@group Neon Elements
+@element neon-slideshow-scrollable
+@demo demo/index.html
+@hero hero.svg
+-->
+<dom-module id="neon-slideshow-scrollable">
+  <template>
+
+    <style>
+      :host {
+        display: block;
+        @apply(--layout-horizontal);
+        overflow: hidden;
+      }
+      :host ::content > * {
+        @apply(--layout-flex-none);
+        height: 100%;
+      }
+    </style>
+    <content></content>
+    <iron-slideshow-controls arrows="[[arrows]]"></iron-slideshow-controls>
+  </template>
+  <script>
+    Polymer({
+      is: 'neon-slideshow-scrollable',
+
+      properties: {
+        /**
+         * If true, display arrows controls
+         */
+        arrows: {
+          type: Boolean,
+          value: false
+        }
+      },
+
+      behaviors: [
+        Zecat.NeonSlideshowScrollableBehavior,
+        Zecat.IronControllableBehavior
+      ]
+    });
+  </script>
+</dom-module>

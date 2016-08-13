@@ -1,0 +1,47 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+
+Example:
+
+    <backend-page></backend-page>
+
+@group Seed Elements
+@element backend-template
+@demo demo/index.html
+@hero hero.svg
+-->
+<dom-module id="backend-page">
+  <template>
+    <style>
+      :host {
+        display: block;
+        padding: 30px;
+        @apply(--layout-fit);
+      }
+      :host:not(.iron-selected):not(.neon-animating) {
+        display: none !important;
+      }
+      :host.neon-animating {
+        pointer-events: none;
+      }
+    </style>
+    <content></content>
+  </template>
+
+</dom-module>
+
+<script>
+
+  Polymer({
+
+    is: 'backend-page',
+
+    properties: {
+      name: String,
+      route: String
+    }
+
+  });
+
+</script>

@@ -1,0 +1,56 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<script>
+
+  window.Zecat = window.Zecat || {};
+
+  Zecat.IronControllableBehavior = {
+    properties: {
+      /**
+       * If set, controllable will listen for this event
+       * and once a control is used, every other are disabled until
+       * this event is recieved.
+       */
+      controlsAwaitForEvent: {
+        type: String,
+        value: '',
+        observer: '_controlsAwaitForEventChange'
+      },
+      /**
+       * If true, controls are disabled.
+       */
+      controlsDisabled: {
+        type: Boolean,
+        value: false,
+        notify: true
+      }
+    },
+
+    disableControls: function() {
+      this.controlsDisabled = true;
+    },
+
+    eneableControls: function() {
+      this.controlsDisabled = false;
+    },
+
+    useControl: function() {
+      if (this.controlsDisabled) {
+        return false;
+      }
+      if (this.controlsAwaitForEvent) {
+        this.controlsDisabled = true;
+      }
+      return true;
+    },
+
+    _controlsAwaitForEventChange: function(eventName, old) {
+      this.unlisten(this, old, 'eneableControls');
+      if(eventName) {
+        this.listen(this, eventName, 'eneableControls');
+      }
+    },
+
+  };
+
+</script>
