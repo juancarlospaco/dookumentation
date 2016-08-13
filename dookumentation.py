@@ -360,7 +360,6 @@ def main():
     log.debug("OUTPUT: Writing JSON Index file {0}.".format(new_json_file))
     with open(new_json_file, "w", encoding="utf-8") as json_file:
             json_file.write(json_pretty(json_meta))
-
     html = json_meta_to_template(json_meta, HTML_PLUS, False)
     new_html_dir = os.path.join(os.path.dirname(args.fullpath), "doc", "html")
     new_html_file = os.path.join(new_html_dir, "index.html")
