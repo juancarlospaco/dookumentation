@@ -50,6 +50,36 @@
             -webkit-clip-path:        polygon(3% 3%, 90% 0, 100% 90%, 0 100%);
             clip-path:                polygon(3% 3%, 90% 0, 100% 90%, 0 100%)
         }
+        #source_code {
+            background-image:
+                                     -webkit-linear-gradient(left, white 10px, transparent 10px),
+                                     -webkit-linear-gradient(right, white 10px, transparent 10px),
+                                     -webkit-linear-gradient(white 30px, lightgray 30px, lightgray 31px, white 31px);
+            background-image:
+                                     -moz-linear-gradient(left, white 10px, transparent 10px),
+                                     -moz-linear-gradient(right, white 10px, transparent 10px),
+                                     -moz-linear-gradient(white 30px, lightgray 30px, lightgray 31px, white 31px);
+            background-image:
+                                     linear-gradient(left, white 10px, transparent 10px),
+                                     linear-gradient(right, white 10px, transparent 10px),
+                                     linear-gradient(white 30px, lightgray 30px, lightgray 31px, white 31px);
+            background-size:         100% 100%, 100% 100%, 100% 31px;
+            background-attachment:   scroll;
+            border:                  1px solid #000;
+            border-radius:           9px;
+            box-shadow:              inset -14em 0 99px 0 rgba(99, 99, 99, 0.25);
+            color:                   #000;
+            font-family:             monospace !important;
+            height:                  480px;
+            line-height:             31px;
+            margin-left:             55px;
+            resize:                  vertical;
+            width:                   800px;
+        }
+        #source_code::selection {
+            background:              cyan;
+            color:                   #000;
+        }
     </style>
 
 
@@ -65,7 +95,7 @@
 
 
 for indez, dato in enumerate(data.items()):
-    {{ '    <backend-category name="&bigstar; {0}" route="cat{1}">'.format(os.path.basename(dato[0])[:99], indez + 1) }}
+    {{ '    <backend-category name="{0}" route="cat{1}">'.format(os.path.basename(dato[0])[:99], indez + 1) }}
     d = dato[1]
 
 
@@ -229,10 +259,28 @@ for indez, dato in enumerate(data.items()):
         {{ """ </paper-material> <paper-material class=foot ><button id=btfscreen onclick="window.open(window.location.href, 'Dookumentation' , 'type=fullWindow, fullscreen, scrollbars=auto')">FullScreen</button>&nbsp;<a href="javascript:(function(){function%20loadScript(a,b){var%20c=document.createElement('script'),d=document.getElementsByTagName('head')[0],e=!1;c.src=a,c.onload=c.onreadystatechange=function(){e||this.readyState&&'loaded'!=this.readyState&&'complete'!=this.readyState||(e=!0,b())},d.appendChild(c)}loadScript('https://css-tricks.github.io/The-Printliminator/printliminator.min.js',function(){thePrintliminator.init()})})()"><button id=btprint >Print</button></a>&nbsp;<a href="javascript:window.open('view-source:' + window.location.href, '_blank')"><button id=btsource >Source</button></a>&nbsp;&nbsp;&nbsp;&nbsp;<i><small>Dookumentation: Made with <big style="color:red">&hearts;</big> and <a href="https://www.python.org" title=Python >Python</a> by <a href="https://github.com/juancarlospaco/dookumentation#dookumentation" title=JuanCarlos >Juan</a> !.</small></i></paper-material> </backend-page> """}}
 
 
+#################################### Code #####################################
+
+
+    {{ '<backend-page name="Code" title="Code" route="page-j"><paper-material><h1>Code</h1>' }}
+    {{ '<h4> &Cconint; {0} </h4> <hr> '.format(d['basename'][:99]) }}
+    with open(d['fullpath'], 'r', encoding='utf-8') as _code:
+        try:  # Use pygments if is installed.
+            from pygments import highlight
+            from pygments.lexers import PythonLexer
+            from pygments.formatters import HtmlFormatter
+            formater = HtmlFormatter(linenos=True, anchorlinenos=True, nobackground=True)
+            {{ str(highlight(_code.read(), PythonLexer(), formater))  }}
+            {{ '<hr><style>{0}</style>'.format(formater.get_style_defs()) }}
+        except:  # Dont Die if is not installed.
+            {{ '<textarea id=source_code readonly onclick=this.select() cols=50 rows=25 >{0}</textarea><!-- Pygments is not installed --><hr>'.format(_code.read().strip()) }}
+    {{ """ </paper-material> <paper-material class=foot ><button id=btfscreen onclick="window.open(window.location.href, 'Dookumentation' , 'type=fullWindow, fullscreen, scrollbars=auto')">FullScreen</button>&nbsp;<a href="javascript:(function(){function%20loadScript(a,b){var%20c=document.createElement('script'),d=document.getElementsByTagName('head')[0],e=!1;c.src=a,c.onload=c.onreadystatechange=function(){e||this.readyState&&'loaded'!=this.readyState&&'complete'!=this.readyState||(e=!0,b())},d.appendChild(c)}loadScript('https://css-tricks.github.io/The-Printliminator/printliminator.min.js',function(){thePrintliminator.init()})})()"><button id=btprint >Print</button></a>&nbsp;<a href="javascript:window.open('view-source:' + window.location.href, '_blank')"><button id=btsource >Source</button></a>&nbsp;&nbsp;&nbsp;&nbsp;<i><small>Dookumentation: Made with <big style="color:red">&hearts;</big> and <a href="https://www.python.org" title=Python >Python</a> by <a href="https://github.com/juancarlospaco/dookumentation#dookumentation" title=JuanCarlos >Juan</a> !.</small></i></paper-material> </backend-page> """}}
+
+
 ################################ Statistics ###################################
 
 
-    {{ '    <backend-page name="Etc" title="We generate Statistics from code, ideal to show up the work of developers" route="page-j">' }}
+    {{ '    <backend-page name="Etc" title="We generate Statistics from code, ideal to show up the work of developers" route="page-k">' }}
     {{ '    <paper-material> <h1>Statistics</h1> <ul>' }}
     {{ '    <li><b>Size (KiloBytes):</b> {0} </li><br>'.format(d["kilobytes"])      }}
     {{ '    <li><b>Permissions (Octal):</b> {0} </li><br>'.format(d["permissions"]) }}
