@@ -18,7 +18,7 @@ from json import loads
 from multiprocessing import Pool, cpu_count
 from platform import platform, python_version
 from urllib import parse
-from shutil import make_archive, unpack_archive
+from shutil import make_archive, unpack_archive, move
 from string import punctuation
 from subprocess import getoutput
 from time import sleep
@@ -135,10 +135,13 @@ def python_file_to_json_meta(python_file_path):
         python_file_path)).isoformat(" ").split(".")[0]
     json_meta["modified"] = datetime.utcfromtimestamp(os.path.getmtime(
         python_file_path)).isoformat(" ").split(".")[0]
+    old_dir = os.getcwd()  # Workaround for misterious file not found on Pylama
+    os.chdir(os.path.dirname(python_file_path))
     json_meta["pylama"] = [  # Bugs
         pylama_error.__dict__["_info"]  # dict with PyLama Errors from linters
-        for pylama_error in check_path(parse_options((python_file_path, )))
+        for pylama_error in check_path(parse_options([python_file_path]))
         ] if check_path and parse_options else []  # if no PyLama empty list
+    os.chdir(old_dir)  # Workaround for misterious file not found on Pylama
     if len(json_meta["pylama"]) and json_meta["lines_total"]:
         json_meta["lines_per_bug"] = int(
             json_meta["lines_total"] / len(json_meta["pylama"]))
@@ -347,11 +350,14 @@ def main():
             _info, datetime.now().isoformat()[:-7])
         if os.path.isfile(html_folder + '.zip'):
             set_zip_comment(html_folder + '.zip', _c)
+            move(html_folder + '.zip',
+                 os.path.join(html_folder, "dookumentation.zip"))
     if args.ebook and os.path.isdir(html_folder):  # HTML to eBook
         log.debug("OUTPUT: Writing EPUB Documentation {0}".format(html_folder))
         htm = walk2list(html_folder, (".html", ".htm", ".css"), IGNORE)
         htm = [_ for _ in htm if "doc/html/bower_components/" not in _.lower()]
-        html2ebook(htm, html_folder + ".epub", {"des": __doc__ + __url__})
+        fyle = os.path.join(html_folder, "dookumentation.epub")
+        html2ebook(htm, fyle, {"des": __doc__ + __url__})
     json_meta = {}
     json_folder = os.path.join(os.path.dirname(args.fullpath), "doc", "json")
     for jotason in walk2list(json_folder, (".json", ), ("index.json",)):
