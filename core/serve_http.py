@@ -30,5 +30,5 @@ def serve_http(where=os.getcwd()):
     else:  # without LiveReload
         print("Run:pip install livereload\nServer running on localhost...")
         httpd = server.HTTPServer(('', prt), CGIHTTPRequestHandler)
-        open_new_tab("http://localhost:{0}/".format(prt))
+        open_new_tab("http://localhost:{0}/doc/html/index.html".format(prt))
         httpd.serve_forever()

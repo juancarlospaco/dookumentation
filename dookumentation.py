@@ -49,7 +49,7 @@ try:  # https://github.com/lepture/python-livereload
     import livereload  # sudo pip3 install livereload
 except ImportError:
     livereload = None  # Still works Ok without LiveReload
-    print("\x1b[29;5;7m LiveReload Not Found\n pip install livereload \x1b[0m")
+    # print("LiveReload Not Found\n pip install livereload")  # Not important.
 
 
 __version__ = '2.0.0'
@@ -345,6 +345,10 @@ def main():
     html_folder = os.path.join(os.path.dirname(args.fullpath), "doc", "html")
     if args.zip and make_archive and os.path.isdir(html_folder):  # HTML to ZIP
         log.debug("OUTPUT: Writing ZIP Documentation {0}.".format(html_folder))
+        try:
+            os.remove(os.path.join(html_folder, "dookumentation.zip"))
+        except:
+            pass
         make_archive(html_folder, 'zip', html_folder, logger=log)
         _c = "{0}. Documentation of Python source code. Creation: ~{1}".format(
             _info, datetime.now().isoformat()[:-7])
@@ -385,7 +389,8 @@ def main():
     _m = '{0} source code files Documented!.'.format(_l)
     make_notification("Dookumentation", _m) if args.notify else log.info(_m)
     set_terminal_title()
-    make_post_exec_msg(start_time, "dookumentation")
+    make_post_exec_msg(start_time, """Upload all your Docs online for Free,run:
+    python3 setup.py upload_docs --upload-dir='{0}'""".format(new_html_dir))
 
 
 if __name__ in '__main__':
