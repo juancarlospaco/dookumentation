@@ -311,6 +311,12 @@ for indez, dato in enumerate(data.items()):
     {{ '<rect x="9" y="230" height="30" fill="#8BC34A" width="{0}%"></rect><text x="9" y="250">{1} Lines of Comments and Blanks</text></g></svg>'.format(int(((d['lines_total'] - d['lines_code']) / d['lines_total']) * 100), d['lines_total'] - d['lines_code']) }}
 
     if indez == 0:  # Export only on 1st page.
+        try:
+            all_logs = "\n".join(open(log.handlers[0].baseFilename, "r", encoding="utf-8").read().strip().splitlines()[-99:])
+            {{ "</paper-material><paper-material><h1>Logs</h1><p>&ggg; Tail on Build Logs.</p>" }}
+            {{ '<textarea cols=50 rows=25 readonly onclick=this.select() title=Logs >{0}</textarea>'.format(all_logs) }}
+        except:
+            pass
         {{ """</paper-material><paper-material><h1>Export</h1><p>Export the whole Documentation with just 1 click.</p> <button><a title="Export to 1 JSON (Pretty-Printed)" target=_blank alt='Export to JSON' download='dookumentation-index.json' href="data:application/json;charset=utf-8,{0}">Export to JSON</a></button> <button><a title="Export to 1 eBook" target=_blank alt='Export to eBook' download='dookumentation.epub' href="dookumentation.epub">Export to eBook</a></button> <button><a title="Export to 1 ZIP" target=_blank alt='Export to ZIP' download='dookumentation.zip' href="dookumentation.zip">Export to ZIP</a></button>""".format(parse.quote(json_pretty(data), encoding='utf-8')) }}
 
     # Footer with buttons.

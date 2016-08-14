@@ -22,7 +22,8 @@ __all__ = ["serve_http"]
 
 
 def serve_http(where=os.getcwd()):
-    """Serve HTTP files and HTML on the where folder,with LiveReload if any."""
+    """Serve HTTP files and HTML on the where folder,with LiveReload if any.
+    https://www.youtube.com/watch?v=nllurjwkk2A """
     prt = get_free_port()
     if livereload:  # with LiveReload
         livereload.Server().serve(port=prt, host="0.0.0.0",
