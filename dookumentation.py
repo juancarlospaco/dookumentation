@@ -389,8 +389,14 @@ def main():
     _m = '{0} source code files Documented!.'.format(_l)
     make_notification("Dookumentation", _m) if args.notify else log.info(_m)
     set_terminal_title()
-    make_post_exec_msg(start_time, """Upload all your Docs online for Free,run:
-    python3 setup.py upload_docs --upload-dir='{0}'""".format(new_html_dir))
+    make_post_exec_msg(start_time, """Upload all versioned Docs online for Free
+    - Read How: https://pages.github.com/#vanilla-step-1
+    - TL;DR:
+    1) Create and jump to a new Git branch named 'gh-pages' from master branch.
+    2) Move all '{0}' to root dir of git repo, commit and push all files.
+    3) 'index.html' and '/bower_components/' must be on root dir of git repo.
+    3) Go https://username.github.io/repository/ Dookumentation should be there
+    """.format(new_html_dir))
 
 
 if __name__ in '__main__':
