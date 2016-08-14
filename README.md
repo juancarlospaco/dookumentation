@@ -12,9 +12,11 @@ https://pypi.python.org/pypi/dookumentation
 
 ### Screenshots
 
-![Desktop](https://lh4.googleusercontent.com/-miw5-uroBYQ/VjW72_PUFyI/AAAAAAAALR0/0jl8fCC224A/s0/dookumentation_web.jpg "HTML5 Material Design Desktop Responsive")
+![Desktop](https://lh5.googleusercontent.com/-OAqQ7mi5yeg/V7CRAx0mK6I/AAAAAAAAMsQ/YLqKBy-RIrkAo-GjGRRt8jaRc-fmyKTDwCL0B/w954-h629-no/dookumentation0.jpg "HTML5 Material Design Polymer WebComponents Desktop Responsive")
 
-![Desktop](https://lh6.googleusercontent.com/-9FmGoCbMCNQ/Viqy8Y0a3tI/AAAAAAAALL8/GWn_Ax9msdM/s0/docs.jpg "HTML5 Material Design Desktop Responsive")
+![Desktop](https://lh4.googleusercontent.com/-C-2hjmYQnB8/V7CRFpfjq5I/AAAAAAAAMsw/8DMDPlvKCiM42PDTuuekbZCvUCne_KobACL0B/w801-h717-no/dookumentation2.jpg "HTML5 Material Design Polymer WebComponents Desktop Responsive")
+
+![Desktop](https://lh4.googleusercontent.com/-7RJm0XXDu6Q/V7CRI4nhhyI/AAAAAAAAMtQ/KiwRVRVXZGAeabRpx5OU198CwZusytxjQCLcB/w924-h760-no/dookumentation3.jpg "HTML5 Material Design Polymer WebComponents Desktop Responsive")
 
 ![Mobile](https://lh3.googleusercontent.com/-NY1dYAmLezk/Vhne9A8gQkI/AAAAAAAALFA/FAc5VNF2y5M/s0/15%2B-%2B1 "HTML5 Material Design Mobile Responsive")
 
