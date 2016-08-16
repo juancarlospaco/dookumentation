@@ -145,7 +145,7 @@ pip3 install dookumentation
 ### Requisites:
 
 - [Python 3.x](https://www.python.org "Python Homepage")
-- Anglerfish
+- [Anglerfish](https://github.com/juancarlospaco/anglerfish#anglerfish)
 
 **Optionals:**
 
