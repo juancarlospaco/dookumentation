@@ -30,7 +30,7 @@ https://pypi.python.org/pypi/dookumentation
 ### Live Demo
 
 - https://juancarlospaco.github.io/dookumentation/
-
+- its just `python dookumentation.py dookumentation.py` with No pre-config, settings, etc at all. Dookumentation executed on itself.
 
 ### Features
 
