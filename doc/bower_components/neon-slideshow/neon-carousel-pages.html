@@ -1,0 +1,29 @@
+<link rel="import" href="neon-carousel-behavior.html">
+<link rel="import" href="neon-pages-shared-styles.html">
+<link rel="import" href="neon-slideshow-pages-behavior.html">
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+@group Neon Elements
+@element neon-carousel-pages
+@demo demo/index.html
+@hero hero.svg
+-->
+<dom-module id="neon-carousel-pages">
+  <template>
+    <style include="neon-pages-shared-styles">
+    </style>
+    <div id="slides">
+      <content></content>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: 'neon-carousel-pages',
+      behaviors: [
+        Zecat.NeonSlideshowPagesBehavior,
+        Zecat.NeonCarouselBehavior
+      ],
+    });
+  </script>
+</dom-module>

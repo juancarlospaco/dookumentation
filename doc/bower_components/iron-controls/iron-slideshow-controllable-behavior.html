@@ -1,0 +1,58 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="iron-controllable-behavior.html">
+
+<script>
+
+  window.Zecat = window.Zecat || {};
+
+  Zecat.IronSlideshowControllableBehaviorImpl = {
+    properties: {
+      /**
+       * The function to call when 'next-slide' event is recieved.
+       */
+      nextFunction: {
+        type: Function,
+        value: function() {
+          return function() {
+            this.selectNext();
+          }
+        }
+      },
+      /**
+       * The function to call when 'previous-slide' event is recieved.
+       */
+      previousFunction: {
+        type: Function,
+        value: function() {
+          return function() {
+            this.selectPrevious();
+          }
+        }
+      }
+    },
+
+    listeners: {
+      'next-slide': 'nextSlide',
+      'previous-slide': 'previousSlide',
+    },
+
+    nextSlide: function() {
+      if (this.useControl()) {
+        this.nextFunction.apply(this);
+      }
+    },
+
+    previousSlide: function() {
+      if (this.useControl()) {
+        this.previousFunction.apply(this);
+      }
+    }
+
+  };
+
+  Zecat.IronSlideshowControllableBehavior = [
+    Zecat.IronControllableBehavior,
+    Zecat.IronSlideshowControllableBehaviorImpl
+  ];
+
+</script>

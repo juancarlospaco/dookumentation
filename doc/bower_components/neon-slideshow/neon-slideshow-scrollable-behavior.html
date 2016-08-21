@@ -1,0 +1,113 @@
+<link rel="import" href="../iron-draggable/iron-draggable-behavior.html">
+<link rel="import" href="../iron-selector/iron-selectable.html">
+<link rel="import" href="../neon-advanced-animations/scroll-animation.html">
+<link rel="import" href="../neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../polymer/polymer.html">
+
+<script>
+  
+  window.Zecat = window.Zecat || {};
+
+  /**
+   * @polymerBehavior Zecat.NeonSlideshowScrollableBehavior
+   */
+  
+  Zecat.NeonSlideshowScrollableBehaviorImpl = {
+    properties: {
+      animationConfig: {
+        value: function() {
+          return {
+            'scroll' : {
+              name: 'scroll-animation',
+              node: this,
+              timing: null,
+              xShift: 0
+            }
+          }
+        }
+      },
+      centerSlideOnTap: {
+        type: Boolean,
+        value: false,
+        observer: '_centerSlideOnTapChanged'
+      },
+      centerSlideOnTrackEnd: {
+        type: Boolean,
+        value: false
+      },
+      scrollAnimationTiming: {
+        type: Object,
+        value: null
+      }
+    },
+
+    listeners: {
+      'iron-select': '_selectedSlideChange',
+      // event fired from iron-draggable-behavior
+      'track-end': '_trackEnd',
+      'iron-overlay-opened': '_ironOverlayOpened'
+    },
+
+    centerSlide: function(slide) {
+      if (this.offsetWidth) {
+        this.scroll(this._scrollLeftForSlideCentered(slide) - this.scrollLeft);
+      }
+    },
+    
+    scroll: function(xShift) {
+      // check for overflow to the left
+      if (this.scrollLeft <= -xShift) {
+        xShift = -this.scrollLeft;
+      }
+      // check for overflow to the right
+      if (xShift >= (remainingWidth = this.scrollWidth - this.scrollLeft - this.offsetWidth)) {
+        xShift = remainingWidth;
+      }
+      this.animationConfig.scroll.xShift = xShift;
+      this.playAnimation('scroll');
+    },
+
+    _centerSlideOnTapChanged: function(centerSlideOnTap) {
+      this.activateEvent = centerSlideOnTap ? 'tap' : '';
+    },
+
+    _ironOverlayOpened: function() {
+      this.scrollLeft = this._scrollLeftForSlideCentered(this.selectedItem);
+    },
+
+    _selectedSlideChange: function(e, selected) {
+      this.centerSlide(selected.item);
+    },
+
+    _scrollLeftForSlideCentered: function(slide) {
+      return (slide.offsetWidth - this.offsetWidth) / 2 + slide.offsetLeft
+    },
+
+    _trackEnd: function() {
+      if (!this.centerSlideOnTrackEnd) {
+        return;
+      }
+      if ((this.scrollLeft + this.offsetWidth) == this.scrollWidth) {
+        this.select(this.items.length);
+        return;
+      }
+      for (slide of this.items) {
+        //fix that to select the good slide
+        var slideshowAbsoluteCenter = this.scrollLeft + this.offsetWidth / 2;
+        if (slide.offsetLeft + slide.offsetWidth >= slideshowAbsoluteCenter) {
+          this.select(this.indexOf(slide));
+          return;
+        }
+      }
+    }
+    
+  };
+
+  Zecat.NeonSlideshowScrollableBehavior = [
+    Polymer.IronSelectableBehavior,
+    Polymer.NeonAnimationRunnerBehavior,
+    Zecat.IronDraggableBehavior,
+    Zecat.NeonSlideshowScrollableBehaviorImpl
+  ];
+
+</script>

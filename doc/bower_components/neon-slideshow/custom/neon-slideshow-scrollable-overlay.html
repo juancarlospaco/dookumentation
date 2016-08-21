@@ -1,0 +1,49 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../iron-overlay-behavior/iron-overlay-behavior.html">
+<link rel="import" href="../../paper-styles/shadow.html">
+<link rel="import" href="../neon-slideshow-scrollable-behavior.html">
+
+<!--
+@group Neon Elements
+@element neon-slideshow-scrollable-overlay
+@demo demo/index.html
+@hero hero.svg
+-->
+<dom-module id="neon-slideshow-scrollable-overlay">
+  <template>
+    <style>
+      :host {
+        display: block;
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        overflow: hidden;
+        height: 100%;
+      }
+      :host ::content > * {
+        @apply(--layout-flex-none);
+        @apply(--shadow-elevation-8dp);
+        max-height: var(--neon-slideshow-scrollable-overlay-content-max-height, 80%);
+        max-width: 100%;
+        margin: 0 40px;
+      }
+    </style>
+    <content></content>
+  </template>
+  <script>
+    Polymer({
+      is: 'neon-slideshow-scrollable-overlay',
+      behaviors: [
+        Polymer.IronOverlayBehavior,
+        Zecat.NeonSlideshowScrollableBehavior
+      ],
+      listeners: {
+        'tap': '_closeIfNeeded'
+      },
+      _closeIfNeeded: function(e) {
+        if (e.target == this) {
+          this.close();
+        }
+      }
+    });
+  </script>
+</dom-module>

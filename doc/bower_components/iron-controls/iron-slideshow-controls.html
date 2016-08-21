@@ -1,0 +1,69 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+
+<!--
+
+Example:
+
+    <iron-slideshow-controls></iron-slideshow-controls>
+
+@group Seed Elements
+@element paper-controls
+@demo demo/index.html
+@hero hero.svg
+-->
+<dom-module id="iron-slideshow-controls">
+
+  <template>
+    <style>
+      :host {
+        @apply(--layout-block);
+        @apply(--layout-fit);
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        @apply(--layout-justified);
+        pointer-events: none;
+      }
+      paper-icon-button {
+        color: white;
+        height: 60px;
+        width: 60px;
+        pointer-events: auto;
+      }
+    </style>
+    <template is="dom-if" if="[[arrows]]">
+      <paper-icon-button icon="icons:chevron-left" on-tap="previous"></paper-icon-button>
+      <paper-icon-button icon="icons:chevron-right" on-tap="next"></paper-icon-button>
+    </template>
+  </template>
+
+</dom-module>
+
+<script>
+
+  Polymer({
+
+    is: 'iron-slideshow-controls',
+
+    properties: {
+      /**
+       * If true, display arrows controls
+       */
+      arrows: {
+        type: Boolean,
+        value: false
+      }
+    },
+
+    next: function() {
+      this.fire('next-slide');
+    },
+
+    previous: function() {
+      this.fire('previous-slide');
+    }
+  });
+
+</script>

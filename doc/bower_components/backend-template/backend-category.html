@@ -1,0 +1,56 @@
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../neon-slideshow/neon-slideshow-pages-behavior.html">
+<link rel="import" href="../neon-slideshow/neon-pages-shared-styles.html">
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+
+Example:
+
+    <backend-category></backend-category>
+
+@group Seed Elements
+@element backend-template
+@demo demo/index.html
+@hero hero.svg
+-->
+<dom-module id="backend-category">
+
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <content></content>
+  </template>
+
+</dom-module>
+
+<script>
+
+  Polymer({
+
+    is: 'backend-category',
+
+    properties: {
+      icon: String,
+      name: String,
+      route: String,
+      attrForSelected: {
+        type: String,
+        value: 'route'
+      }
+    },
+
+    behaviors: [
+      Zecat.NeonSlideshowPagesBehavior
+    ],
+
+    attached: function() {
+      this.selected = this.items[0].route;
+    }
+
+  });
+
+</script>
