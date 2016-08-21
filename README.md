@@ -24,13 +24,13 @@ https://pypi.python.org/pypi/dookumentation
 
 ![eBook Documentation on Okular Viewer](https://lh6.googleusercontent.com/-aI9SIUzt23E/ViHcqejiISI/AAAAAAAALIg/kefIUyBNllY/s0/temp.jpg "eBook Documentation on Okular Viewer")
 
-![Dookumentation Command Line Interface showing the Help](https://lh5.googleusercontent.com/-hNeMwFV_QBs/ViRgw6-HmnI/AAAAAAAALLI/ZxdWgFdet8Q/s0/temp.jpg "Dookumentation Command Line Interface showing the Help")
+![Dookumentation Command Line Interface showing the Help](https://lh5.googleusercontent.com/-t_yeXauLg8s/V7JWB31PfoI/AAAAAAAAMuc/SVYEp0a4d34OQMVZiU3MXYdBlXjUybG8ACL0B/w711-h666-no/dookumentation5.jpg "Dookumentation Command Line Interface showing the Help")
 
 
 ### Live Demo
 
 - https://juancarlospaco.github.io/dookumentation/
-
+- its just `python dookumentation.py dookumentation.py` with No pre-config, settings, etc at all. Dookumentation executed on itself.
 
 ### Features
 
@@ -145,7 +145,7 @@ pip3 install dookumentation
 ### Requisites:
 
 - [Python 3.x](https://www.python.org "Python Homepage")
-- Anglerfish
+- [Anglerfish](https://github.com/juancarlospaco/anglerfish#anglerfish)
 
 **Optionals:**
 
